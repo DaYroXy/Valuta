@@ -1,0 +1,125 @@
+<!-- Left Side -->
+<div class="left-side">
+
+    <!-- Side Bar -->
+    <div class="side-bar">
+
+        <a href="/" class="menu-item active noselect">
+            <span><i class="fa-solid fa-house-chimney"></i></span> <h3>Home</h3>
+        </a>
+
+        <a class="menu-item noselect" id="notifications-button">
+            <span><i class="fa-solid fa-bell"><small class="notification-count">99</small></i></span> <h3>Notifications</h3>
+            
+            <!-- Notifications Popyo -->
+            <div class="notification-popup notification-show noselect">
+
+                <!-- Notifications List -->
+                <a href="#" class="notification ">
+                    <div class="profile-picture">
+                        <img src="./images/user.png" alt="Profile Image">
+                    </div>
+
+                    <div class="notification-body">
+                        <b>Bashar Shaabi</b> Accepted your friend request
+                        <small class="text-muted">2 DAYS AGO</small>
+                    </div>
+                </a>
+                <!-- Notifications List -->
+                <a href="#" class="notification">
+                    <div class="profile-picture">
+                        <img src="./images/user.png" alt="Profile Image">
+                    </div>
+
+                    <div class="notification-body">
+                        <b>Bashar Shaabi</b> Accepted your friend request
+                        <small class="text-muted">2 DAYS AGO</small>
+                    </div>
+                </a>
+                <!-- Notifications List -->
+                <a href="#" class="notification">
+                    <div class="profile-picture">
+                        <img src="./images/user.png" alt="Profile Image">
+                    </div>
+
+                    <div class="notification-body">
+                        <b>Bashar Shaabi</b> Accepted your friend request
+                        <small class="text-muted">2 DAYS AGO</small>
+                    </div>
+                </a>
+                <!-- Notifications List -->
+                <a href="#" class="notification">
+                    <div class="profile-picture">
+                        <img src="./images/user.png" alt="Profile Image">
+                    </div>
+
+                    <div class="notification-body">
+                        <b>Bashar Shaabi</b> Accepted your friend request
+                        <small class="text-muted">2 DAYS AGO</small>
+                    </div>
+                </a>
+            </div>
+        </a>
+
+        <a href="./messages" class="menu-item noselect">
+            <span><i class="fa-solid fa-envelope"><small class="notification-count">6</small></i></span> <h3>Messages</h3>
+        </a>
+        
+        <a href="./rooms" class="menu-item noselect">
+            <span><i class="fa-solid fa-graduation-cap"><small class="notification-count">75</small></i></span> <h3>Rooms</h3>
+        </a>
+
+        <a href="./profile" class="menu-item noselect">
+            <span><i class="fa-solid fa-user"></i></span> <h3>Profile</h3>
+        </a>
+
+        <a class="menu-item noselect">
+            <span><i class="fa-solid fa-gear"></i></span> <h3>Settings</h3>
+        </a>
+
+    </div>
+
+    <!-- Create Post -->
+    <label for="create-post" class="btn btn-primary">Create Post</label>
+
+    <div class="trends-section">
+        <div class="trends-top">
+            <h4>Trends</h4>
+            <i class="fa-solid fa-chart-gantt"></i>
+        </div>
+
+        <span class="line-up"></span>
+        
+        <div class="trends">
+            <div class="trend">
+                <h5>#Greg</h5>
+                <p class="text-muted">214 Posts</p>
+            </div>
+
+            <div class="trend">
+                <h5>#Braude</h5>
+                <p class="text-muted">187 Posts</p>
+            </div>
+
+            <div class="trend">
+                <h5>#Libary</h5>
+                <p class="text-muted">166 Posts</p>
+            </div>
+
+            <div class="trend">
+                <h5>#Weekend</h5>
+                <p class="text-muted">140 Posts</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.querySelector(".notification-popup").childNodes[0].remove();
+
+    document.getElementById("notifications-button").addEventListener("click", () => {
+        document.querySelector(".notification-popup").classList.toggle("notification-show");
+    });
+</script>

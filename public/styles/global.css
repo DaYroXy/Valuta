@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --color-white: #FFFFFF;
+    --color-light: #F0EEF6;
+    --color-gray: #9E98B3;
+    --color-primary: #6B4CE6;
+    --color-secondary: #D6CCFF;
+    --color-sucess: #51FB51;
+    --color-online: #2bd32b;
+    --color-danger: #FB5151;
+    --color-dark: #241E38;
+    --color-black: #151221;
+    --color-recieved: #514e57d3;
+
+    --border-radius: 2rem;
+    --card-border-radius: 1rem;
+    --btn-padding: 0.6rem 2rem;
+    --search-padding: 0.6rem 1rem;
+    --card-padding: 1rem;
+
+    --sticky-top-left: 5.4rem;
+    --sticky-top-right: -18rem;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    border: none;
+    
+}
+
+
+html {
+    height: 100vh;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-dark);
+    background: var(--color-light);
+    overflow-x: hidden;
+}
+
+.logo {
+    color: var(--color-black);
+}
+
+.container { 
+    width: 80%;
+    margin: 0 auto;
+}
+
+textarea {
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* Main Styles */
+
+.profile-picture {
+    width: 2.7rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-picture-xl {
+    min-width: 80px;
+    width: 5rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+
+img {
+    display: block;
+    width: 100%;
+}
+
+.btn {
+    display: inline-block;
+    padding: var(--btn-padding);
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 300ms ease;
+    font-size: 0.9rem;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.text-bold {
+    font-weight: 500;
+}
+
+.text-muted {
+    color: var(--color-gray);
+}
+
+.student {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+/* ---------- NAVBAR ---------- */
+
+
+.nav {
+    width: 100%;
+    background: var(--color-white);
+    padding: 0.7rem 0;
+    position: fixed;
+    z-index: 10;
+}
+
+.nav .profile-details {
+    margin-right: 2rem;
+}
+
+.nav .container {
+    display: grid;
+    grid-template-columns: 18vw auto 20vw;
+    column-gap: 2rem;
+    position: relative;
+}
+
+
+.search-bar {
+    background: var(--color-light);
+    border-radius: var(--border-radius);
+    padding: var(--search-padding);
+    display: flex;
+}
+
+.search-bar input[type="search"] {
+    background: transparent;
+    /* width: 30vw; */
+    width: 90%;
+    margin-left: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-dark);
+}
+
+.search-bar input[type="search"]::placeholder {
+    color: var(--color-gray);
+}
+
+.user-profile-info {
+    gap: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.nav .user-profile-info {
+    margin: auto;
+    width: fit-content;
+    justify-content: space-between;
+    gap: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+
+.user-profile-info p {
+    font-size: 0.8rem;
+}
+.user-profile-info h4 {
+    font-size: 0.95rem;
+}
+
+.no-posts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    /* padding: 5rem; */
+    margin-top: 5rem;
+}
+
+.error-class {
+    padding: 1rem;
+    color: var(--color-danger);
+}

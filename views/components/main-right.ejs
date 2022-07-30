@@ -1,0 +1,120 @@
+<!-- Right Side -->
+<div class="right-side">
+
+    <!-- Main profile info -->
+    <div class="right-profile-container">
+        <div class="top-right-profile">
+            <div class="profile-picture-xl">
+                <img src="./images/<%- user.avatar %>" alt="user profile picture">
+            </div>
+            
+            <div class="right-profile-description">
+                <h4><%- user.name %></h4>
+                <p class="text-muted">@<%- user.username %></p>
+                <small class="student"><%- user.rank %></small>
+            </div>
+        </div>
+
+
+        <div class="middle-right-profile">
+            <div class="post-friends-counter">
+                <p><%- user.friends_count %></p>
+                <h5>Friends</h5>
+            </div>
+
+            <div class="post-friends-counter">
+                <p><%- user.posts_count %></p>
+                <h5>posts</h5>
+            </div>
+        </div>
+
+        <div class="bottom-right-profile">
+            <h5>BIO:</h5>
+            <small><%- user.bio %></small>
+        </div>
+    </div>
+
+    <!-- Friends / Requests -->
+    <div class="friends">
+        <div class="friends-top">
+            <h4>Friends</h4>
+            <i class="fa-solid fa-user-group"></i>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" placeholder="Search for friends" id="friends-search">
+        </div>
+
+        <!-- Friends Category -->
+        <div class="category">
+            <h6 class="active">Friends</h6>
+            <h6 class="friend-requests">Requests</h6>
+        </div>
+
+
+        <!-- FRIENDS ONLINE -->
+        <div class="friends-list">
+
+            <div class="friend">
+                <div class="profile-picture">
+                    <img src="./images/user2.png" alt="user profile picture">
+                </div>
+
+                <div class="friend-body">
+                    <h5>Bashar Shaabi</h5>
+                    <p class="text-muted">Online</p>
+                </div>
+            </div>
+
+            <div class="friend">
+                <div class="profile-picture">
+                    <img src="./images/user3.png" alt="user profile picture">
+                </div>
+
+                <div class="friend-body">
+                    <h5>Salh Zedany</h5>
+                    <p class="text-muted">Online</p>
+                </div>
+            </div>
+
+            <div class="friend">
+                <div class="profile-picture">
+                    <img src="./images/user4.png" alt="user profile picture">
+                </div>
+
+                <div class="friend-body">
+                    <h5>Rawad Natur</h5>
+                    <p class="text-muted">Online</p>
+                </div>
+            </div>
+
+            <div class="friend">
+                <div class="profile-picture">
+                    <img src="./images/user5.png" alt="user profile picture">
+                </div>
+
+                <div class="friend-body">
+                    <h5>Mohammed Dahabre</h5>
+                    <p class="text-muted">Online</p>
+                </div>
+            </div>
+
+            <div class="friend">
+                <div class="profile-picture">
+                    <img src="./images/user6.png" alt="user profile picture">
+                </div>
+
+                <div class="friend-body">
+                    <h5>Selena Gomez</h5>
+                    <p class="text-muted">Online</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- END OF FRIENDS -->
+        
+    </div>
+
+</div>
