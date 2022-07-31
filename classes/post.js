@@ -1,7 +1,6 @@
 
 const postClass = require('../models/Post.model');
 const User = require('../classes/user.js');
-console.log(User)
 
 class Post {
 
