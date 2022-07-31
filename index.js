@@ -47,9 +47,9 @@ app.use('/styles', express.static(__dirname + "public/styles"))
 // Home Page
 app.get('/', (req, res) => {
     const user = req.session.user
-    
+    console.log(user)
     if(!user) {
-        res.redirect('/entry')
+        // res.redirect('/entry')
         return;
     }
     res.render('index', {user})

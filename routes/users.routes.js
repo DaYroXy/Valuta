@@ -27,12 +27,11 @@ router.post("/login", async (req, res) => {
         return;
     }
 
-    let user = await new userClass();
+    let user = new userClass();
 
     if(await user.login(data.username, data.password)) {
-        req.session.user = await user.getUser();
-        const SessionId = req.session.id
-        res.redirect("/?success=" + SessionId);
+        req.session.user = user.getUser();
+        res.redirect("/");
         return
     } else {
         res.redirect("/entry?error=username or password is incorrect");
