@@ -44,19 +44,6 @@ app.use((err, req, res, next) => {
 app.use(express.static('public'));
 app.use('/styles', express.static(__dirname + "public/styles"))
 
-
-let user = {
-    avatar: "anas.jpeg",
-    background: "anas-bg.jpg",
-    name: "Bashar Shaabi",
-    username: "anas.abush",
-    friends: 17,
-    posts: 18,
-    bio: "I am a web developer and I love to code",
-    rank: "student"
-}
-
-
 // Home Page
 app.get('/', (req, res) => {
     const user = req.session.user
@@ -70,16 +57,34 @@ app.get('/', (req, res) => {
 
 // Messages Page
 app.get('/messages', (req, res) => {
+    const user = req.session.user
+    
+    if(!user) {
+        res.redirect('/entry')
+        return;
+    }
     res.render('messages', {user})
 })
 
 // Rooms Page
 app.get('/rooms', (req, res) => {
+    const user = req.session.user
+    
+    if(!user) {
+        res.redirect('/entry')
+        return;
+    }
     res.render('rooms', {user})
 })
 
 // Profie Page
 app.get('/profile', (req, res) => {
+    const user = req.session.user
+    
+    if(!user) {
+        res.redirect('/entry')
+        return;
+    }
     res.render('profile', {user})
 })
 
@@ -109,14 +114,14 @@ io.on("connection", async (socket) => {
 
     const userSession = await socket.request.session.user
 
-    const user = new User();
+    let user = new User();
     
     socket.on("disconnect", async (data) => {
         await user.getUserById(userSession.id);
         await user.removeSocket(socket.id)
         console.log("disconnected" + userSession.username)
     })
-
+    await user.getUserById(userSession.id);
     await user.addSocket(socket.id);
 });
 

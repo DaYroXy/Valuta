@@ -1,4 +1,4 @@
-
+let ObjectId = require('mongoose').Types.ObjectId;
 const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 
@@ -29,7 +29,14 @@ class user {
     }
 
     async getUserById(userId) {
-        let user = await User.findOne({userId});
+        if(!ObjectId.isValid(userId)) {
+            return {
+                status: "error",
+                message: "Invalid user id"
+            }
+        }
+        
+        let user = await User.findById({userId});
         this.user = user;
         return user;
     }

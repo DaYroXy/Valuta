@@ -70,32 +70,28 @@ router.get("/rooms", (req, res) => {
 
 // Post to db
 
-router.post("/post", (req, res) => {
-    // var io = req.app.get('socketio');
-    // console.log(req.session)
-    console.log(req.body)
-    // console.log(req.files)
-    res.json({
-        status: "success",
-        message: "Post created successfully"
-    })
-    return;
-    const data = req.body;
-    // if()
-    
-    let post = new Post({
-        user_id: 1,
-        content: "This is a random post.",
-        image: "",
-        createdAt: new Date().getTime()
-    });
+router.post("/post", async (req, res) => {
+    var io = req.app.get('socketio');
+    const postData = req.body;
 
-    post = post.post()
-    post = Object.assign({ 
-        name: "bashar shaabi",
-        rank: "student",
-        avatar: "anas.jpeg"}, post)
+    const post = new Post({postData});
+    console.log(await post.isValid())
+    if(!await post.isValid()) {
+        post.post();
+        console.log("error");
+        res.json({
+            status: "error",
+            message: "Something went wrong"
+        })
+        return;
+    }
 
+    // let post = new Post({
+    //     user_id: 1,
+    //     content: "This is a random post.",
+    //     image: "",
+    //     createdAt: new Date().getTime()
+    // });
 
     io.emit("newPost", post)
     res.json({

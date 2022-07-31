@@ -197,6 +197,21 @@ img {
 .user-profile-info h4 {
     font-size: 0.95rem;
 }
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+  width: 24px;
+  border-radius: 13px;
+  background-clip: padding-box;
+  border: 10px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb {        
+  box-shadow: inset 0 0 0 10px rgb(202, 202, 202);
+}
+.friends-list {
+    max-height: 400px;
+    overflow-y: scroll;
+}
 
 .no-posts {
     display: flex;

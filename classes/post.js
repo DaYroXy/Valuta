@@ -1,4 +1,7 @@
 
+const postClass = require('../models/Post.model');
+const User = require('../classes/user.js');
+console.log(User)
 
 class Post {
 
@@ -9,17 +12,22 @@ class Post {
         this.createdAt = createdAt;
     }
 
-    isValid() {
+    async isValid() {
 
         // if content is empty
-        if(this.user_id === "") {
-            return false;
+        let user = await new User().getUserById("asd");
+        if(!user) {
+            return {
+                status: "error",
+                message: "User not found"
+            }
         }
+
         if(this.content === "") {
-            return false;
-        }
-        if(this.createdAt === "") {
-            return false;
+            return {
+                status: "error",
+                message: "Content is empty"
+            }
         }
 
         return true;
