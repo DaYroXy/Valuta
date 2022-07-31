@@ -32,11 +32,11 @@ function timeSince(date) {
     return Math.floor(seconds) + " SECONDS AGO";
   }
 
-function addPost(post) {
-    img = ""
-    let createdAt = timeSince(post.createdAt);
-    if(post.image !== "") {
-        img = `<img src="./images/${post.image}" alt="feed-content-image">`
+function addPost(data) {
+    let img = ""
+    let createdAt = timeSince(new Date(data.post.createdAt));
+    if(data.post.image !== "") {
+        img = `<img src="./images/${data.post.image}" alt="feed-content-image">`
     }
 
     let html = `
@@ -45,20 +45,20 @@ function addPost(post) {
                     <div class="user">
                         <div class="pfp-container">
                             <div class="profile-picture">
-                                <img src="./images/${post.avatar}" alt="user profile picture">
+                                <img src="./images/${data.avatar}" alt="user profile picture">
                             </div>
                         </div>
 
                         <div class="info">
-                            <h3>${post.name}</h3>
-                            <small>${createdAt}, <span class="student">${post.rank}</span></small>
+                            <h3>${data.name}</h3>
+                            <small>${createdAt}, <span class="student">${data.rank}</span></small>
                         </div>
                     </div>
                     <span class="edit"><i class="fa-solid fa-ellipsis fa-lg"></i></span>
                 </div>
 
                 <div class="feed-content">
-                    <small>${post.content}</small>
+                    <small>${data.post.content}</small>
                     <div class="feed-photo">
                         ${img}
                     </div>

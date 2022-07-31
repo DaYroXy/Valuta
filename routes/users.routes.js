@@ -3,6 +3,16 @@ const userClass = require("../classes/user");
 const router = express.Router();
 
 
+router.get("/test", (req,res)=> {
+    res.json({
+        message: "Hello World"
+    })
+
+    var io = req.app.get('io');
+    io.emit("work", "Hello World");
+
+})
+
 router.post("/login", async (req, res) => {
 
     const data = {

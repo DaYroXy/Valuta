@@ -17,7 +17,8 @@ mongoose.connect('mongodb://localhost:27017/Valuta', { useNewUrlParser: true });
 const io = require('socket.io')(server);
 
 app.use(cors());
-app.set('socketio', io);  
+app.set("io", io);
+app.set('server', server);
 app.use(fileUpload());
 
 app.use(sessionMiddleware);
@@ -49,7 +50,7 @@ app.get('/', (req, res) => {
     const user = req.session.user
 
     if(!user) {
-        // res.redirect('/entry')
+        res.redirect('/entry')
         return;
     }
     res.render('index', {user})
@@ -96,7 +97,6 @@ app.get('/entry', (req, res) => {
     res.render('entry', error)
 })
 
-app.set("io", io);
 io.use(wrap(sessionMiddleware));
 
 io.use((socket, next) => {
@@ -107,7 +107,6 @@ io.use((socket, next) => {
         next(new Error("unauthorized"));
     }
 });
-
 // Socket Connection
 io.on("connection", async (socket) => {
 

@@ -6,19 +6,11 @@ router.use(require("./users.routes"));
 
 
 // Get All Posts 
-router.get("/posts", (req, res) => {
-    let posts = [
-        {
-            avatar: "basha.jpeg",
-            name: "bashar shaabi",
-            createdAt: 1659096727871,
-            rank: "student",
-            image: "feed-2.jpg",
-            content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis deserunt facere, repellendus nostrum unde sunt sequi obcaecati dolorem vero repellat."
-        }
-    ]
+router.get("/posts", async (req, res) => {
+    let posts = new Post();
+    // posts = await posts.getPosts();
 
-    res.json(posts)
+    res.json(await posts.getPosts())
 })
 
 // Get All rooms 
@@ -71,13 +63,44 @@ router.get("/rooms", (req, res) => {
 // Post to db
 
 router.post("/post", async (req, res) => {
-    var io = req.app.get('socketio');
-    const postData = req.body;
+    var io = req.app.get('io');
+    console.log(io)
+    const user = req.session.user;
 
-    const post = new Post({postData});
-    console.log(await post.isValid())
+    // if user isnet logged in
+    if(!user) {
+        res.json({
+            status: "error",
+            message: "You are not logged in"
+        })
+        return;
+    }
+    
+    // Create the post data
+    const postData = {
+        content: req.body.content,
+        image: "",
+        file: ""
+    }
+
+    // if user sent a file or image
+    if(req.files) {
+        if('image' in req.files) {
+            const image = req.files.image;
+            postData.image = image.name;
+        }
+
+        if('file' in req.files) {
+            const file = req.files.file;
+            postData.file = file.name;
+        }
+    }
+
+    const post = new Post();
+    await post.setUserById(user.id);
+    await post.postData(postData);
+    
     if(!await post.isValid()) {
-        post.post();
         console.log("error");
         res.json({
             status: "error",
@@ -86,18 +109,30 @@ router.post("/post", async (req, res) => {
         return;
     }
 
-    // let post = new Post({
-    //     user_id: 1,
-    //     content: "This is a random post.",
-    //     image: "",
-    //     createdAt: new Date().getTime()
-    // });
+    // let getPost = getPostById(post);
+    
+    let postResult = await post.post();
+    const postToEmit = {
+        _id: postResult.data.userId,
+        avatar: user.avatar,
+        name: user.name,
+        username: user.username,
+        rank: user.rank,
+        post: {
+            _id: postResult.data._id,
+            content: postResult.data.content,
+            image: postResult.data.image,
+            file: postResult.data.file,
+        },
+        createdAt: postResult.data.createdAt
+    }
 
-    io.emit("newPost", post)
-    res.json({
-        "status": "success",
-        "message": "Post created successfully."
-    })
+    if(!postResult.status === "sucess") {
+        res.redirect(`/?error=${postResult.message}`)
+        return
+    }
+    io.emit("newPost", postToEmit)
+    res.redirect(`/?success=${postResult.message}`);
 })
 
 module.exports=router;

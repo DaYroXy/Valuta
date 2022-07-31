@@ -31,16 +31,16 @@ getGlobalPosts().then(posts => {
 })
 
 // Socket Io Conenction
-const socket = io("http://localhost:4200");
+const socket = io("/");
 
-const userId = document.getElementById("user-id").innerHTML;
-socket.emit("logged-in", (userId));
 
 // Listen for new posts from the server
 socket.on("newPost", (post) => {
+    console.log("POSTINNNNNNNNNNNNNNNNNNNNNNNNNG")
     let noPosts = document.querySelector('.no-posts');
     if(noPosts !== null) {
         noPosts.remove();
     }
+    console.log(post)
     addPost(post);
 });

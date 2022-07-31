@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 
 const Post = new mongoose.Schema({
-    userId: String,
+    userId: mongoose.Types.ObjectId,
     content: String,
     image: String,
     file: String,
-    createdAt: String
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("Post", Post);

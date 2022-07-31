@@ -10,6 +10,6 @@ const User = new mongoose.Schema({
     rank: Number,
     bio: String,
     sockets_id: [String]
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("User", User);
