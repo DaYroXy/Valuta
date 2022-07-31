@@ -35,8 +35,7 @@ class user {
                 message: "Invalid user id"
             }
         }
-        
-        let user = await User.findById({userId});
+        let user = await User.findById(userId);
         this.user = user;
         return user;
     }
@@ -65,7 +64,7 @@ class user {
         
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        User.create({
+        await User.create({
             avatar: "anas.jpeg",
             bg_image: "anas-bg.jpeg",
             name: name,
@@ -76,7 +75,11 @@ class user {
             bio: bio,
             sockets_id: socket_id
         })
-        return true;
+        this.user = await this.userExists(username);
+        return {
+            "status": "success",
+            "message": "Account created successfully"
+        };
     }
 
     async login(username, password) {

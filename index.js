@@ -47,7 +47,7 @@ app.use('/styles', express.static(__dirname + "public/styles"))
 // Home Page
 app.get('/', (req, res) => {
     const user = req.session.user
-    console.log(user)
+
     if(!user) {
         // res.redirect('/entry')
         return;
@@ -102,7 +102,6 @@ io.use(wrap(sessionMiddleware));
 io.use((socket, next) => {
     const session = socket.request.session;
     if (session && session.user) {
-        console.log("YEs")
         next();
     } else {
         next(new Error("unauthorized"));
@@ -112,15 +111,16 @@ io.use((socket, next) => {
 // Socket Connection
 io.on("connection", async (socket) => {
 
-    const userSession = await socket.request.session.user
-
+    let userSession = await socket.request.session.user
     let user = new User();
-    
+
     socket.on("disconnect", async (data) => {
         await user.getUserById(userSession.id);
         await user.removeSocket(socket.id)
-        console.log("disconnected" + userSession.username)
+        console.log(userSession.username + ": disconnected")
     })
+
+    console.log(userSession.username + ": connected")
     await user.getUserById(userSession.id);
     await user.addSocket(socket.id);
 });

@@ -4,12 +4,11 @@ const router = express.Router();
 
 
 router.post("/login", async (req, res) => {
-    const io = req.app.get('socketio');
+
     const data = {
         username: req.body.username.toString(),
         password: req.body.password.toString()
     }
-    console.log(data)
 
     if(data.username === "") {
         res.json({
@@ -89,48 +88,23 @@ router.post("/register", async (req, res) => {
         return;
     }
 
-
-
-
+    // Registartion
     let user = new userClass()
-    let reg = await user.register({
+    let result = await user.register({
         name: data.name,
         username: data.username,
         password: data.password,
         email: data.email.toLowerCase(),
         bio: data.bio,
     })
-    if(typeof reg !== "undefined") {
-        if(reg.status === "error") {
-            // res.redirect("/entry?registerError=" + reg.message);
-            console.log(reg.message)
-            return;
-        }
+
+    if(result.status !== "success") {
+        res.redirect(`/entry?registerError=${result.message}`);
+        return user;
     }
 
-    result = await user.getUser();
-    console.log(user)
-
-
-    
-    // if(Object.keys(user.getUser()).length === 0) {
-        // user = await user.getUser();
-    //     console.log(user)
-
-    // }
-    // console.log(user.getUser())
-    // if(Object.keys(user).length !== 0) {
-    //     user = await user.getUser();
-    //     req.session.user = user.getUser();
-
-    //     return;
-    // } else {
-    //     res.json({
-    //         status: "error",
-    //         message: "Registration failed",
-    //     })
-    //     return;
-    // }
+    req.session.user = user.getUser();
+    res.redirect("/");
 })
 
 // Logout
