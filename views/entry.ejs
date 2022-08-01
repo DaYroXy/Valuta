@@ -14,7 +14,7 @@
     <% } %>
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="/api/v1/login" method="post" class="sign-in-form">
+          <form action="/api/v1/entry/login" method="post" class="sign-in-form">
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -31,12 +31,10 @@
               </div>
             <% } %>
             
-
-
             <input type="submit" name="login" value="Login" class="btn solid" />
             
           </form>
-          <form action="/api/v1/register" method="POST" class="sign-up-form">
+          <form action="/api/v1/entry/register" method="POST" class="sign-up-form">
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fa-solid fa-id-card"></i>

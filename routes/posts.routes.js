@@ -5,7 +5,6 @@ const router = express.Router();
 
 
 // Get my posts
-
 router.get("/me", async (req,res) => {
     const userSession = req.session.user;
     
@@ -69,6 +68,8 @@ router.post("/add", async (req, res) => {
 
     const post = new Post();
     await post.setUserById(user.id);
+    
+    return;
     await post.postData(postData);
     
     if(!await post.isValid()) {
@@ -95,7 +96,6 @@ router.post("/add", async (req, res) => {
             username: user.username,
         },
         _id: postResult.data._id,
-
     }
 
     if(!postResult.status === "sucess") {

@@ -3,7 +3,6 @@ const postModel = require('../models/Post.model');
 const userModel = require('../models/User.model');
 const User = require('../classes/user.js');
 
-
 class Post {
     
     async postData({content, image, file}) {
@@ -36,7 +35,9 @@ class Post {
     }
     
     async setUserById(userId) {
-        let user = await new User().getUserById(userId);
+        let user = new User();
+        console.log(user)
+        // let user = await new User().getUserById(userId);
         this.user = user;
         return user;
     }

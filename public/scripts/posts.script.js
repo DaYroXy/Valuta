@@ -79,13 +79,13 @@ function addPost(post) {
 
 // Get Global Posts
 async function getGlobalPosts() {
-    let posts = await (await fetch("/api/v1/posts")).json();
+    let posts = await (await fetch("/api/v1/post/")).json();
     return posts;
 }
 
 // Get Private Posts
 function getProfilePosts() {
-    fetch("/api/v1/posts")
+    fetch("/api/v1/post")
     .then(res => res.json())
     .then(res => {
         addPost(res);

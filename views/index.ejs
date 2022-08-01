@@ -25,7 +25,7 @@
             <!-- Middle -->
             <div class="middle">
 
-                <form enctype="multipart/form-data" method="POST" action="/api/v1/post" class="create-post">
+                <form id="create-post-form" enctype="multipart/form-data" method="POST" action="/api/v1/post/add" class="create-post">
                     <div class="profile-picture">
                         <img src="./images/<%- user.avatar %>" alt="user profile picture">
                     </div>
@@ -54,39 +54,7 @@
 
 
                 <!-- FEED -->
-                <div class="feeds" id="feeds">
-
-                    <!-- <div class="feed">
-                        <div class="feed-top">
-                            <div class="user">
-                                <div class="profile-picture">
-                                    <img src="./images/user4.png" alt="user profile picture">
-                                </div>
-
-                                <div class="info">
-                                    <h3>Bashar Shaabi</h3>
-                                    <small>46 MINUTES AGO, <span class="student">STUDENT</span></small>
-                                </div>
-                            </div>
-                            <span class="edit"><i class="fa-solid fa-ellipsis fa-lg"></i></span>
-                        </div>
-
-                        <div class="feed-content">
-                            <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis deserunt facere, repellendus nostrum unde sunt sequi obcaecati dolorem vero repellat.</small>
-                            <div class="feed-photo">
-                                <img src="./images/basha.jpeg" alt="feed-content-image">
-                            </div>
-                        </div>
-                        
-                        <div class="action-button">
-                            <span><i class="fa-regular fa-heart fa-xl"></i></span>
-                            <span><i class="fa-regular fa-comment fa-xl"></i></span>
-                            <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
-                        </div>
-
-                    </div> -->
-
-                </div>
+                <div class="feeds" id="feeds"></div>
 
             </div>
 

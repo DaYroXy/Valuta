@@ -1,5 +1,5 @@
 function getPosts() {
-    fetch("http://localhost:4200/api/v1/rooms")
+    fetch("/api/v1/rooms")
     .then(res => res.json())
     .then(res => {
         let html = res.map(p => {
