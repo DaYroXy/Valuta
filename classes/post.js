@@ -85,7 +85,7 @@ class Post {
                 $unwind: "$user"
             }, { 
                 $project: { 
-                    "user.id":1,
+                    "user._id":1,
                     "user.name":1,
                     "user.avatar":1,
                     "user.username":1,
@@ -98,6 +98,48 @@ class Post {
                 }
             }]).sort({createdAt: 1}).limit(10)
         return posts;
+    }
+
+    async getUserPosts() {
+        let userId = await this.getUser();
+        if(!userId) {
+            return {
+                status: "error",
+                message: "User not found"
+            }
+        }
+        userId = userId.id
+        console.log(userId)
+        let posts = await postModel.aggregate([
+            {
+                $match: { "userId": userId}
+            },
+            { $lookup:
+                { 
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            }, { 
+                $unwind: "$user"
+            }, { 
+                $project: { 
+                    "user._id":1,
+                    "user.name":1,
+                    "user.avatar":1,
+                    "user.username":1,
+                    "user.rank":1,
+                    id:1,
+                    content:1,
+                    image:1,
+                    file:1,
+                    createdAt: 1
+                }
+            }]).sort({createdAt: 1}).limit(10)
+
+        return posts;
+
     }
 }
 

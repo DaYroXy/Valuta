@@ -34,6 +34,7 @@ function timeSince(date) {
 
 function addPost(post) {
     let img = ""
+    console.log(post)
     let createdAt = timeSince(new Date(post.createdAt));
     if(post.image !== "") {
         img = `<img src="./images/${post.image}" alt="feed-content-image">`

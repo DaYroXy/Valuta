@@ -2,7 +2,7 @@ let ObjectId = require('mongoose').Types.ObjectId;
 const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 
-class user {
+class user extends require("./post.js") {
 
     getUser() {
         const user = {
