@@ -16,7 +16,6 @@ class Post {
 
         // if content is empty
         if(!this.user || this.user === undefined) {
-            console.log("no user")
             return {
                 status: "error",
                 message: "User not found"
@@ -24,7 +23,6 @@ class Post {
         }
 
         if(this.content === "" || this.content === undefined) {
-            console.log("no content")
             return {
                 status: "error",
                 message: "Content is empty"
@@ -52,7 +50,6 @@ class Post {
             };
         }
 
-        console.log("readying" + this.content)
         let post = await postModel.create({
             userId: this.user._id,
             content: this.content,

@@ -36,11 +36,10 @@ const socket = io("/");
 
 // Listen for new posts from the server
 socket.on("newPost", (post) => {
-    console.log("POSTINNNNNNNNNNNNNNNNNNNNNNNNNG")
     let noPosts = document.querySelector('.no-posts');
     if(noPosts !== null) {
         noPosts.remove();
     }
-    console.log(post)
+
     addPost(post);
 });

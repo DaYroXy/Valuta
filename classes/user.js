@@ -55,7 +55,6 @@ class user {
 
     async register({name, username, password, email, bio, socket_id}) {
         if(await this.userExists(username)) {
-            console.log("exists")
             return {
                 status: "error",
                 message: "Username is already taken"

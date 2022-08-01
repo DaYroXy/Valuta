@@ -64,7 +64,6 @@ router.get("/rooms", (req, res) => {
 
 router.post("/post", async (req, res) => {
     var io = req.app.get('io');
-    console.log(io)
     const user = req.session.user;
 
     // if user isnet logged in
@@ -101,7 +100,6 @@ router.post("/post", async (req, res) => {
     await post.postData(postData);
     
     if(!await post.isValid()) {
-        console.log("error");
         res.json({
             status: "error",
             message: "Something went wrong"
