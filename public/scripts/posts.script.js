@@ -78,7 +78,7 @@ function addPost(data) {
 
 // Get Global Posts
 async function getGlobalPosts() {
-    let posts = await (await fetch("http://10.0.0.7:4200/api/v1/posts")).json();
+    let posts = await (await fetch("/api/v1/posts")).json();
     return posts;
 }
 

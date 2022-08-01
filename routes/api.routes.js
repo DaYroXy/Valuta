@@ -8,6 +8,7 @@ router.use(require("./users.routes"));
 // Get All Posts 
 router.get("/posts", async (req, res) => {
     let posts = new Post();
+    console.log(posts)
     // posts = await posts.getPosts();
 
     res.json(await posts.getPosts())
@@ -121,8 +122,8 @@ router.post("/post", async (req, res) => {
             content: postResult.data.content,
             image: postResult.data.image,
             file: postResult.data.file,
+            createdAt: postResult.data.createdAt
         },
-        createdAt: postResult.data.createdAt
     }
 
     if(!postResult.status === "sucess") {
