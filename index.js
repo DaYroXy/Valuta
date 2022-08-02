@@ -107,9 +107,10 @@ app.get("/profile/:username", async (req, res) => {
         return;
     }
 
+    // Fix Joined Date
     let userJoined = visitedUser.createdAt.toLocaleDateString('en-US', {month: 'long', year: 'numeric'})
 
-    res.render('profile', {user, visitedUser, userJoined})
+    res.render('profile', {user, visitedUser})
 })
 
 // APIS
