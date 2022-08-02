@@ -95,7 +95,7 @@ class Post {
                 "post.file": 1,
                 "post.createdAt": 1,
             }}
-          ]).limit(10);
+          ]).sort({"post.createdAt":1}).limit(10);
         return posts;
     }
 }
