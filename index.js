@@ -110,6 +110,7 @@ app.get("/profile/:username", async (req, res) => {
     // Fix Joined Date
     let userJoined = visitedUser.createdAt.toLocaleDateString('en-US', {month: 'long', year: 'numeric'})
 
+    // Render
     res.render('profile', {user, visitedUser})
 })
 
