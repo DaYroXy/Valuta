@@ -30,6 +30,7 @@ router.post("/login", async (req, res) => {
 
     if(await user.login(data.username, data.password)) {
         req.session.user = user.getUser();
+        req.session.user.rank = (await user.getUserRank()).name;
         res.redirect("/");
         return
     } else {

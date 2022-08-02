@@ -2,10 +2,13 @@
 
 :root {
     --color-white: #FFFFFF;
-    --color-light: #F0EEF6;
+    /* --color-light: #e4e1ee; */
+    --color-light: #dcd8e9;
+
     --color-gray: #9E98B3;
     --color-primary: #6B4CE6;
     --color-secondary: #D6CCFF;
+    
     --color-sucess: #51FB51;
     --color-online: #2bd32b;
     --color-danger: #FB5151;
@@ -112,6 +115,10 @@ img {
     color: #fff;
 }
 
+.profile-picture {
+    max-width: 45px;
+}
+
 .text-bold {
     font-weight: 500;
 }
@@ -123,6 +130,13 @@ img {
 .student {
     color: var(--color-primary);
     font-weight: 700;
+    text-transform: uppercase;
+}
+
+.admin {
+    color: var(--color-danger);
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 /* ---------- NAVBAR ---------- */
@@ -225,4 +239,14 @@ img {
 .error-class {
     padding: 1rem;
     color: var(--color-danger);
+}
+
+.feed .feed-top .user .info .info-name-container {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.feed .feed-top .user .info .info-name-container a{
+    color: var(--color-dark);
 }

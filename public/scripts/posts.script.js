@@ -32,11 +32,22 @@ function timeSince(date) {
     return Math.floor(seconds) + " SECONDS AGO";
   }
 
+
+
+// Add post to page
 function addPost(data) {
     let img = ""
-    let createdAt = timeSince(new Date(data.post.createdAt));
-    if(data.post.image !== "") {
-        img = `<img src="./images/${data.post.image}" alt="feed-content-image">`
+    let user_avatar = data.user.avatar
+
+    if(user_avatar.includes("http") || user_avatar.includes("https")){
+        user_avatar = data.user.avatar
+    }   else{
+        user_avatar = `http://localhost:4200/images/${data.user.avatar}`
+    }
+
+    let createdAt = timeSince(new Date(data.createdAt));
+    if(data.image !== "") {
+        img = `<img src="./images/${data.image}" alt="feed-content-image">`
     }
 
     let html = `
@@ -45,20 +56,23 @@ function addPost(data) {
                     <div class="user">
                         <div class="pfp-container">
                             <div class="profile-picture">
-                                <img src="./images/${data.avatar}" alt="user profile picture">
+                                <img src="${user_avatar}" alt="user profile picture">
                             </div>
                         </div>
 
                         <div class="info">
-                            <h3>${data.name}</h3>
-                            <small>${createdAt}, <span class="student">${data.rank}</span></small>
+                            <div class="info-name-container">
+                                <h3>${data.user.name}</h3>
+                                <small><a href="http://localhost:4200/profile/${data.user.username}">@${data.user.username}</a></small>
+                            </div>
+                            <small>${createdAt}, <span class="${data.rank.name}">${data.rank.name}</span></small>
                         </div>
                     </div>
                     <span class="edit"><i class="fa-solid fa-ellipsis fa-lg"></i></span>
                 </div>
 
                 <div class="feed-content">
-                    <small>${data.post.content}</small>
+                    <small>${data.content}</small>
                     <div class="feed-photo">
                         ${img}
                     </div>
@@ -81,11 +95,3 @@ async function getGlobalPosts() {
     let posts = await (await fetch("http://localhost:4200/api/v1/posts")).json();
     return posts;
 }
-
-// // Get Private Posts
-async function getProfilePosts() {
-    let posts = await (await fetch("http://localhost:4200/api/v1/posts/me")).json();
-    return posts;
-}
-
-// }

@@ -27,7 +27,17 @@
                 <form id="submit-post" class="create-post">
                 <!-- <form enctype="multipart/form-data" method="POST" action="/api/v1/posts/add" class="create-post"> -->
                     <div class="profile-picture">
-                        <img src="http://localhost:4200/images/<%- user.avatar %>" alt="user profile picture">
+                        <%
+                        if(user.avatar.includes("http") || user.avatar.includes("https")){
+                            %>
+                                <img src="<%- user.avatar %>" alt="user profile picture">
+                            <%
+                        }else{
+                                %>
+                                    <img src="http://localhost:4200/images/<%- user.avatar %>" alt="user profile picture">
+                                <%
+                            }
+                        %>
                     </div>
                     <div class="create-post-container">
                         

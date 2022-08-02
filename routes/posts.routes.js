@@ -1,6 +1,7 @@
 const express = require ("express");
 const router = express.Router();
 
+const rankModel = require("../models/Rank.model");
 const userClass = require("../classes/user");
 const Post = require("../classes/post");
 
@@ -24,6 +25,22 @@ router.get("/me", async(req, res) => {
     await userPosts.getUserById(userSession.id)
     res.json(await userPosts.Posts())
 })
+
+router.get("/:username", async(req, res) => {
+    const userSession = req.session.user;
+    const username = req.params.username;
+    if(!userSession) {
+        res.json({
+            status: "error",
+            message: "User not found"
+        })
+    }
+
+    const userPosts = new userClass();
+    await userPosts.getUserByUsername(username);
+    res.json(await userPosts.Posts())
+})
+
 
 
 // Post to db
@@ -73,29 +90,30 @@ router.post("/add", async (req, res) => {
     }
 
     // let getPost = getPostById(post);
-    
     let postResult = await post.post();
-    const postToEmit = {
-        _id: postResult.data.userId,
-        avatar: user.avatar,
-        name: user.name,
-        username: user.username,
-        rank: user.rank,
-        post: {
-            _id: postResult.data._id,
-            content: postResult.data.content,
-            image: postResult.data.image,
-            file: postResult.data.file,
-        },
-        createdAt: postResult.data.createdAt
-    }
-
     if(!postResult.status === "sucess") {
         res.json({
             "status": "error",
             "message": "post added successfully"
         });
         return
+    }
+
+    const userRank = await rankModel.findOne({id: user.rank});
+    const postToEmit = {
+        _id: postResult.data._id,
+        content: postResult.data.content,
+        image: postResult.data.image,
+        file: postResult.data.file,
+        createdAt: postResult.data.createdAt,
+        user: {
+            avatar: user.avatar,
+            name: user.name,
+            username: user.username,
+        },
+        rank: {
+            name : userRank.name
+        }
     }
 
     io.emit("newPost", postToEmit)

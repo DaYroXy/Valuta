@@ -7,7 +7,7 @@ const User = new mongoose.Schema({
     username: String,
     password: String,
     email: String,
-    rank: Number,
+    rank: mongoose.Types.ObjectId,
     bio: String,
     sockets_id: [String]
 }, { timestamps: true });

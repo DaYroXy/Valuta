@@ -5,7 +5,17 @@
     <div class="right-profile-container">
         <div class="top-right-profile">
             <div class="profile-picture-xl">
-                <img src="http://localhost:4200/images/<%- user.avatar %>" alt="user profile picture">
+                <%
+                    if(user.avatar.includes("http") || user.avatar.includes("https")){
+                        %>
+                            <img src="<%- user.avatar %>" alt="user profile picture">
+                        <%
+                    }else{
+                        %>
+                            <img src="http://localhost:4200/images/<%- user.avatar %>" alt="user profile picture">
+                        <%
+                    }
+                %>
             </div>
             
             <div class="right-profile-description">

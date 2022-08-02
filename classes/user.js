@@ -1,8 +1,13 @@
 let ObjectId = require('mongoose').Types.ObjectId;
 const User = require("../models/User.model");
 const userModel = require("../models/User.model");
+const postModel = require("../models/Post.model");
+const rankModel = require("../models/Rank.model");
+
 const bcrypt = require("bcrypt");
 const { default: mongoose } = require('mongoose');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 
 class user {
 
@@ -23,6 +28,10 @@ class user {
         return user;
     }
 
+    async getUserRank() {
+        return await rankModel.findOne({id: this.user.rank});
+    }
+
     async getUserByUsername(username) {
         let user = await User.findOne({username: username}, {"sockets_id":0, "password":0, "email":0});
         if(!user) {
@@ -32,6 +41,7 @@ class user {
             }
         }
         
+        this.user = user;
         return user;
     }
 
@@ -76,15 +86,44 @@ class user {
         }
         
         const hashedPassword = await bcrypt.hash(password, 10)
-        
+
+        var backgroundImage;
+        try  {
+            const Url = await fetch("https://picsum.photos/800")   
+            backgroundImage = Url.url
+    
+        } catch(err) {
+            backgroundImage = "anas-bg.jpeg"
+        }
+
+        var userImage;
+        try  {
+            let rngBGcolor = (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+            let seed = Math.round(Math.random()*Math.pow(2,64)).toString(36)
+            const Url = await fetch(`https://avatars.dicebear.com/api/bottts/${seed}.png?background=%23${rngBGcolor}`)   
+            console.log(Url)
+            userImage = Url.url
+    
+        } catch(err) {
+            userImage = "anas.jpeg"
+        }
+
+        let rank = await rankModel.findOne({access: 0});
+        if(!rank) {
+            rank = await rankModel.create({
+                name: "student",
+                access: 0})
+        }
+        console.log(rank)
+
         await User.create({
-            avatar: "anas.jpeg",
-            bg_image: "anas-bg.jpeg",
+            avatar: userImage,
+            bg_image: backgroundImage,
             name: name,
             username: username,
             password: hashedPassword,
             email: email,
-            rank: 0,
+            rank: rank._id,
             bio: bio,
             sockets_id: socket_id
         })
@@ -128,34 +167,47 @@ class user {
             })
         }
     
-        const posts = await userModel.aggregate([
+        const posts = await postModel.aggregate([
             {
                 $match: {
-                    "_id" : mongoose.Types.ObjectId(this.user.id)
+                    "userId" : mongoose.Types.ObjectId(this.user.id)
                 }
             },
             {
-              "$lookup": {
-                "from": "posts",
-                "localField": "_id",
-                "foreignField": "userId",
-                "as": "post"
-              }
-            },
-            {"$unwind": "$post"},
-            {"$project": {
+                "$lookup": {
+                  "from": "users",
+                  "localField": "userId",
+                  "foreignField": "_id",
+                  "as": "user"
+                }
+              },
+              {
+                "$unwind": "$user"
+              },
+              {
+                "$lookup": {
+                    "from": "ranks",
+                    "localField": "user.rank",
+                    "foreignField": "_id",
+                    "as": "rank"
+                }
+              },
+              {
+                "$unwind": "$rank"      
+              },
+              {"$project": {
                 "_id":1,
-                "name": 1,
-                "avatar": 1,
-                "username": 1,
-                "rank" : 1, 
-                "post._id": 1,
-                "post.content": 1,
-                "post.image": 1,
-                "post.file": 1,
-                "post.createdAt": 1,
+                "content":1,
+                "image":1,
+                "file":1,
+                "createdAt": 1,
+                "user.name": 1,
+                "user.avatar": 1,
+                "user.username": 1,
+                "rank.name" : 1, 
             }}
-          ]).sort({"post.createdAt":1}).limit(10);
+            
+          ]).sort({"createdAt":1}).limit(10);
         return posts;
     }
     
