@@ -76,7 +76,7 @@ class user {
         }
         
         const hashedPassword = await bcrypt.hash(password, 10)
-
+        
         await User.create({
             avatar: "anas.jpeg",
             bg_image: "anas-bg.jpeg",
@@ -155,7 +155,7 @@ class user {
                 "post.file": 1,
                 "post.createdAt": 1,
             }}
-          ]).limit(10);
+          ]).sort({"post.createdAt":1}).limit(10);
         return posts;
     }
     

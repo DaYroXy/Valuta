@@ -2,7 +2,6 @@ const express = require ("express");
 const router = express.Router();
 const userClass = require("../classes/user");
 
-
 // Login 
 router.post("/login", async (req, res) => {
 

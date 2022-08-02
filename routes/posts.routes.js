@@ -91,11 +91,18 @@ router.post("/add", async (req, res) => {
     }
 
     if(!postResult.status === "sucess") {
-        res.redirect(`/?error=${postResult.message}`)
+        res.json({
+            "status": "error",
+            "message": "post added successfully"
+        });
         return
     }
+
     io.emit("newPost", postToEmit)
-    res.redirect(`/?success=${postResult.message}`);
+    res.json({
+        "status": "success",
+        "message": "post added successfully"
+    });
 })
 
 
