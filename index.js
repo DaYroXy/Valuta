@@ -86,7 +86,30 @@ app.get('/profile', (req, res) => {
         res.redirect('/entry')
         return;
     }
-    res.render('profile', {user})
+    let visitedUser = user;
+    res.render('profile', {user, visitedUser})
+})
+
+// get user profile
+app.get("/profile/:username", async (req, res) => {
+    const user = req.session.user
+    
+    if(!user) {
+        res.redirect('/entry')
+        return;
+    }
+
+    const username = req.params.username
+    var visitedUser = await new User().getUserByUsername(username);
+
+    if(visitedUser.status === "error") {
+        res.redirect('/')
+        return;
+    }
+
+    let userJoined = visitedUser.createdAt.toLocaleDateString('en-US', {month: 'long', year: 'numeric'})
+
+    res.render('profile', {user, visitedUser, userJoined})
 })
 
 // APIS

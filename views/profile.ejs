@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <%- include("./addons/header-includes.ejs") %>
-    <script src="./scripts/side-bar.js" defer></script>
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="styles/index.css">
-    <link rel="stylesheet" href="styles/profile.css">
+    <script src="http://localhost:4200/scripts/posts.script.js" defer></script>
+    <script src="http://localhost:4200/scripts/profile.script.js" defer></script>
+    <link rel="stylesheet" href="http://localhost:4200/styles/global.css">
+    <link rel="stylesheet" href="http://localhost:4200/styles/index.css">
+    <link rel="stylesheet" href="http://localhost:4200/styles/profile.css">
 
     <title>Valuta</title>
 </head>
@@ -30,7 +31,7 @@
                 <div class="profile-information">
                     
                     <div class="profile-background-image">
-                        <img src="images/<%- user.bg_image %>" alt="Profile Background Image">
+                        <img src="http://localhost:4200/images/<%- user.bg_image %>" alt="Profile Background Image">
                     </div>
                     
                     <div class="profile-content">
@@ -38,13 +39,13 @@
                             <div class="profile-left">
                                 <div class="pfp-container">
                                     <div class="profile-picture">
-                                        <img src="./images/<%- user.avatar %>">
+                                        <img src="http://localhost:4200/images/<%- user.avatar %>">
                                     </div>
                                 </div>
                                 <div class="profile-info-left">
-                                    <h3>Anas Abu Shanab</h3>
-                                    <small class="text-muted">@Anas.Abush</small>
-                                    <small class="text-muted">Joined November 2021</small>
+                                    <h3><%- visitedUser.name %></h3>
+                                    <small class="text-muted"><%- visitedUser.username %></small>
+                                    <small class="text-muted"><%- visitedUser.createdAt %></small>
                                     
                                     <div class="profile-right-profile">
                                         <div class="profile-friends-counter">
@@ -75,101 +76,7 @@
                 </div>
 
                 <!-- FEED -->
-                <div class="feeds">
-                    
-                    <div class="feed">
-                        <div class="feed-top">
-                            <div class="user">
-                                <div class="profile-picture">
-                                    <img src="./images/user4.png" alt="user profile picture">
-                                </div>
-
-                                <div class="info">
-                                    <h3>Bashar Shaabi</h3>
-                                    <small>46 MINUTES AGO, <span class="student">STUDENT</span></small>
-                                </div>
-                            </div>
-                            <span class="edit"><i class="fa-solid fa-ellipsis fa-lg"></i></span>
-                        </div>
-
-                        <div class="feed-content">
-                            <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis deserunt facere, repellendus nostrum unde sunt sequi obcaecati dolorem vero repellat.</small>
-                            <div class="feed-photo">
-                                <img src="./images/basha.jpeg" alt="feed-content-image">
-                            </div>
-                        </div>
-                        
-                        <div class="action-button">
-                            <span><i class="fa-regular fa-heart fa-xl"></i></span>
-                            <span><i class="fa-regular fa-comment fa-xl"></i></span>
-                            <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
-                        </div>
-
-                    </div>
-
-                    <div class="feed">
-                        <div class="feed-top">
-                            <div class="user">
-                                <div class="profile-picture">
-                                    <img src="./images/user.png" alt="user profile picture">
-                                </div>
-
-                                <div class="info">
-                                    <h3>Anas Abu Shanab</h3>
-                                    <small>15 MINUTES AGO, <span class="student">STUDENT</span></small>
-                                </div>
-                            </div>
-                            <span class="edit"><i class="fa-solid fa-ellipsis fa-lg"></i></span>
-                        </div>
-
-                        <div class="feed-content">
-                            <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis deserunt facere, repellendus nostrum unde sunt sequi obcaecati dolorem vero repellat.</small>
-                            <div class="feed-photo">
-                                <img src="./images/pexels-pixabay-372490.jpg" alt="feed-content-image">
-                            </div>
-                        </div>
-                        
-                        <div class="action-button">
-                            <span><i class="fa-regular fa-heart fa-xl"></i></span>
-                            <span><i class="fa-regular fa-comment fa-xl"></i></span>
-                            <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
-                        </div>
-
-                    </div>
-
-                    <div class="feed">
-                        <div class="feed-top">
-                            <div class="user">
-                                <div class="profile-picture">
-                                    <img src="./images/user.png" alt="user profile picture">
-                                </div>
-
-                                <div class="info">
-                                    <h3>Anas Abu Shanab</h3>
-                                    <small>15 MINUTES AGO, <span class="student">STUDENT</span></small>
-                                </div>
-                            </div>
-                            <span class="edit"><i class="fa-solid fa-ellipsis fa-lg"></i></span>
-                        </div>
-
-                        <div class="feed-content">
-                            <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis deserunt facere, repellendus nostrum unde sunt sequi obcaecati dolorem vero repellat.</small>
-                            <div class="feed-photo">
-                                <img src="./images/feed-2.jpg" alt="feed-content-image">
-                            </div>
-                        </div>
-                        
-                        <div class="action-button">
-                            <span><i class="fa-regular fa-heart fa-xl"></i></span>
-                            <span><i class="fa-regular fa-comment fa-xl"></i></span>
-                            <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
-                        </div>
-
-                    </div>
-
-                    
-                
-                </div>
+                <div class="feeds"></div>
 
             </div>
 

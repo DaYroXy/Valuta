@@ -1,6 +1,8 @@
 let ObjectId = require('mongoose').Types.ObjectId;
 const User = require("../models/User.model");
+const userModel = require("../models/User.model");
 const bcrypt = require("bcrypt");
+const { default: mongoose } = require('mongoose');
 
 class user {
 
@@ -18,6 +20,18 @@ class user {
             friends_count: 0,
             posts_count: 0
         }
+        return user;
+    }
+
+    async getUserByUsername(username) {
+        let user = await User.findOne({username: username}, {"sockets_id":0, "password":0, "email":0});
+        if(!user) {
+            return {
+                status: "error",
+                message: "User not found"
+            }
+        }
+        
         return user;
     }
 
@@ -104,6 +118,45 @@ class user {
         user.sockets_id = [];
         await user.save();
         return true;
+    }
+
+    async Posts() {
+        if(!this.user) {
+            return({
+                status: "error",
+                message: "User not found"
+            })
+        }
+    
+        const posts = await userModel.aggregate([
+            {
+                $match: {
+                    "_id" : mongoose.Types.ObjectId(this.user.id)
+                }
+            },
+            {
+              "$lookup": {
+                "from": "posts",
+                "localField": "_id",
+                "foreignField": "userId",
+                "as": "post"
+              }
+            },
+            {"$unwind": "$post"},
+            {"$project": {
+                "_id":1,
+                "name": 1,
+                "avatar": 1,
+                "username": 1,
+                "rank" : 1, 
+                "post._id": 1,
+                "post.content": 1,
+                "post.image": 1,
+                "post.file": 1,
+                "post.createdAt": 1,
+            }}
+          ]).limit(10);
+        return posts;
     }
     
 }

@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <%- include("./addons/header-includes.ejs") %>
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="./styles/entry.css"/>
+    <link rel="stylesheet" href="http://localhost:4200/styles/global.css">
+    <link rel="stylesheet" href="http://localhost:4200/styles/entry.css"/>
     <title>Valuta</title>
   </head>
   <body>
@@ -14,7 +14,7 @@
     <% } %>
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="/api/v1/login" method="post" class="sign-in-form">
+          <form action="/api/v1/entry/login" method="post" class="sign-in-form">
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -36,7 +36,7 @@
             <input type="submit" name="login" value="Login" class="btn solid" />
             
           </form>
-          <form action="/api/v1/register" method="POST" class="sign-up-form">
+          <form action="/api/v1/entry/register" method="POST" class="sign-up-form">
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fa-solid fa-id-card"></i>

@@ -78,15 +78,14 @@ function addPost(data) {
 
 // Get Global Posts
 async function getGlobalPosts() {
-    let posts = await (await fetch("http://10.0.0.7:4200/api/v1/posts")).json();
+    let posts = await (await fetch("http://localhost:4200/api/v1/posts")).json();
     return posts;
 }
 
-// Get Private Posts
-function getProfilePosts() {
-    fetch("http://10.0.0.7:4200/api/v1/posts")
-    .then(res => res.json())
-    .then(res => {
-        addPost(res);
-    })
+// // Get Private Posts
+async function getProfilePosts() {
+    let posts = await (await fetch("http://localhost:4200/api/v1/posts/me")).json();
+    return posts;
 }
+
+// }
