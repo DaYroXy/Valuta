@@ -11,6 +11,7 @@ router.get("/", async (req, res) => {
 })
 
 
+// Get logged user data
 router.get("/me", async(req, res) => {
     const userSession = req.session.user;
 
@@ -26,6 +27,7 @@ router.get("/me", async(req, res) => {
     res.json(await userPosts.Posts())
 })
 
+// Get username data
 router.get("/:username", async(req, res) => {
     const userSession = req.session.user;
     const username = req.params.username;
@@ -41,9 +43,7 @@ router.get("/:username", async(req, res) => {
     res.json(await userPosts.Posts())
 })
 
-
-
-// Post to db
+// add post to db
 router.post("/add", async (req, res) => {
     var io = req.app.get('io');
     const user = req.session.user;

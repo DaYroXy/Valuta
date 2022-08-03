@@ -47,6 +47,9 @@
     
 }
 
+.pfp-container {
+    max-width: 55px;
+}
 
 html {
     height: 100vh;

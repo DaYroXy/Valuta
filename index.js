@@ -16,16 +16,17 @@ mongoose.connect('mongodb://localhost:27017/Valuta', { useNewUrlParser: true });
 // Socket.io Setup
 const io = require('socket.io')(server);
 
+// Add packages to app
 app.use(cors());
 app.set("io", io);
 app.set('server', server);
 app.use(fileUpload());
-
 app.use(sessionMiddleware);
 
+// Setup view engine as .ejs files
 app.set('view engine', 'ejs')
 
-// Body Parsers
+// Body Parsers, to enable JSON and url params
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }));
 
@@ -41,7 +42,7 @@ app.use((err, req, res, next) => {
     }
 });
 
-
+// make public folder as public to allow styles/scripts to be accessable
 app.use(express.static('public'));
 app.use('/styles', express.static(__dirname + "public/styles"))
 
@@ -107,23 +108,21 @@ app.get("/profile/:username", async (req, res) => {
         return;
     }
 
-    // Fix Joined Date
-    let userJoined = visitedUser.createdAt.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-
     // Render
     res.render('profile', { user, visitedUser })
 })
 
 // APIS
 app.use("/api/v1", require("./routes/api.routes"));
-
 app.get('/entry', (req, res) => {
     const error = req.query;
     res.render('entry', error)
 })
 
+// Allow socket to use session Middle ware
 io.use(wrap(sessionMiddleware));
 
+// make sure to check if user is connected before allowing socket
 io.use((socket, next) => {
     const session = socket.request.session;
     if (session && session.user) {
@@ -132,24 +131,26 @@ io.use((socket, next) => {
         next(new Error("unauthorized"));
     }
 });
+
 // Socket Connection
 io.on("connection", async (socket) => {
 
+    // Get use data
     let userSession = await socket.request.session.user
     let user = new User();
 
+    // User disconnected
     socket.on("disconnect", async (data) => {
         await user.getUserById(userSession.id);
         await user.removeSocket(socket.id)
         console.log(userSession.username + ": disconnected")
     })
 
+    // User connected
     console.log(userSession.username + ": connected")
     await user.getUserById(userSession.id);
     await user.addSocket(socket.id);
 });
-
-
 
 // Server Listener
 server.listen(PORT, () => {

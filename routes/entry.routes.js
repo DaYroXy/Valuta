@@ -105,6 +105,7 @@ router.post("/register", async (req, res) => {
     }
 
     req.session.user = user.getUser();
+    req.session.user.rank = (await user.getUserRank()).name;
     res.redirect("/");
 })
 
