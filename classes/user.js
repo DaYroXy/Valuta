@@ -3,13 +3,14 @@ const User = require("../models/User.model");
 const userModel = require("../models/User.model");
 const postModel = require("../models/Post.model");
 const rankModel = require("../models/Rank.model");
+const Friend = require("./friend.js");
 
 const bcrypt = require("bcrypt");
 const { default: mongoose } = require('mongoose');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 
-class user {
+class user extends Friend {
 
     getUser() {
         const user = {
@@ -44,6 +45,18 @@ class user {
         this.user = user;
         return user;
     }
+
+    async returnUserByUsername(username) {
+        let user = await User.findOne({username: username}, {"sockets_id":0, "password":0, "email":0});
+        if(!user) {
+            return {
+                status: "error",
+                message: "User not found"
+            }
+        }
+        return user
+    }
+
 
     async userExists(username) {
         let user = await User.findOne({$or:[{'email':username},{'username':username}]});

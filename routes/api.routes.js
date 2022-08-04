@@ -1,12 +1,25 @@
 const express = require ("express");
 const router = express.Router();
-const postModel = require("../models/Post.model");
-const userModel = require("../models/User.model");
+const User = require("../classes/user");
+
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 router.use(require("./users.routes"));
 router.use("/posts", require("./posts.routes"));
 router.use("/trends", require("./trends.routes"));
 router.use("/entry", require("./entry.routes"));
+
+router.get("/test", async (req, res) => {
+
+    let user = new User();
+    await user.getUserById("62ec0413b080c0d85c059315");
+    user.addFriend("anas.abush");
+    // 62ec0348b080c0d85c059230
+    // 62ec0413b080c0d85c059315
+    res.json({
+        status: "success",
+        message: "API is working"
+    })
+})
 
 module.exports=router;
