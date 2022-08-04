@@ -1,4 +1,13 @@
-
+function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    var items = location.search.substr(1).split("&");
+    for (var index = 0; index < items.length; index++) {
+        tmp = items[index].split("=");
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    }
+    return result;
+}
 
 const form = document.getElementById('submit-post');
 
@@ -41,30 +50,50 @@ imgPreview.onchange = evt => {
     }
 }
 
-getGlobalPosts().then(posts => {
-    if(posts.length === 0) {
-        document.querySelector(".feeds").innerHTML = `<div class="no-posts">
-            <i class="fa-solid fa-child"></i>
-                    <p>Wow, its so empty in here...</p>
-                </div>`
-        return;
-    }
+let trend = findGetParameter("trend")
+if(trend) {
+    getTrendPosts(trend).then(posts => {
+        console.log(posts)
+        if(posts.length === 0) {
+            document.querySelector(".feeds").innerHTML = `<div class="no-posts">
+                <i class="fa-solid fa-child"></i>
+                        <p>Wow, its so empty in here...</p>
+                    </div>`
+            return;
+        }
 
-    posts.map(p => {
-        addPost(p);
+        posts.map(p => {
+            addPost(p);
+        })
     })
-})
 
-// Socket Io Conenction
-const socket = io("/");
+} else {
+
+    getGlobalPosts().then(posts => {
+        if(posts.length === 0) {
+            document.querySelector(".feeds").innerHTML = `<div class="no-posts">
+                <i class="fa-solid fa-child"></i>
+                        <p>Wow, its so empty in here...</p>
+                    </div>`
+            return;
+        }
+
+        posts.map(p => {
+            addPost(p);
+        })
+    })
+}
+
+ // Socket Io Conenction
+//  const socket = io("/");
 
 
-// Listen for new posts from the server
-socket.on("newPost", (post) => {
-    let noPosts = document.querySelector('.no-posts');
-    if(noPosts !== null) {
-        noPosts.remove();
-    }
+ // Listen for new posts from the server
+ socket.on("newPost", (post) => {
+     let noPosts = document.querySelector('.no-posts');
+     if(noPosts !== null) {
+         noPosts.remove();
+     }
 
-    addPost(post);
-});
+     addPost(post);
+ });

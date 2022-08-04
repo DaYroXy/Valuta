@@ -239,6 +239,18 @@ img {
     margin-top: 5rem;
 }
 
+.no-trends {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.trend a {
+    color: var(--color-dark);
+}
+
 .error-class {
     padding: 1rem;
     color: var(--color-danger);

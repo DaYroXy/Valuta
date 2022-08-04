@@ -95,3 +95,10 @@ async function getGlobalPosts() {
     let posts = await (await fetch("http://localhost:4200/api/v1/posts")).json();
     return posts;
 }
+
+// Get Global Posts
+
+async function getTrendPosts(trendName) {
+    let posts = await (await fetch(`http://localhost:4200/api/v1/posts/trends/${trendName}`)).json();
+    return posts;
+}

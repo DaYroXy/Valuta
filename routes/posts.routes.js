@@ -4,6 +4,7 @@ const router = express.Router();
 const rankModel = require("../models/Rank.model");
 const userClass = require("../classes/user");
 const Post = require("../classes/post");
+const Trend = require("../classes/trend");
 
 // Get All Posts 
 router.get("/", async (req, res) => {
@@ -91,7 +92,8 @@ router.post("/add", async (req, res) => {
 
     // let getPost = getPostById(post);
     let postResult = await post.post();
-    if(!postResult.status === "sucess") {
+    console.log(postResult)
+    if(postResult.status !== "sucess") {
         res.json({
             "status": "error",
             "message": "post added successfully"
@@ -116,11 +118,38 @@ router.post("/add", async (req, res) => {
         }
     }
 
+    // emit post to all users
     io.emit("newPost", postToEmit)
+
+    // Add to trends
+    const trend = new Trend();
+    let trends = trend.getTrendsByText(postData.content);
+    trends.forEach(async t => {
+        await trend.addTrend(t)
+        await trend.addTrendToPost(postToEmit._id, t);
+        io.emit("newTrend", await trend.getTrend(t));
+    })
+
     res.json({
         "status": "success",
         "message": "post added successfully"
     });
+})
+
+
+// Get trend posts data
+router.get("/trends/:trend", async(req, res) => {
+    const trend = req.params.trend || nulll;
+
+    if(trend === null) {
+        res.json({
+            status: "error",
+            message: "Trend not found"
+        })
+    }
+
+    let post = new Post();
+    res.json((await post.getPostsByTrend(trend)))
 })
 
 

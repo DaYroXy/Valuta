@@ -1,4 +1,4 @@
-
+const mongoose = require("mongoose");
 const postModel = require('../models/Post.model');
 const userModel = require('../models/User.model');
 const User = require('../classes/user.js');
@@ -72,45 +72,120 @@ class Post {
 
     }
 
+    async addTrendId(trendId) {
+        let post = await postModel.find({"id": this.id})
+        return post;
+    }
+
     async getPosts() {
         const posts = await postModel.aggregate([
             {
                 "$lookup": {
-                  "from": "users",
-                  "localField": "userId",
-                  "foreignField": "_id",
-                  "as": "user"
+                    "from": "users",
+                    "localField": "userId",
+                    "foreignField": "_id",
+                    "as": "user"
                 }
-              },
-              {
+            },
+            {
                 "$unwind": "$user"
-              },
-              {
+            },
+            {
                 "$lookup": {
                     "from": "ranks",
                     "localField": "user.rank",
                     "foreignField": "_id",
                     "as": "rank"
                 }
-              },
-              {
-                "$unwind": "$rank"      
-              },
-              {"$project": {
-                "_id":1,
-                "content":1,
-                "image":1,
-                "file":1,
-                "createdAt": 1,
-                "user.name": 1,
-                "user.avatar": 1,
-                "user.username": 1,
-                "rank.name" : 1, 
-            }}
+            },
+            {
+            "$unwind": "$rank"      
+            },
+            {
+            "$project": 
+                {
+                    "_id":1,
+                    "content":1,
+                    "image":1,
+                    "file":1,
+                    "createdAt": 1,
+                    "user.name": 1,
+                    "user.avatar": 1,
+                    "user.username": 1,
+                    "rank.name" : 1, 
+                }
+            }
             
           ]).sort({"createdAt":1}).limit(10);
         return posts;
     }
+
+    async getPostsByTrend(trendName) {
+        const posts = await postModel.aggregate([
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "userId",
+                    "foreignField": "_id",
+                    "as": "user"
+                }
+            },
+            {
+                "$unwind": "$user"
+            },
+            {
+                "$lookup": {
+                    "from": "ranks",
+                    "localField": "user.rank",
+                    "foreignField": "_id",
+                    "as": "rank"
+                }
+            },
+            {
+            "$unwind": "$rank"      
+            },
+            {
+                $lookup: {
+                    from: "trends",
+                    localField: "trendId",
+                    foreignField: "_id",
+                    pipeline: [
+                        {
+                            $match: {"name": trendName}
+                        }
+                    ],
+                    as: "trend"
+                }   
+            },
+            {
+                $unwind: "$trend"
+            },
+            {
+                "$project": 
+                {
+                    "_id":1,
+                    "content":1,
+                    "image":1,
+                    "file":1,
+                    "createdAt": 1,
+                    "user.name": 1,
+                    "user.avatar": 1,
+                    "user.username": 1,
+                    "rank.name" : 1, 
+                }
+            }
+        ]).sort({"createdAt":1}).limit(10)
+
+        if(!posts) {
+            return {
+                status: "error",
+                message: "Posts not found"
+            }
+        }
+
+        return posts;
+    }
+
 }
 
 module.exports = Post
