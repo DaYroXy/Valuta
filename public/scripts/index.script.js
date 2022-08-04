@@ -21,7 +21,7 @@ form.addEventListener('submit', (e) => {
         body: formData
     }).then (res => res.json())
     .then(res => {
-        console.log(res)
+        
     })
 
     let image = form.querySelector('#preview-image');
@@ -53,7 +53,6 @@ imgPreview.onchange = evt => {
 let trend = findGetParameter("trend")
 if(trend) {
     getTrendPosts(trend).then(posts => {
-        console.log(posts)
         if(posts.length === 0) {
             document.querySelector(".feeds").innerHTML = `<div class="no-posts">
                 <i class="fa-solid fa-child"></i>
@@ -62,7 +61,7 @@ if(trend) {
             return;
         }
 
-        posts.map(p => {
+        posts.reverse().map(p => {
             addPost(p);
         })
     })
@@ -70,6 +69,7 @@ if(trend) {
 } else {
 
     getGlobalPosts().then(posts => {
+        
         if(posts.length === 0) {
             document.querySelector(".feeds").innerHTML = `<div class="no-posts">
                 <i class="fa-solid fa-child"></i>
@@ -78,22 +78,10 @@ if(trend) {
             return;
         }
 
-        posts.map(p => {
+        posts.reverse().map(p => {
+            
             addPost(p);
         })
     })
 }
 
- // Socket Io Conenction
-//  const socket = io("/");
-
-
- // Listen for new posts from the server
- socket.on("newPost", (post) => {
-     let noPosts = document.querySelector('.no-posts');
-     if(noPosts !== null) {
-         noPosts.remove();
-     }
-
-     addPost(post);
- });

@@ -23,6 +23,9 @@ app.set('server', server);
 app.use(fileUpload());
 app.use(sessionMiddleware);
 
+// Reset all users status on startup
+new User().resetAllUserStatus();
+
 // Setup view engine as .ejs files
 app.set('view engine', 'ejs')
 
@@ -47,14 +50,16 @@ app.use(express.static('public'));
 app.use('/styles', express.static(__dirname + "public/styles"))
 
 // Home Page
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     const user = req.session.user
 
     if (!user) {
         res.redirect('/entry')
         return;
     }
-    res.render('index', { user })
+
+    const page = "home"
+    res.render('index', { user, page })
 })
 
 // Messages Page
@@ -65,6 +70,7 @@ app.get('/messages', (req, res) => {
         res.redirect('/entry')
         return;
     }
+
     res.render('messages', { user })
 })
 
@@ -76,6 +82,7 @@ app.get('/rooms', (req, res) => {
         res.redirect('/entry')
         return;
     }
+
     res.render('rooms', { user })
 })
 
@@ -88,7 +95,10 @@ app.get('/profile', (req, res) => {
         return;
     }
     let visitedUser = user;
-    res.render('profile', { user, visitedUser })
+
+    const page = "profile"
+
+    res.render('profile', { user, visitedUser, page })
 })
 
 // get user profile
@@ -108,8 +118,9 @@ app.get("/profile/:username", async (req, res) => {
         return;
     }
 
+    const page = "visit"
     // Render
-    res.render('profile', { user, visitedUser })
+    res.render('profile', { user, visitedUser, page })
 })
 
 // APIS
@@ -143,16 +154,26 @@ io.on("connection", async (socket) => {
     socket.on("disconnect", async (data) => {
         await user.getUserById(userSession.id);
         await user.removeSocket(socket.id)
-        console.log(userSession.username + ": disconnected")
+        
     })
 
     // User connected
-    console.log(userSession.username + ": connected")
+    
     await user.getUserById(userSession.id);
     await user.addSocket(socket.id);
 });
 
 // Server Listener
 server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
+    console.log(`
+\u001b[1;31m██╗░░░██╗░█████╗░██╗░░░░░██╗░░░██╗████████╗░█████╗░
+██║░░░██║██╔══██╗██║░░░░░██║░░░██║╚══██╔══╝██╔══██╗
+╚██╗░██╔╝███████║██║░░░░░██║░░░██║░░░██║░░░███████║
+░╚████╔╝░██╔══██║██║░░░░░██║░░░██║░░░██║░░░██╔══██║
+░░╚██╔╝░░██║░░██║███████╗╚██████╔╝░░░██║░░░██║░░██║
+░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝\u001b[0m
+
+Server Started on port: \u001b[1;31m${PORT}\u001b[0m
+Host: \u001b[1;36mhttp://localhost:${PORT}/\u001b[0m
+    `)
 })

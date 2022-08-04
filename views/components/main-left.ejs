@@ -4,7 +4,7 @@
     <!-- Side Bar -->
     <div class="side-bar">
 
-        <a href="/" class="menu-item active noselect">
+        <a href="/" class="menu-item <% if(page=='home'){ %> active <% } %> noselect">
             <span><i class="fa-solid fa-house-chimney"></i></span> <h3>Home</h3>
         </a>
 
@@ -61,7 +61,7 @@
             </div>
         </a>
 
-        <a href="http://localhost:4200/messages" class="menu-item noselect">
+        <a href="http://localhost:4200/messages" class="menu-item <% if(page=='message'){ %> active <% } %> noselect">
             <span><i class="fa-solid fa-envelope"><small class="notification-count">6</small></i></span> <h3>Messages</h3>
         </a>
         
@@ -69,7 +69,7 @@
             <span><i class="fa-solid fa-graduation-cap"><small class="notification-count">75</small></i></span> <h3>Rooms</h3>
         </a>
 
-        <a href="http://localhost:4200/profile" class="menu-item noselect">
+        <a href="http://localhost:4200/profile" class="menu-item <% if(page=='profile'){ %> active <% } %> noselect">
             <span><i class="fa-solid fa-user"></i></span> <h3>Profile</h3>
         </a>
 

@@ -101,7 +101,7 @@ class user {
             let rngBGcolor = (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
             let seed = Math.round(Math.random()*Math.pow(2,64)).toString(36)
             const Url = await fetch(`https://avatars.dicebear.com/api/bottts/${seed}.png?background=%23${rngBGcolor}`)   
-            console.log(Url)
+            
             userImage = Url.url
     
         } catch(err) {
@@ -114,7 +114,7 @@ class user {
                 name: "student",
                 access: 0})
         }
-        console.log(rank)
+        
 
         await User.create({
             avatar: userImage,
@@ -210,7 +210,12 @@ class user {
           ]).sort({"createdAt":1}).limit(10);
         return posts;
     }
-    
+
+    async resetAllUserStatus() {
+        await User.updateMany({}, {$set: {sockets_id: []}});
+        return true;
+    }
+
 }
 
 module.exports = user;

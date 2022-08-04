@@ -12,6 +12,27 @@ class Post {
         this.file = file;
     }
 
+    async getPostById(postid) {
+        const post = await postModel.findById(postid);
+        
+        if(post) {
+            this.id = post._id;
+        }
+        
+        return post;
+    }
+
+    async delete() {
+        if(!this.id) {
+            return {
+                status: "error",
+                message: "Post id is empty"
+            }
+        }
+        return await postModel.deleteOne({_id:this.id});
+
+    }
+
     async isValid() {
 
         // if content is empty
@@ -116,7 +137,7 @@ class Post {
                 }
             }
             
-          ]).sort({"createdAt":1}).limit(10);
+          ]).sort({"createdAt":-1}).limit(10);
         return posts;
     }
 

@@ -5,6 +5,7 @@ const rankModel = require("../models/Rank.model");
 const userClass = require("../classes/user");
 const Post = require("../classes/post");
 const Trend = require("../classes/trend");
+const ObjectId = require('mongoose').Types.ObjectId;
 
 // Get All Posts 
 router.get("/", async (req, res) => {
@@ -92,7 +93,7 @@ router.post("/add", async (req, res) => {
 
     // let getPost = getPostById(post);
     let postResult = await post.post();
-    console.log(postResult)
+    
     if(postResult.status !== "sucess") {
         res.json({
             "status": "error",
@@ -124,16 +125,77 @@ router.post("/add", async (req, res) => {
     // Add to trends
     const trend = new Trend();
     let trends = trend.getTrendsByText(postData.content);
-    trends.forEach(async t => {
-        await trend.addTrend(t)
-        await trend.addTrendToPost(postToEmit._id, t);
-        io.emit("newTrend", await trend.getTrend(t));
-    })
+    
+    
+    if(trends != '') {
+        trends.forEach(async t => {
+            await trend.addTrend(t)
+            await trend.addTrendToPost(postToEmit._id, t);
+            io.emit("newTrend", await trend.getTrend(t));
+        })
+    }
+
 
     res.json({
         "status": "success",
         "message": "post added successfully"
     });
+})
+
+// Delete post
+router.delete("/delete/:postId", async (req, res) => {
+    const io = req.app.get('io');
+
+    const user = req.session.user;
+    if(!user) {
+        res.json({
+            status: "error",
+            message: "You are not logged in"
+        })
+        return;
+    }
+
+    const { postId } = req.params;
+    if(!postId || !ObjectId.isValid(postId)) {
+        res.json({
+            status: "error",
+            message: "Post id not found"
+        })
+        return;
+    }
+
+    let post = new Post();
+    
+    let postData = await post.getPostById(postId)
+
+    if(postData.userId != user.id) {
+        res.json({
+            status: "error",
+            message: "You are not allowed to delete this post, tryna hack huh?"
+        })
+        return;
+    }
+
+    if(postData.trendId.length > 0) {
+        postData.trendId.forEach(async trend => {
+            let trendClass = new Trend();
+            await trendClass.getTrendById(trend)
+            trendClass.remove();
+        })
+    }
+
+    await post.delete()
+    io.emit("postDeleted", postId)
+
+    // let trend = new Trend();
+    // 
+
+
+    res.json({
+        status: "success",
+        message: "post removed sucessfully"
+    })
+
 })
 
 

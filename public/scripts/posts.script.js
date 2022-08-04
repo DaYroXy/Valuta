@@ -1,8 +1,10 @@
+
+
 function timeSince(date) {
     var seconds = Math.floor((new Date() - date) / 1000);
     var interval = seconds / 31536000;
     if(seconds === 0) {
-        return 1 + " SECOND AGO"; 
+        return "A FEW SECOND AGO"; 
     }
 
     if (interval > 1) {
@@ -29,7 +31,7 @@ function timeSince(date) {
       return Math.floor(interval) + " MINUTES AGO";
     }
 
-    return Math.floor(seconds) + " SECONDS AGO";
+    return "A FEW SECOND AGO"; 
   }
 
 
@@ -49,9 +51,22 @@ function addPost(data) {
     if(data.image !== "") {
         img = `<img src="./images/${data.image}" alt="feed-content-image">`
     }
+    let connectedUserInfo = document.querySelector(".profile-details > .handle");
+    let logged_user_username = connectedUserInfo.textContent.toLocaleLowerCase()
+
+    let editMenu = ""
+    if(logged_user_username == data.user.name.toLocaleLowerCase()) {
+        editMenu = `
+        <div class="edit-menu show">
+            <ul>
+                <li><button onclick="deletePost('${data._id}')" >Delete</button></li>
+            </ul>
+        </div>
+        `
+    }
 
     let html = `
-        <div class="feed">
+        <div class="feed" data-id="${data._id}">
                 <div class="feed-top">
                     <div class="user">
                         <div class="pfp-container">
@@ -65,10 +80,13 @@ function addPost(data) {
                                 <h3>${data.user.name}</h3>
                                 <small><a href="http://localhost:4200/profile/${data.user.username}">@${data.user.username}</a></small>
                             </div>
-                            <small>${createdAt}, <span class="${data.rank.name}">${data.rank.name}</span></small>
+                            <small> <span createdAt="${data.createdAt}">${createdAt}</span>, <span class="${data.rank.name}">${data.rank.name}</span></small>
                         </div>
                     </div>
-                    <span class="edit"><i class="fa-solid fa-ellipsis fa-lg"></i></span>
+                    <span class="edit">
+                        <i onclick="toggleMenuList(this)" class="fa-solid fa-ellipsis fa-lg"></i>
+                        ${editMenu}
+                    </span>
                 </div>
 
                 <div class="feed-content">
@@ -102,3 +120,66 @@ async function getTrendPosts(trendName) {
     let posts = await (await fetch(`http://localhost:4200/api/v1/posts/trends/${trendName}`)).json();
     return posts;
 }
+
+
+function toggleMenuList(event) {
+    let element = event.parentElement.querySelector(".edit-menu");
+    element.classList.toggle("show");
+}
+
+function deletePost(postId) {
+    fetch(`http://localhost:4200/api/v1/posts/delete/${postId}`, {
+        method: "DELETE",
+    }).then(res => res.json())
+    .then(res => {
+        
+    })
+}
+
+ // Listen for new posts from the server
+ socket.on("newPost", (post) => {
+    let noPosts = document.querySelector('.no-posts');
+    if(noPosts !== null) {
+        noPosts.remove();
+    }
+
+    addPost(post);
+});
+
+socket.on("postDeleted", (post) => {
+    let postElement = document.querySelector(`[data-id="${post}"]`);
+    postElement.remove();
+    
+    try{
+        trendsElement.innerHTML = "";
+        getTrendsAndAddtoDom()
+    } catch(err) {
+        
+    }
+
+    if(document.querySelectorAll(".feeds > .feed").length == 0) {
+
+        document.querySelector(".feeds").innerHTML = 
+        `<div class="no-posts">
+            <i class="fa-solid fa-child"></i>
+                <p>Wow, its so empty in here...</p>
+            </div>  
+        `;
+    }
+
+})
+
+
+setInterval(() => {
+    try {
+        let timeList = document.querySelectorAll("[createdAt]")
+
+        timeList.forEach(time => {
+            let since = timeSince(new Date(time.getAttribute("createdAt")))
+            time.textContent = since;
+        })
+
+    } catch (err) {
+        
+    }
+}, 10000);

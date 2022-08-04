@@ -251,6 +251,33 @@ img {
     color: var(--color-dark);
 }
 
+.feed .edit {
+    text-align: right;
+    position: relative;
+}
+
+.show {
+    display: none;
+}
+
+.feed .edit .edit-menu {
+    position: absolute;
+    left: -3.5rem;
+}
+.feed .edit .edit-menu ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.feed .edit .edit-menu ul button {
+    width: 100%;
+    padding: .3rem 1rem;
+    background: var(--color-dark);
+    color: var(--color-light);
+    border-radius: .5rem;
+}
+
 .error-class {
     padding: 1rem;
     color: var(--color-danger);
