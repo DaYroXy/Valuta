@@ -12,10 +12,9 @@ router.use("/entry", require("./entry.routes"));
 router.get("/test", async (req, res) => {
 
     let user = new User();
-    await user.getUserById("62ec0413b080c0d85c059315");
-    user.addFriend("anas.abush");
-    // 62ec0348b080c0d85c059230
-    // 62ec0413b080c0d85c059315
+    await user.getUserById("62ec0348b080c0d85c059230");
+    user.addFriend("bashar.shaabi");
+
     res.json({
         status: "success",
         message: "API is working"
