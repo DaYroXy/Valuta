@@ -11,6 +11,8 @@ router.use("/posts", require("./posts.routes"));
 router.use("/trends", require("./trends.routes"));
 router.use("/entry", require("./entry.routes"));
 router.use("/friends", require("./friend.routes"));
+router.use("/search", require("./search.routes"));
+
 
 
 module.exports=router;
