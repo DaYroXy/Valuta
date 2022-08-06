@@ -134,7 +134,7 @@ router.post("/add", async (req, res) => {
             io.emit("newTrend", await trend.getTrend(t));
         })
     }
-
+    req.session.user.posts_count += 1;
 
     res.json({
         "status": "success",
@@ -185,11 +185,14 @@ router.delete("/delete/:postId", async (req, res) => {
     }
 
     await post.delete()
-    io.emit("postDeleted", postId)
 
-    // let trend = new Trend();
-    // 
+    const postToEmit = {
+        id: postId,
+        name: user.name,
+    }
 
+    io.emit("postDeleted", postToEmit)
+    req.session.user.posts_count -= 1;
 
     res.json({
         status: "success",

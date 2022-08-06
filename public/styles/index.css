@@ -391,8 +391,15 @@ main .container .right-side {
 }
 
 .right-side .friends .friend p {
-    color: var(--color-online);
     font-size: 0.8rem;
+}
+
+.online {
+    color: var(--color-online);
+}
+
+.offline {
+    color: var(--color-danger);
 }
 
 @keyframes fadeIn {

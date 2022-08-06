@@ -44,11 +44,31 @@
 .profile-right button {
     padding: .5rem 1rem;
     background: none;
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
     border-radius: var(--border-radius);
     width: 100px;
 }
+
+
+.add-friend, .edit-profile {
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.accept-friend {
+    color: var(--color-lowGreen);
+    border: 1px solid var(--color-lowGreen);
+}
+
+.remove-friend {
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+}
+
+.pending-friend {
+    color: var(--color-pending);
+    border: 1px solid var(--color-pending);
+}
+
 
 .profile-left {
     /* width: 50%; */

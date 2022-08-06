@@ -57,7 +57,7 @@ app.get('/', async (req, res) => {
         res.redirect('/entry')
         return;
     }
-
+    
     const page = "home"
     res.render('index', { user, page })
 })
@@ -94,8 +94,8 @@ app.get('/profile', (req, res) => {
         res.redirect('/entry')
         return;
     }
+    
     let visitedUser = user;
-
     const page = "profile"
 
     res.render('profile', { user, visitedUser, page })
@@ -111,16 +111,37 @@ app.get("/profile/:username", async (req, res) => {
     }
 
     const username = req.params.username
-    var visitedUser = await new User().getUserByUsername(username);
 
+    // check if user wants to access his own profile
+    if(username == req.session.user.username) {
+        res.redirect('/profile')
+        return;
+    }
+
+    let userClass = new User()
+    let visitedUser = await userClass.getUserByUsername(username);
+    visitedUser.friends_count = await userClass.getFriendsCount()
+    visitedUser.posts_count = await userClass.getUserPostsCount()
     if (visitedUser.status === "error") {
         res.redirect('/')
         return;
     }
 
+    let me = new User();
+    await me.getUserById(user.id);
+    let friendStatus = await me.friendStatus(username);
+    if(friendStatus.status === "error") {
+        if(friendStatus.message !== "You are not friends with this user") {
+            res.redirect(`/?error=${friendStatus.message}`)
+            return;
+        }
+    }
+
+    let isFriend = friendStatus.status;
+
     const page = "visit"
     // Render
-    res.render('profile', { user, visitedUser, page })
+    res.render('profile', { user, visitedUser, page, isFriend })
 })
 
 // APIS
@@ -152,14 +173,13 @@ io.on("connection", async (socket) => {
 
     // User disconnected
     socket.on("disconnect", async (data) => {
-        await user.getUserById(userSession.id);
+        io.emit("user-disconnected", await user.getUserById(userSession.id));
         await user.removeSocket(socket.id)
         
     })
 
     // User connected
-    
-    await user.getUserById(userSession.id);
+    io.emit("user-connected", await user.getUserById(userSession.id));
     await user.addSocket(socket.id);
 });
 

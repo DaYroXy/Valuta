@@ -34,8 +34,6 @@ function timeSince(date) {
     return "A FEW SECOND AGO"; 
   }
 
-
-
 // Add post to page
 function addPost(data) {
     let img = ""
@@ -144,10 +142,35 @@ function deletePost(postId) {
     }
 
     addPost(post);
+
+
+    let connectedUserInfo = document.querySelector(".profile-details > .handle");
+    let logged_user_username = connectedUserInfo.textContent.toLocaleLowerCase()
+
+    if(logged_user_username == post.user.name.toLocaleLowerCase()) {
+    
+        // Increase HTML Posts length
+    
+        let postsCount = document.querySelectorAll("#posts-count")
+
+        postsCount.forEach(element => {
+            let count = parseInt(element.textContent)
+            element.textContent = ++count
+        })
+
+    }
+
 });
 
 socket.on("postDeleted", (post) => {
-    let postElement = document.querySelector(`[data-id="${post}"]`);
+    
+    // const postToEmit = {
+    //     id: postId,
+    //     name: user.name,
+    // }
+
+    
+    let postElement = document.querySelector(`[data-id="${post.id}"]`);
     postElement.remove();
     
     try{
@@ -167,6 +190,19 @@ socket.on("postDeleted", (post) => {
         `;
     }
 
+    let connectedUserInfo = document.querySelector(".profile-details > .handle");
+    let logged_user_username = connectedUserInfo.textContent.toLocaleLowerCase()
+    if(logged_user_username == post.name.toLocaleLowerCase()) {
+    
+        let postsCount = document.querySelectorAll("#posts-count")
+
+        postsCount.forEach(element => {
+            let count = parseInt(element.textContent)
+            element.textContent = --count
+        })
+
+    }
+
 })
 
 
@@ -183,3 +219,19 @@ setInterval(() => {
         
     }
 }, 10000);
+
+
+socket.on("friend_request", (data_status) => {
+    const data = data_status.requestStatus;
+
+    if(data.status === "accepted") {
+        let friendsElement = document.getElementById("friends-count");
+        friendsElement.textContent = parseInt(friendsElement.textContent) + 1;
+    } else if (data.status === "removed") {
+        let friendsElement = document.getElementById("friends-count");
+        friendsElement.textContent = parseInt(friendsElement.textContent) - 1;
+ 
+    }
+
+    fetch("http://localhost:4200/api/v1/refresh")
+})

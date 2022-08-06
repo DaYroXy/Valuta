@@ -66,32 +66,46 @@
                                 <div class="profile-info-left">
                                     <h3><%- visitedUser.name %></h3>
                                     <small class="text-muted">@<%- visitedUser.username %></small>
-                                    <small class="text-muted"><%- visitedUser.createdAt %></small>
-                                    
+                                    <small id="joined-date" joined-date="<%- visitedUser.createdAt %>" class="text-muted"></small>
+
                                     <div class="profile-right-profile">
                                         <div class="profile-friends-counter">
-                                            <p>0</p>
+                                            <p><%- visitedUser.friends_count %></p>
                                             <h5>Friends</h5>
                                         </div>
                 
                                         <div class="profile-friends-counter">
-                                            <p>0</p>
+                                            <p id="posts-count"><%- visitedUser.posts_count %></p>
                                             <h5>posts</h5>
                                         </div>
                                     </div>
 
                                     <div class="description">
-                                        <small>Hello guys my name is anas abu shanab and today is the best way on how to get more content</small>
+                                        <small><%- user.bio %></small>
                                     </div>
                                 </div>
 
                             </div>
                             <div class="profile-right">
+                            
+                            <% if (typeof isFriend !== "undefined") { %>
+                                <% if (isFriend === "success") { %>
+                                    <button id="removeFriend" class="remove-friend" onclick="removeFriend('<%- visitedUser.username %>')">Remove</button>
+                                <% } else if (isFriend === "accept") { %>
+                                    <button id="acceptFriend" class="accept-friend" onclick="friend_Request('<%- visitedUser.username %>')" >Accept</button>
+                                <% } else if (isFriend === "pending") { %>
+                                    <button class="pending-friend">Pending</button>
+                                <% } else {
+                                    %>
+                                        <button id="addFriend" class="add-friend" onclick="friend_Request('<%- visitedUser.username %>')" >Add</button>
+                                    <%
+                                } %>
+                            <% } %>
                                 <div class="profile-info-right">
                                     <% 
                                         if(user.id == visitedUser.id) {
                                             %> 
-                                            <button>Edit Profile</button>
+                                            <button class="edit-profile">Edit Profile</button>
                                             <%
                                         }
                                     %>
@@ -121,7 +135,23 @@
                         getProfilePosts("me")
                     <%
                 }
+
             %>
+
+            let joinedElement = document.getElementById("joined-date");
+            if(joinedElement ){
+                const today = new Date(joinedElement.getAttribute("joined-date"))
+                const yyyy = today.getFullYear();
+                let mm = today.getMonth() + 1; // Months start at 0!
+                let dd = today.getDate();
+
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+
+                const formattedToday = dd + '/' + mm + '/' + yyyy;
+
+                joinedElement.textContent = "Joined date " + formattedToday;
+            }
         </script>
     </main>
 </body>

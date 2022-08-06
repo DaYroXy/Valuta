@@ -1,6 +1,5 @@
 let ObjectId = require('mongoose').Types.ObjectId;
 const User = require("../models/User.model");
-const userModel = require("../models/User.model");
 const postModel = require("../models/Post.model");
 const rankModel = require("../models/Rank.model");
 const Friend = require("./friend.js");
@@ -22,6 +21,7 @@ class user extends Friend {
             email: this.user.email,
             rank: this.user.rank,
             bio: this.user.bio,
+            createdAt: this.user.createdAt,
             sockets_id: this.user.sockets_id,
             friends_count: 0,
             posts_count: 0
@@ -34,25 +34,21 @@ class user extends Friend {
     }
 
     async getUserByUsername(username) {
-        let user = await User.findOne({username: username}, {"sockets_id":0, "password":0, "email":0});
+        let user = await User.findOne({"username": username}, {"sockets_id":0, "password":0, "email":0});
         if(!user) {
             return {
                 status: "error",
                 message: "User not found"
             }
         }
-        
         this.user = user;
-        return user;
+        return user.toObject();
     }
 
     async returnUserByUsername(username) {
         let user = await User.findOne({username: username}, {"sockets_id":0, "password":0, "email":0});
         if(!user) {
-            return {
-                status: "error",
-                message: "User not found"
-            }
+            return;
         }
         return user
     }
@@ -60,7 +56,6 @@ class user extends Friend {
 
     async userExists(username) {
         let user = await User.findOne({$or:[{'email':username},{'username':username}]});
-
         this.user = user;
         return user;
     }
@@ -72,8 +67,21 @@ class user extends Friend {
                 message: "Invalid user id"
             }
         }
+
         let user = await User.findById(userId);
         this.user = user;
+        return user;
+    }
+
+    async returnUserById(userId) {
+        if(!ObjectId.isValid(userId)) {
+            return {
+                status: "error",
+                message: "Invalid user id"
+            }
+        }
+
+        let user = await User.findById(userId);
         return user;
     }
 
@@ -89,6 +97,7 @@ class user extends Friend {
         this.user = user;
         return true;
     }
+
 
     async register({name, username, password, email, bio, socket_id}) {
         if(await this.userExists(username)) {
@@ -161,14 +170,14 @@ class user extends Friend {
         }
     }
 
-    async logout(username) {
-        let user = await this.userExists(username);
-        if(!user) {
-            return false;
+    async logout() {
+        if(!this.user) {
+            return({
+                status: "error",
+                message: "User not found"
+            })
         }
-
-        user.sockets_id = [];
-        await user.save();
+        await User.updateOne({_id: this.user._id}, {$set: {sockets_id: []}});
         return true;
     }
 
@@ -227,6 +236,28 @@ class user extends Friend {
     async resetAllUserStatus() {
         await User.updateMany({}, {$set: {sockets_id: []}});
         return true;
+    }
+
+    async getUserPostsCount() {
+        if(!this.user) {
+            return({
+                status: "error",
+                message: "User not found"
+            })
+        }
+        let posts = await postModel.find({userId: this.user._id});
+        return posts.length;
+    }
+
+    async getUserSockets() {
+        if(!this.user) {
+            return({
+                status: "error",
+                message: "User not found"
+            })
+        }
+        return (await User.findById(this.user._id, {_id:0, sockets_id: 1})).sockets_id;
+
     }
 
 }

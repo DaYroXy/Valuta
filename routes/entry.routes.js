@@ -31,6 +31,8 @@ router.post("/login", async (req, res) => {
     if(await user.login(data.username, data.password)) {
         req.session.user = user.getUser();
         req.session.user.rank = (await user.getUserRank()).name;
+        req.session.user.posts_count = await user.getUserPostsCount();
+        req.session.user.friends_count = await user.getFriendsCount();
         res.redirect("/");
         return
     } else {
@@ -110,13 +112,17 @@ router.post("/register", async (req, res) => {
 })
 
 // Logout
-router.post("/logout", (req,res) => {
+router.put("/logout", async(req,res) => {
     let user = req.session.user
     
     if(!user) {
         return;
     }
+
     req.session.destroy();
+    let me = new userClass()
+    await me.getUserById(user.id);
+    await me.logout();
     res.redirect("/entry")
 })
 

@@ -1,4 +1,5 @@
 
+
 // // Get Private Posts
 function getProfilePosts(username) {
     fetch(`http://localhost:4200/api/v1/posts/${username}`)
@@ -17,4 +18,42 @@ function getProfilePosts(username) {
             addPost(p);
         })
     })    
+}
+
+// Add friend 
+function friend_Request(username) {
+    fetch(`http://localhost:4200/api/v1/friends/add`,{
+        method: "POST",
+        body: JSON.stringify({"recipient" : username}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => res.json())
+    .then(res => {
+        if(res.status === "success") {
+            let acceptElement =  document.getElementById("acceptFriend") 
+            if(acceptElement) {
+                acceptElement.parentElement.innerHTML = `<button id="removeFriend" class="remove-friend" onclick="removeFriend('${username}')">Remove</button>`
+                acceptElement.remove();
+                return;
+            }
+
+            let addElement = document.getElementById("addFriend")
+            addElement.parentElement.innerHTML = `<button class="pending-friend" >Pending</button>`
+            addElement.remove();
+        }
+    })
+}
+
+function removeFriend(username) {
+    fetch(`http://localhost:4200/api/v1/friends/remove/${username}`,{
+        method: "DELETE",
+    }).then(res => res.json())
+    .then(res => {
+        if(res.status === "success") {
+            let removeElement = document.getElementById("removeFriend")
+            removeElement.parentElement.innerHTML = `<button id="addFriend" onclick="friend_Request('${username}')" class="add-friend" >Add</button>`
+            removeElement.remove();
+        }
+    })
 }

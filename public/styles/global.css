@@ -11,7 +11,10 @@
     
     --color-sucess: #51FB51;
     --color-online: #2bd32b;
+    --color-lowGreen: #22b922;
     --color-danger: #FB5151;
+    --color-pending: #eb700c;
+
     --color-dark: #241E38;
     --color-black: #151221;
     --color-recieved: #514e57d3;
@@ -166,6 +169,7 @@ img {
 
 
 .search-bar {
+    position: relative;
     background: var(--color-light);
     border-radius: var(--border-radius);
     padding: var(--search-padding);
@@ -291,4 +295,58 @@ img {
 
 .feed .feed-top .user .info .info-name-container a{
     color: var(--color-dark);
+}
+
+.search-results {
+    position: absolute;
+    width: 100%;
+    top: 2.1rem;
+    right: 0;
+    background-color: var(--color-white);
+    border-radius: 1rem;
+    border: 1px solid var(--color-gray);
+}
+
+.search-results ul {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.search-results ul a {
+    color: var(--color-black);
+    padding: 0 1rem;
+}
+
+.search-results ul a:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.search-results ul a:not(:last-child):after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-gray);
+    margin-top: .5rem;
+}
+
+.search-result-user {
+    width: 100%;
+    gap: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.search-result-user .text-muted {
+    font-size: 0.7rem;
+}
+
+.search-trend-result .text-muted {
+    font-size: .85rem;
+}
+.search-trend-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
 }
