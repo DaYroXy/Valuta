@@ -231,6 +231,8 @@ class Friend {
             return b.user.sockets_id.length - a.user.sockets_id.length
         });
         return result;
+        
+        return friends;
     }
 }
 
