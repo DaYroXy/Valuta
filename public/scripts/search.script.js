@@ -7,7 +7,7 @@ if(searchElement){
     searchResults.style.display = "none"
     searchElement.addEventListener("input", (e) => {
         searchResults.style.display = "block"
-        searchResults.innerHTML = ""
+        // searchResults.innerHTML = ""
         console.log("YES")
     })
 

@@ -184,55 +184,17 @@ class Friend {
     }
 
     async getFriends() {
-        // let friends = await friendModel.aggregate([
-        //     {$match: {
-        //         "recipient" : ObjectId(this.user.id)
-        //     }},
-        //     {
-        //         $lookup: {
-        //             from: "users",
-        //             localField: "requester",
-        //             foreignField: "_id",
-        //             as: "user",
-    
-        //         }
-        //     }, {$unwind: "$user"},
-        //     {$project: {
-        //         "user._id":1,
-        //         "user.avatar":1,
-        //         "user.name":1,
-        //         "user.sockets_id":1  
-        //     }}
-        // ]);
-
-        // let friends2 = await friendModel.aggregate([
-        //     {$match: {
-        //         "requester" : ObjectId(this.user.id)
-        //     }},
-        //     {
-        //         $lookup: {
-        //             from: "users",
-        //             localField: "recipient",
-        //             foreignField: "_id",
-        //             as: "user",
-    
-        //         }
-            // }, {$unwind: "$user"},
-            // {$project: {
-            //     "user._id":1,
-            //     "user.avatar":1,
-            //     "user.name":1,
-            //     "user.sockets_id":1  
-            // }}
-        // ]);
-        // let result = friends.concat(friends2)
-        // // Sort by array length
-        // result.sort((a, b) => {
-        //     return b.user.sockets_id.length - a.user.sockets_id.length
-        // });
-        // return result;
         let friends = await friendModel.aggregate(
             [
+                {
+                    $match: { 
+                        $and: [
+                            {$or: [{ recipient: ObjectId(this.user.id) },
+                                    { requester: ObjectId(this.user.id) }]},
+                            {status: 1}  
+                        ]
+                    }
+                },
                 {
                   '$addFields': {
                     'lookupId': {
@@ -240,14 +202,15 @@ class Friend {
                         'if': {
                           '$eq': [
                             '$recipient', ObjectId(this.user.id)
-                          ]
+                          ],
                         }, 
                         'then': '$requester', 
                         'else': '$recipient'
                       }
                     }
                   }
-                }, {
+                }
+                ,{
                     $lookup: {
                         from: "users",
                         localField: "lookupId",
@@ -260,10 +223,9 @@ class Friend {
                     "user._id":1,
                     "user.avatar":1,
                     "user.name":1,
-                    "user.sockets_id":1  
+                    "user.sockets_id":1 ,
                 }}
             ])
-
             console.log(friends)
         return friends;
     }
