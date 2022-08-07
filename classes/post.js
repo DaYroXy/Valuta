@@ -43,7 +43,7 @@ class Post {
             }
         }
 
-        if(this.content === "" || this.content === undefined) {
+        if((this.content === "" || this.content === undefined) && !this.image) {
             return {
                 status: "error",
                 message: "Content is empty"

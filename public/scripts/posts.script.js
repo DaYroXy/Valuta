@@ -47,7 +47,7 @@ function addPost(data) {
 
     let createdAt = timeSince(new Date(data.createdAt));
     if(data.image !== "") {
-        img = `<img src="./images/${data.image}" alt="feed-content-image">`
+        img = `<img src="./uploads/${data.image}" alt="feed-content-image">`
     }
     let connectedUserInfo = document.querySelector(".profile-details > .handle");
     let logged_user_username = connectedUserInfo.textContent.toLocaleLowerCase()

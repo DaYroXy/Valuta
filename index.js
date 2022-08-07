@@ -20,7 +20,10 @@ const io = require('socket.io')(server);
 app.use(cors());
 app.set("io", io);
 app.set('server', server);
-app.use(fileUpload());
+app.use(fileUpload({
+    safeFileNames: true,
+    preserveExtension: true
+}));
 app.use(sessionMiddleware);
 
 // Reset all users status on startup

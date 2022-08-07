@@ -67,10 +67,21 @@ router.post("/add", async (req, res) => {
     }
 
     // if user sent a file or image
+    let isImage, isFile;
     if(req.files) {
         if('image' in req.files) {
             const image = req.files.image;
-            postData.image = image.name;
+            if(image.mimetype.includes("image")) {
+                let filterdImage = image.name.split(".");
+                postData.image = `${image.md5}.${filterdImage[filterdImage.length - 1]}`;
+                isImage = true;
+            } else {
+                res.json({
+                    status: "error",
+                    message: "must send an image"
+                })
+                return;
+            }
         }
 
         if('file' in req.files) {
@@ -89,6 +100,16 @@ router.post("/add", async (req, res) => {
             message: "Something went wrong"
         })
         return;
+    }
+
+    // move the image to the uploads folder
+    if(isImage) {
+        req.files.image.mv(`public/uploads/${postData.image}`, async (err) => {
+            if(err) {
+                res.json(err)
+                return;
+            }
+        })    
     }
 
     // let getPost = getPostById(post);
