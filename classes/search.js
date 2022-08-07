@@ -2,7 +2,6 @@
 const Users = require('../models/User.model');
 const Trends = require('../models/Trend.model');
 
-
 class Search {
 
     async search(content) {

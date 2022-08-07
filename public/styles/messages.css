@@ -25,7 +25,7 @@ main .container .left-side {
 
 
 .messages-list {
-    height: 100%;
+    height: fit-content;
 }
 
 .messages-list .message-handler{
@@ -64,7 +64,6 @@ main .container .left-side {
     align-items: center;
     margin-bottom: 1rem;
 }
-
 .left-side .search-bar {
     display: flex;
     margin: 1rem 0;

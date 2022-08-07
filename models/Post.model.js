@@ -6,7 +6,7 @@ const Post = new mongoose.Schema({
     content: String,
     image: String,
     file: String,
-    trendId: [{ type: mongoose.Schema.Types.ObjectId, default: null }],
+    trendId: [{ type: ObjectId, default: null }],
 }, { timestamps: true });
 
 module.exports = mongoose.model("Post", Post);

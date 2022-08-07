@@ -2,14 +2,20 @@ let ObjectId = require('mongoose').Types.ObjectId;
 const User = require("../models/User.model");
 const postModel = require("../models/Post.model");
 const rankModel = require("../models/Rank.model");
+
+// Extends to multiple classes libary
+const Many = require('ts-mixer')
+
 const Friend = require("./friend.js");
+const Message = require("./message.js");
+
 
 const bcrypt = require("bcrypt");
 const { default: mongoose } = require('mongoose');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 
-class user extends Friend {
+class user extends Many.Mixin(Friend,Message) {
 
     getUser() {
         const user = {

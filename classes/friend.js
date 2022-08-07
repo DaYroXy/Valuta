@@ -220,6 +220,7 @@ class Friend {
                 },
                 {$unwind: "$user"},
                 {$project: {
+                    _id:0,
                     "user._id":1,
                     "user.avatar":1,
                     "user.name":1,

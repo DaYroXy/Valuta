@@ -12,6 +12,7 @@ router.use("/trends", require("./trends.routes"));
 router.use("/entry", require("./entry.routes"));
 router.use("/friends", require("./friend.routes"));
 router.use("/search", require("./search.routes"));
+router.use("/messages", require("./messages.routes"));
 
 
 
