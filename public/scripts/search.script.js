@@ -1,6 +1,21 @@
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
+}
 
 const getSearchResults = throttleSearch(async text => {
-    fetch(`http://localhost:4200/api/v1/search/${text}`).then(res => res.json())
+
+    let API_URL = `http://localhost:4200/api/v1/search/${text}`
+    if(text.startsWith('#')) {
+        text = text.replaceAll("#", "")
+        API_URL = `http://localhost:4200/api/v1/search/trends/${text}`
+    }
+
+    console.log(text)
+    if(isEmptyOrSpaces(text)) {
+        return;
+    }
+    
+    fetch(API_URL).then(res => res.json())
     .then(res => {
         let searchResultsElement = document.querySelector(".search-results > ul");
         if(searchResultsElement.parentElement.style.display === "none") {
@@ -103,3 +118,40 @@ if(searchElement){
 
 }
 
+
+let friends_list_element = document.getElementById("friends-list-search");
+if(friends_list_element){
+
+
+    friends_list_element.addEventListener("keyup", (e) => {
+        let friends_list_container = document.querySelectorAll(".friend");
+
+        let Found = []
+        friends_list_container.forEach(friend => {
+            const friendName = friend.querySelector("h5").textContent
+            if(friendName.toLowerCase().startsWith(e.target.value.toLowerCase())) {
+                Found.push(friend)
+                friend.style.display = ""
+            } else {
+                friend.style.display = "none"
+            }
+        })
+
+        let NoResults = document.querySelector(".no-results-found")
+        if(Found.length === 0 && !NoResults) {
+            let NoResults = `
+                <div class="no-results-found">
+                    <h5>No results found.</h5>
+                </div>
+            `
+
+            document.querySelector(".friends-list").insertAdjacentHTML("beforeend", NoResults)
+        }
+
+        if(Found.length > 0 && NoResults) {
+            NoResults.remove();
+        }
+
+    })
+
+}

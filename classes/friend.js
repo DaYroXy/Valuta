@@ -225,8 +225,7 @@ class Friend {
                     "user.name":1,
                     "user.sockets_id":1 ,
                 }}
-            ])
-            console.log(friends)
+            ]).sort({"user.sockets_id": -1})
         return friends;
     }
 }
