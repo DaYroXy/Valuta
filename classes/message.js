@@ -51,6 +51,22 @@ class Message {
         this.message = messages;
     }
 
+    async getMessagesBetween(uid) {
+        let message = await MessageModel.aggregate(
+            [
+                {
+                    $match: { 
+                        $or: [
+                            {$and: [{ from: ObjectId(this.user.id) }, { to: ObjectId(uid) }]},
+                            {$and: [{ to: ObjectId(this.user.id) }, { from: ObjectId(uid) }]},
+                        ],
+                    }
+                },
+                
+            ]).sort({createdAt: -1})
+        return message;
+    }
+
     async getRecentMessages() {
         let message = await MessageModel.aggregate(
             [
@@ -103,6 +119,7 @@ class Message {
                         user_id: { $last: "$user._id" },
                         name: { $last: "$user.name" },
                         avatar: { $last: "$user.avatar" },
+                        sockets: { $last: "$user.sockets_id" },
                         createdAt: { $last: "$createdAt" },
                     }
                 }

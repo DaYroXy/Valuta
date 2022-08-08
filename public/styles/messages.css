@@ -124,14 +124,19 @@ main .container .left-side {
     border-bottom: 2px solid var(--color-light);
 }
 
-.right-side .user-profile-info .profile-details p {
-    color: var(--color-online);
-}
-
 .right-side-top .user-profile-controls {
     display: flex;
     gap: 1rem;
 }
+
+.profile-details .offline {
+    color: var(--color-danger);
+}
+
+.profile-details .online {
+    color: var(--color-online);
+}
+
 
 .right-side-top .user-profile-controls button {
     background: none;

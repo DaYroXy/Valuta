@@ -18,6 +18,24 @@
 
     <!-- Main Content -->
 
+    <div class="message-container-holder hide">
+        <div class="message-container">
+            <div class="top-side">
+                <h5>Send Message</h5>
+                <button onclick="toggleMessageContainer()">x</button>
+            </div>
+            <div class="bottom-side">
+                <div class="message-input">
+                    <textarea name="send-msg" id="" cols="30" rows="10" placeholder="Type message to send"></textarea>
+                </div>
+                <div class="message-send">
+                    <button onclick="sendMessage('<%- visitedUser._id %>')">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
     <main>
 
         <div class="container">
@@ -90,6 +108,7 @@
                             
                             <% if (typeof isFriend !== "undefined") { %>
                                 <% if (isFriend === "success") { %>
+                                    <button id="sendMessage" class="accept-friend" onclick="toggleMessageContainer()">Message</button>
                                     <button id="removeFriend" class="remove-friend" onclick="removeFriend('<%- visitedUser.username %>')">Remove</button>
                                 <% } else if (isFriend === "accept") { %>
                                     <button id="acceptFriend" class="accept-friend" onclick="friend_Request('<%- visitedUser.username %>')" >Accept</button>

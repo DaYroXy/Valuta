@@ -1,24 +1,24 @@
 const express = require("express");
 const router = express.Router();
-
-// const MessageModel = require("../models/Message.model");
-const Message = require("../classes/message");
 const User = require("../classes/user");
-const ObjectId = require("mongoose").Types.ObjectId;
 
-// router.get("/", async (req,res) => {
+router.post("/send", async(req,res) => {
 
-//     let messages = await Message.find({});
+    let me = req.session.user
+    if(!me) {
+        res.json({
+            "status": "error",
+            "message": "You are not logged in"
+        })
+        return;
+    }
 
-//     res.json(messages)
-// })
-
-router.get("/send", async(req,res) => {
+    const {to, content} = req.body;
 
     let user = new User();
-    await user.getUserById("62ec0348b080c0d85c059230")
+    await user.getUserById(me.id)
 
-    let result = await user.send("62ec0413b080c0d85c059315","5ls yzlmi azbot", "", "");
+    let result = await user.send(to,content, "", "");
 
     if(result) {
         if(result.status === "error") {
@@ -40,22 +40,71 @@ router.get("/send", async(req,res) => {
 
 router.get("/get", async(req,res) => {
     
-        let user = new User();
-        await user.getUserById("62ec0348b080c0d85c059230")
-        let result = await user.getRecentMessages();
-    
-        if(result) {
-            if(result.status === "error") {
-                res.json({
-                    "stauts": "error",
-                    "message": result.message
-                })
-                
-                return;
-            }
+    let me = req.session.user
+    if(!me) {
+        res.json({
+            "status": "error",
+            "message": "You are not logged in"
+        })
+        return;
+    }
+
+    let user = new User();
+    await user.getUserById(me.id)
+    let result = await user.getRecentMessages();
+
+    if(result) {
+        if(result.status === "error") {
+            res.json({
+                "stauts": "error",
+                "message": result.message
+            })
+            
+            return;
         }
-        res.json(result)
+    }
+    res.json(result)
     
+})
+
+router.get("/get/:uid", async(req,res) => {
+
+    let me = req.session.user
+    if(!me) {
+        res.json({
+            "status": "error",
+            "message": "You are not logged in"
+        })
+        return;
+    }
+
+    const {uid} = req.params;
+
+    if(!uid) {
+        res.json({
+            "status": "error",
+            "message": "Invalid parameters"
+        })
+        return;
+    }
+
+    let user = new User();
+    await user.getUserById(me.id)
+    let result = await user.getMessagesBetween(uid)
+    let userData = await user.returnUserById(uid);
+    let userResult = {
+        id: userData.id,
+        avatar: userData.avatar,
+        username: userData.username,
+        name : userData.name  , 
+        sockets : userData.sockets_id 
+    }
+    let dataResult = {
+        user: userResult,
+        data: result
+    }
+    // let result = await user.getMessagesBetween();
+    res.json(dataResult)
 })
 
 module.exports = router;

@@ -57,3 +57,30 @@ function removeFriend(username) {
         }
     })
 }
+
+function toggleMessageContainer() {
+    let messageContainer = document.querySelector(".message-container-holder")
+    messageContainer.classList.toggle("hide")
+}
+
+
+async function sendMessage(userId) {
+    let message = document.querySelector(".message-input > textarea").value
+
+    fetch(`http://localhost:4200/api/v1/messages/send`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            to: userId,
+            content: message
+        })
+    }).then(res => res.json()).then(res => {
+        console.log(res.stauts)
+        if(res.stauts === "sucess") {
+            console.log("ASd")
+            window.location.href = "http://localhost:4200/messages"
+        }
+    })
+}

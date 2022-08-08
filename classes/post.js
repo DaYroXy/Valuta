@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const postModel = require('../models/Post.model');
 const userModel = require('../models/User.model');
-// const User = require('../classes/user.js');
+const User = require('../classes/user.js');
 
 
 class Post {

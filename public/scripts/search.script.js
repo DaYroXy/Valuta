@@ -155,3 +155,4 @@ if(friends_list_element){
     })
 
 }
+
