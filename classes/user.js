@@ -255,6 +255,7 @@ class user {
     }
 
 
+    // Get User Posts Count
     async getUserPostsCount() {
         if(!this.user) {
             return({
