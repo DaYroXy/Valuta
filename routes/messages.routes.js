@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../classes/user");
 
 router.post("/send", async(req,res) => {
-
+    const io = req.app.get("io");
     let me = req.session.user
     if(!me) {
         res.json({
@@ -17,9 +17,7 @@ router.post("/send", async(req,res) => {
 
     let user = new User();
     await user.getUserById(me.id)
-
     let result = await user.send(to,content, "", "");
-
     if(result) {
         if(result.status === "error") {
             res.json({
@@ -30,6 +28,17 @@ router.post("/send", async(req,res) => {
             return;
         }
     }
+    
+    let userSockets = new User();
+    await userSockets.getUserById(to)
+    userSockets = await userSockets.getUserSockets()
+
+    if(userSockets.length > 0) {
+        userSockets.forEach(socket => {
+            io.to(socket).emit("new_message", me.id)
+        } )
+    }
+
 
     res.json({
         "stauts": "sucess",

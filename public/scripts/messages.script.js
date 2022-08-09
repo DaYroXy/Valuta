@@ -64,8 +64,9 @@ function updateChatInfo(user) {
     let userStatus = userTopElement.querySelector(".profile-details > p");
     let button = document.querySelector('#send-message-button');
     button.innerHTML = ''
-    button.innerHTML = `<i onclick='sendMessage("${user.user_id}")' class="fa-solid fa-paper-plane fa-lg"></i>`
     let uid = user.id || user.user_id
+    button.innerHTML = `
+    <i id="send-message-button-uid" user-data="${uid}" onclick='sendMessage("${uid}")' class="fa-solid fa-paper-plane fa-lg"></i>`
     userName.textContent = user.name;
 
     if(user.avatar.includes("http") || user.avatar.includes("https")) {
@@ -239,3 +240,9 @@ async function sendMessage(userId) {
         loadMessages(userId)
     })
 }
+
+socket.on("new_message", (uid) => {
+    if(document.querySelector("#send-message-button-uid").getAttribute("user-data") === uid) {
+        loadMessages(uid)
+    }
+})
