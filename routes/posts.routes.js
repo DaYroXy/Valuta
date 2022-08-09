@@ -25,7 +25,7 @@ router.get("/me", async(req, res) => {
     }
 
     const userPosts = new userClass();
-    await userPosts.getUserById(userSession.id)
+    await userPosts.setUser(userSession.id)
     res.json(await userPosts.Posts())
 })
 
@@ -41,7 +41,7 @@ router.get("/:username", async(req, res) => {
     }
 
     const userPosts = new userClass();
-    await userPosts.getUserByUsername(username);
+    await userPosts.setUser(username);
     res.json(await userPosts.Posts())
 })
 

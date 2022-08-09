@@ -11,7 +11,7 @@ router.get("/refresh", async (req, res) => {
 
     const {username} = req.params;
     let me = new User();
-    await me.getUserById(user.id);
+    await me.setUser(user.id);
 
     req.session.user.posts_count = await me.getUserPostsCount();
     req.session.user.friends_count = await me.getFriendsCount();

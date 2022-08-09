@@ -6,7 +6,9 @@ const fileUpload = require('express-fileupload');
 const server = require('http').createServer(app)
 const { sessionMiddleware, wrap } = require('./server/express-session');
 const User = require('./classes/user');
-const PORT = 4200;
+const Friend = require('./classes/friend');
+
+const PORT = 443;
 
 
 // MongoDb Setup
@@ -121,7 +123,7 @@ app.get("/profile/:username", async (req, res) => {
         return;
     }
 
-    let userClass = new User()
+    let userClass = new Friend()
     let visitedUser = await userClass.getUserByUsername(username);
     visitedUser.friends_count = await userClass.getFriendsCount()
     visitedUser.posts_count = await userClass.getUserPostsCount()
@@ -131,7 +133,7 @@ app.get("/profile/:username", async (req, res) => {
     }
 
     let me = new User();
-    await me.getUserById(user.id);
+    await me.setUser(user.id);
     let friendStatus = await me.friendStatus(username);
     if(friendStatus.status === "error") {
         if(friendStatus.message !== "You are not friends with this user") {
@@ -176,13 +178,13 @@ io.on("connection", async (socket) => {
 
     // User disconnected
     socket.on("disconnect", async (data) => {
-        io.emit("user-disconnected", await user.getUserById(userSession.id));
+        io.emit("user-disconnected", await user.setUser(userSession.id));
         await user.removeSocket(socket.id)
         
     })
 
     // User connected
-    io.emit("user-connected", await user.getUserById(userSession.id));
+    io.emit("user-connected", await user.setUser(userSession.id));
     await user.addSocket(socket.id);
 });
 

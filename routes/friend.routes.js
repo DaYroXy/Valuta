@@ -15,7 +15,7 @@ router.post("/add", async (req, res) => {
     const {recipient} = req.body;
 
     let me = new User();
-    await me.getUserById(user.id);
+    await me.setUser(user.id);
     let friend_status = await me.addFriend(recipient);
 
     if(friend_status.status === "success") {
@@ -26,7 +26,7 @@ router.post("/add", async (req, res) => {
         }
 
         let recipientSockets = new User();
-        await recipientSockets.getUserByUsername(recipient);
+        await recipientSockets.setUser(recipient);
 
 
         let userSockets = await recipientSockets.getUserSockets()
@@ -60,7 +60,7 @@ router.delete("/remove/:username", async (req, res) => {
 
     const {username} = req.params;
     let me = new User();
-    await me.getUserById(user.id);
+    await me.setUser(user.id);
 
     let removedUser = await me.remove(username);
     if(removedUser.status === "success") {
@@ -71,7 +71,7 @@ router.delete("/remove/:username", async (req, res) => {
         }
 
         let recipientSockets = new User();
-        await recipientSockets.getUserByUsername(username);
+        await recipientSockets.setUser(username);
 
 
         let userSockets = await recipientSockets.getUserSockets()
@@ -101,7 +101,7 @@ router.get("/get", async (req,res ) => {
     }
 
     let me = new User();
-    await me.getUserById(user.id);
+    await me.setUser(user.id);
     let friends = await me.getFriends();
     
     res.json(friends)

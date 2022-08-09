@@ -14,6 +14,11 @@ router.use("/friends", require("./friend.routes"));
 router.use("/search", require("./search.routes"));
 router.use("/messages", require("./messages.routes"));
 
-
+router.get("/test", async(req,res) => {
+    let user = new User()
+    await user.setUser("anas.abush");
+    console.log(user.getUser())
+    res.json({"hi":"asd"})
+})
 
 module.exports=router;

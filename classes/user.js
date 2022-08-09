@@ -3,83 +3,78 @@ const User = require("../models/User.model");
 const postModel = require("../models/Post.model");
 const rankModel = require("../models/Rank.model");
 
-// Extends to multiple classes libary
-const Many = require('ts-mixer')
-
-const Friend = require("./friend.js");
-const Message = require("./message.js");
-
-
 const bcrypt = require("bcrypt");
 const { default: mongoose } = require('mongoose');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 
-class user extends Many.Mixin(Friend,Message) {
+class user {
 
-    getUser() {
-        const user = {
-            id: this.user._id,
-            avatar: this.user.avatar,
-            bg_image: this.user.bg_image,
-            name: this.user.name,
-            username: this.user.username,
-            email: this.user.email,
-            rank: this.user.rank,
-            bio: this.user.bio,
-            createdAt: this.user.createdAt,
-            sockets_id: this.user.sockets_id,
-            friends_count: 0,
-            posts_count: 0
+    // Set user by username or id
+    async setUser(usernameId) {
+        
+        let user;
+        if(!ObjectId.isValid(usernameId)) {
+            user = await User.findOne({username:usernameId}, {"password":0, "email":0});
+        }else{           
+            user = await User.findById(usernameId, {"password":0, "email":0});
         }
-        return user;
-    }
 
-    async getUserRank() {
-        return await rankModel.findOne({id: this.user.rank});
-    }
-
-    async getUserByUsername(username) {
-        let user = await User.findOne({"username": username}, {"sockets_id":0, "password":0, "email":0});
         if(!user) {
             return {
                 status: "error",
                 message: "User not found"
             }
         }
+
+        user = user.toObject()
+
+        user.friends_count = 0,
+        user.posts_count= 0
         this.user = user;
-        return user.toObject();
+        return user;
+    }
+    
+    // check if user exists
+    async userExists(username) {
+        let user = await User.findOne({$or:[{'email':username},{'username':username}]});
+        return user;
     }
 
-    async returnUserByUsername(username) {
+    // get user data
+    getUser() {
+        return this.user;
+    }
+    
+    // get user rank
+    async getUserRank() {
+        return await rankModel.findOne({id: this.user.rank});
+    }
+
+    // get user by id
+    async findUserById(userId) {
+        if(!ObjectId.isValid(userId)) {
+            return {
+                status: "error",
+                message: "Invalid user id"
+            }
+        }
+
+        let user = await User.findById(userId);
+        return user;
+    }
+
+    // find user by useranme
+    async findUserByUseranme(username) {
         let user = await User.findOne({username: username}, {"sockets_id":0, "password":0, "email":0});
         if(!user) {
             return;
         }
         return user
     }
-
-
-    async userExists(username) {
-        let user = await User.findOne({$or:[{'email':username},{'username':username}]});
-        this.user = user;
-        return user;
-    }
-
-    async getUserById(userId) {
-        if(!ObjectId.isValid(userId)) {
-            return {
-                status: "error",
-                message: "Invalid user id"
-            }
-        }
-
-        let user = await User.findById(userId);
-        this.user = user;
-        return user;
-    }
-
-    async returnUserById(userId) {
+    
+    // find user by id
+    async findUserById(userId) {
         if(!ObjectId.isValid(userId)) {
             return {
                 status: "error",
@@ -91,20 +86,32 @@ class user extends Many.Mixin(Friend,Message) {
         return user;
     }
 
+    // get user sockets
+    async getUserSockets() {
+        if(!this.user) {
+            return({
+                status: "error",
+                message: "User not found"
+            })
+        }
 
+        return (await User.findById(this.user._id, {_id:0, sockets_id: 1})).sockets_id;
+    }
+
+    // add socket to user
     async addSocket(socket_id) {
         await User.updateOne({ _id: this.user._id}, {$push: {sockets_id: [ socket_id ] }})
-        this.user = user;
         return true;
     }
 
+    // remove socket from user
     async removeSocket(socket_id) {
         await User.updateOne({ _id: this.user._id}, { $pull: {sockets_id: socket_id }})
-        this.user = user;
         return true;
     }
 
 
+    // register user
     async register({name, username, password, email, bio, socket_id}) {
         if(await this.userExists(username)) {
             return {
@@ -162,13 +169,14 @@ class user extends Many.Mixin(Friend,Message) {
         };
     }
 
+    // Login User
     async login(username, password) {
         let user = await this.userExists(username);
         if(!user) {
             return false;
         }
 
-        if(await bcrypt.compare(password, user.password)) {
+        if(bcrypt.compare(password, user.password)) {
             this.user = user;
             return true;
         } else {
@@ -176,6 +184,7 @@ class user extends Many.Mixin(Friend,Message) {
         }
     }
 
+    // Logout user
     async logout() {
         if(!this.user) {
             return({
@@ -239,10 +248,12 @@ class user extends Many.Mixin(Friend,Message) {
         return posts;
     }
 
+    // Reset all users status on server startup
     async resetAllUserStatus() {
         await User.updateMany({}, {$set: {sockets_id: []}});
         return true;
     }
+
 
     async getUserPostsCount() {
         if(!this.user) {
@@ -255,16 +266,7 @@ class user extends Many.Mixin(Friend,Message) {
         return posts.length;
     }
 
-    async getUserSockets() {
-        if(!this.user) {
-            return({
-                status: "error",
-                message: "User not found"
-            })
-        }
-        return (await User.findById(this.user._id, {_id:0, sockets_id: 1})).sockets_id;
-
-    }
+    
 
 }
 

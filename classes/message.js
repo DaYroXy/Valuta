@@ -33,7 +33,7 @@ class Message {
             }
         }
 
-        if (!(await this.returnUserById(to))) {
+        if (!(await this.findUserById(to))) {
             return {
                 status: "error",
                 message: "User not found"

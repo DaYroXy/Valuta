@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId
 const friendModel = require("../models/Friend.model");
 
-class Friend {
+const userClass = require("../classes/user");
 
-
+class Friend extends userClass {
+    
     async friendStatus(username) {
-        let friend = await this.returnUserByUsername(username);
+        let friend = await this.findUserByUseranme(username);
         if(!friend) {
             return {
                 status: "error",
@@ -62,7 +63,7 @@ class Friend {
 
     async addFriend(username) {
 
-        let friend = await this.returnUserByUsername(username);
+        let friend = await this.findUserByUseranme(username);
         if(!friend) {
             return {
                 status: "error",
@@ -150,7 +151,7 @@ class Friend {
     }
     
     async remove(username) {
-        let friend = await this.returnUserByUsername(username);
+        let friend = await this.findUserByUseranme(username);
         if(!friend) {
             return {
                 status: "error",

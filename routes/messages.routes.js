@@ -16,7 +16,7 @@ router.post("/send", async(req,res) => {
     const {to, content} = req.body;
 
     let user = new User();
-    await user.getUserById(me.id)
+    await user.setUser(me.id)
 
     let result = await user.send(to,content, "", "");
 
@@ -50,7 +50,7 @@ router.get("/get", async(req,res) => {
     }
 
     let user = new User();
-    await user.getUserById(me.id)
+    await user.setUser(me.id)
     let result = await user.getRecentMessages();
 
     if(result) {
@@ -89,9 +89,9 @@ router.get("/get/:uid", async(req,res) => {
     }
 
     let user = new User();
-    await user.getUserById(me.id)
+    await user.setUser(me.id)
     let result = await user.getMessagesBetween(uid)
-    let userData = await user.returnUserById(uid);
+    let userData = await user.findUserById(uid);
     let userResult = {
         id: userData.id,
         avatar: userData.avatar,

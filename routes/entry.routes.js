@@ -1,6 +1,7 @@
 const express = require ("express");
 const router = express.Router();
 const userClass = require("../classes/user");
+const Friend = require("../classes/friend");
 
 // Login 
 router.post("/login", async (req, res) => {
@@ -26,7 +27,7 @@ router.post("/login", async (req, res) => {
         return;
     }
 
-    let user = new userClass();
+    let user = new Friend();
 
     if(await user.login(data.username, data.password)) {
         req.session.user = user.getUser();
@@ -121,7 +122,7 @@ router.put("/logout", async(req,res) => {
 
     req.session.destroy();
     let me = new userClass()
-    await me.getUserById(user.id);
+    await me.setUser(user.id);
     await me.logout();
     res.redirect("/entry")
 })

@@ -57,7 +57,7 @@ class Post {
     }
     
     async setUserById(userId) {
-        let user = await new User().getUserById(userId);
+        let user = await new User().setUser(userId);
         this.user = user;
         return user;
     }
