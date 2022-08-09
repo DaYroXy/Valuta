@@ -1,38 +1,5 @@
 
 
-function timeSince(date) {
-    var seconds = Math.floor((new Date() - date) / 1000);
-    var interval = seconds / 31536000;
-    if(seconds === 0) {
-        return "A FEW SECOND AGO"; 
-    }
-
-    if (interval > 1) {
-      return Math.floor(interval) + " YEARS AGO";
-    }
-    
-    interval = seconds / 2592000;
-    if (interval > 1) {
-      return Math.floor(interval) + " MONTHS AGO";
-    }
-
-    interval = seconds / 86400;
-    if (interval > 1) {
-      return Math.floor(interval) + " DAYS AGO";
-    }
-
-    interval = seconds / 3600;
-    if (interval > 1) {
-      return Math.floor(interval) + " HOURS AGO";
-    }
-
-    interval = seconds / 60;
-    if (interval > 1) {
-      return Math.floor(interval) + " MINUTES AGO";
-    }
-
-    return "A FEW SECOND AGO"; 
-  }
 
 // Add post to page
 function addPost(data) {

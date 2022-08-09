@@ -1,7 +1,3 @@
-const scrollToBottom = (node) => {
-	node.scrollTop = node.scrollHeight;
-}
-
 function loadMessages(uid) {
     let results = document.querySelectorAll(".sent-message, .recieved-message")
     
@@ -30,7 +26,7 @@ function loadMessages(uid) {
                             <p>${message.content}</p>
                         </div>
                         <div class="message-timestamp">
-                            <small class="text-muted">${message.createdAt}</small>
+                            <small class="text-muted">${timeSince(new Date(message.createdAt))}</small>
                         </div>
                     </div>
                 </div>
@@ -44,7 +40,7 @@ function loadMessages(uid) {
                         </div>
     
                         <div class="message-timestamp">
-                            <small class="text-muted">${message.createdAt}</small>
+                            <small class="text-muted">${timeSince(new Date(message.createdAt))}</small>
                         </div>
                     </div>
                 </div>
@@ -53,8 +49,10 @@ function loadMessages(uid) {
 
             MessagesContent.insertAdjacentHTML("afterbegin", html)
         })
+        document.querySelector(".chatting-messages").insertAdjacentHTML("afterend", `<div class="scroll-to-bottom"></div>`)
+        document.querySelector(".scroll-to-bottom").scrollIntoView()
     })
-    scrollToBottom(document.getElementsByClassName("chatting-messages"));
+   
 }
 
 function updateChatInfo(user) {
