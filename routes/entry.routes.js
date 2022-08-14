@@ -1,5 +1,6 @@
 const express = require ("express");
 const router = express.Router();
+const Major = require("../classes/major");
 const userClass = require("../classes/user");
 
 // Login 
@@ -43,16 +44,24 @@ router.post("/login", async (req, res) => {
 
 // Registartion
 router.post("/register", async (req, res) => {
+    console.log(req.body)
     const data = {
         name: req.body.name,
         username: req.body.username,
         password: req.body.password,
         email: req.body.email,
+        majors: req.body.majors,
         bio: "No bio availabe."
     }
 
     if(data.name === "") {
         res.redirect("/entry?registerError=Name is required");
+        return;
+    }
+
+    let major = new Major().findById(data.majors);
+    if(!major) {
+        res.redirect("/entry?registerError=Major is invalid");
         return;
     }
 
@@ -93,12 +102,14 @@ router.post("/register", async (req, res) => {
 
     // Registartion
     let user = new userClass()
+    console.log(data.majors)
     let result = await user.register({
         name: data.name,
         username: data.username,
         password: data.password,
         email: data.email.toLowerCase(),
         bio: data.bio,
+        major: data.majors
     })
 
     if(result.status !== "success") {

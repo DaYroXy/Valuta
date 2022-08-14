@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../classes/user");
 const friendModel = require("../models/Friend.model");
 const ObjectId = require('mongoose').Types.ObjectId;
+const Major = require("../classes/major");
 
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
@@ -13,6 +14,25 @@ router.use("/entry", require("./entry.routes"));
 router.use("/friends", require("./friend.routes"));
 router.use("/search", require("./search.routes"));
 router.use("/messages", require("./messages.routes"));
+
+router.get("/test", async (req,res) => {
+
+    let major = new Major();
+    try {
+        let years = 3;
+        let lecturers = [];
+        await major.create("Software Engineering",years, lecturers);
+        // console.log(await major.findById("62f83dc0589021a4c888220f"))
+    } catch(e) {
+        res.json(e.message)
+        return;
+    }
+
+    res.json({
+        status: "sucess",
+        message: "Hello World"
+    })
+})
 
 
 

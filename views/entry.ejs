@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
   <head>
     <%- include("./addons/header-includes.ejs") %>
@@ -7,7 +7,7 @@
     <title>Valuta</title>
   </head>
   <body>
-    <% if(typeof registerError != 'undefined') { %>
+    <% if(typeof error.registerError != 'undefined') { %>
       <div class="container sign-up-mode">
     <% } else { %>
       <div class="container ">
@@ -27,7 +27,7 @@
             
             <% if(typeof error !== 'undefined') { %> 
               <div class="error-class">
-                <p><%- error %></p>
+                <p><%- error.error %></p>
               </div>
             <% } %>
             
@@ -54,9 +54,24 @@
               <i class="fas fa-lock"></i>
               <input type="password" name="password" placeholder="Password" />
             </div>
-            <% if(typeof registerError !== 'undefined') { %> 
+            <div class="input-field">
+              <i class="fa-solid fa-graduation-cap"></i>
+              <div class="majors-section">
+                <select name="majors" id="majors">
+                  <% 
+                    MajorsList.forEach(function(major) {
+                      %>
+                        <option value="<%- major._id %>"><%- major.name %> - Year <%- major.year %></option>
+                      <%
+                    })
+                  %>
+                </select>
+              </div>
+            </div>
+            <% if(typeof error.registerError !== 'undefined') { %> 
               <div class="error-class">
-                <p><%- registerError %></p>
+                <!-- MajorsList -->
+                <p><%- error.registerError %></p>
               </div>
             <% } %>
             <input type="submit"  name="register" value="Sign up" class="btn"/>

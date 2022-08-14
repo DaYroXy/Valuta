@@ -105,7 +105,7 @@ class user extends Many.Mixin(Friend,Message) {
     }
 
 
-    async register({name, username, password, email, bio, socket_id}) {
+    async register({name, username, password, email, bio, major, socket_id}) {
         if(await this.userExists(username)) {
             return {
                 status: "error",
@@ -143,7 +143,7 @@ class user extends Many.Mixin(Friend,Message) {
                 access: 0})
         }
         
-
+        console.log(major)
         await User.create({
             avatar: userImage,
             bg_image: backgroundImage,
@@ -153,6 +153,7 @@ class user extends Many.Mixin(Friend,Message) {
             email: email,
             rank: rank._id,
             bio: bio,
+            major: major,
             sockets_id: socket_id
         })
         this.user = await this.userExists(username);

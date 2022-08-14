@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload');
 const server = require('http').createServer(app)
 const { sessionMiddleware, wrap } = require('./server/express-session');
 const User = require('./classes/user');
+const Major = require("./classes/major");
 const PORT = 4200;
 
 
@@ -149,9 +150,11 @@ app.get("/profile/:username", async (req, res) => {
 
 // APIS
 app.use("/api/v1", require("./routes/api.routes"));
-app.get('/entry', (req, res) => {
+app.get('/entry', async (req, res) => {
     const error = req.query;
-    res.render('entry', error)
+    let MajorsList = await new Major().getAll();
+    console.log(MajorsList)
+    res.render('entry', {error, MajorsList})
 })
 
 // Allow socket to use session Middle ware

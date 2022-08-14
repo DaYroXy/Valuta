@@ -96,6 +96,32 @@ form.sign-in-form {
   font-size: 1rem;
 }
 
+.input-field select {
+  background: none;
+  outline: none;
+  border: none;
+  line-height: 1;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.majors-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.majors-section select {
+  width: 95%;
+}
+
+.majors-section select option {
+  font-size: 1.1rem;
+  padding: 1rem;
+  border: none;
+}
+
 .social-media {
   display: flex;
   justify-content: center;

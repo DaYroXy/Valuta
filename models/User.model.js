@@ -8,6 +8,7 @@ const User = new mongoose.Schema({
     password: String,
     email: String,
     rank: mongoose.Types.ObjectId,
+    major:mongoose.Types.ObjectId,
     bio: String,
     sockets_id: [String]
 }, { timestamps: true });
