@@ -7,8 +7,8 @@ const server = require('http').createServer(app)
 const { sessionMiddleware, wrap } = require('./server/express-session');
 const User = require('./classes/user');
 const Major = require("./classes/major");
+const Room = require("./classes/room");
 const PORT = 4200;
-
 
 // MongoDb Setup
 const mongoose = require('mongoose');
@@ -79,15 +79,21 @@ app.get('/messages', (req, res) => {
 })
 
 // Rooms Page
-app.get('/rooms', (req, res) => {
+app.get('/rooms', async (req, res) => {
     const user = req.session.user
+    
+// Roomm, Major
 
     if (!user) {
         res.redirect('/entry')
         return;
     }
+    const major = new Major();
+    const room = new Room();
+    let majors = await major.getRelated(user.major);
+    let rooms = await room.getRelated(majors);
 
-    res.render('rooms', { user })
+    res.render('rooms', { user, rooms })
 })
 
 // Profie Page
@@ -153,7 +159,6 @@ app.use("/api/v1", require("./routes/api.routes"));
 app.get('/entry', async (req, res) => {
     const error = req.query;
     let MajorsList = await new Major().getAll();
-    console.log(MajorsList)
     res.render('entry', {error, MajorsList})
 })
 

@@ -53,7 +53,7 @@
                     <div class="messages-container">
                         
                         <!-- MESSAGE HERE -->
-                        <div class="user-message">
+                        <!-- <div class="user-message">
                             <div class="message-details">
                                 <div class="message-content">
                                     <h5>Software Engineering<small class="notification-count">61</small></h5>
@@ -61,7 +61,23 @@
                                 
                                 <small class="text-muted">Software Engineering topics only.</small>
                             </div>                        
-                        </div>
+                        </div> -->
+
+                        <% 
+                        rooms.forEach(room => {
+                            %>
+                                <div class="user-message" onclick="changeRoom('<%- room._id %>')">
+                                    <div class="message-details">
+                                        <div class="message-content">
+                                            <h5><%- room.name %></h5>
+                                        </div>
+                                        
+                                        <small class="text-muted"><%- room.description %></small>
+                                    </div>                        
+                                </div>
+                            <%
+                        })
+                        %>
 
                     </div>
                 </div>
@@ -74,15 +90,9 @@
                 <div class="right-side-top">
 
                     <div class="user-profile-info">
-                        <h4 class="handle">Software Engineering</h4>       
-                        <small class="text-muted">Feel free to talk whatever you like.</small>
+                        <h4 class="handle" id="current-room-name"><%- rooms[0].name -%></h4>       
+                        <small class="text-muted" id="current-room-description"><%- rooms[0].description -%></small>
                     </div>
-
-                    <div class="user-profile-controls">
-                        <button><i class="fa-solid fa-magnifying-glass fa-lg"></i></button>
-                        <button><i class="fa-solid fa-ellipsis-vertical fa-lg"></i></button>
-                    </div>
-
 
                 </div>
 
@@ -109,10 +119,13 @@
                             <div class="recieved-message-content">
                                 
                                 <div class="inner-message-content">
-                                    <div class="avatar-picture">
-                                        <img src="./images/user.png" alt="profile picutre">
+                                        <div class="avatar-picture">
+                                            <img src="./images/user.png" alt="profile picutre">
+                                        </div>
+                                    <div class="message-details">
+                                        <h5>Anas Abu Shanab</h5>
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae optio velit sequi ullam aut suscipit quisquam dolores possimus aspernatur voluptatum enim reiciendis pariatur dolore, itaque sit? Optio nesciunt blanditiis fugiat.</p>
                                     </div>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae optio velit sequi ullam aut suscipit quisquam dolores possimus aspernatur voluptatum enim reiciendis pariatur dolore, itaque sit? Optio nesciunt blanditiis fugiat.</p>
                                 </div>
                                 <div class="message-timestamp">
                                     <small class="text-muted">4:40pm</small>
@@ -125,18 +138,11 @@
                 </div>
 
                 <div class="user-chatting-controls">
-                    <div class="files-container">
-                        <input type="file" id="create-post-image">
-                        <input type="file" id="create-post-file">
-                        <label for="create-post-image"><i class="fa-solid fa-image fa-xl"></i></label>
-                        <label for="create-post-file"><i class="fa-solid fa-file-circle-plus fa-lg"></i></label>
-                    </div>
-
                     <div class="send-message">
                         <input type="text" name="post-content" placeholder="Whats on your mind, Anas?" id="create-post" required>
                     </div>
 
-                    <span><i class="fa-solid fa-paper-plane fa-lg"></i></span>
+                    <span><i class="fa-solid fa-paper-plane fa-lg" id="current-room-send" onclick="sendMessage('<%- rooms[0].id -%>')"></i></span>
                 </div>
 
             </div>

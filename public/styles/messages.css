@@ -107,6 +107,10 @@ main .container .left-side {
     width: 100%;
 }
 
+.message-details h5 {
+    margin-bottom: .5rem;
+}
+
 .user-message .message-details .message-content {
     display: flex;
     justify-content: space-between;

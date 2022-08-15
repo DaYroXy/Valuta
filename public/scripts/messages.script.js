@@ -222,6 +222,13 @@ if(friendsSearchMessage){
 
 }
 
+socket.on("new_message", (uid) => {
+    if(document.querySelector("#send-message-button-uid").getAttribute("user-data") === uid) {
+        loadMessages(uid)
+    }
+})
+
+
 async function sendMessage(userId) {
     let message = document.getElementById("create-post").value;
     fetch(`http://localhost:4200/api/v1/messages/send`, {
@@ -238,9 +245,3 @@ async function sendMessage(userId) {
         loadMessages(userId)
     })
 }
-
-socket.on("new_message", (uid) => {
-    if(document.querySelector("#send-message-button-uid").getAttribute("user-data") === uid) {
-        loadMessages(uid)
-    }
-})

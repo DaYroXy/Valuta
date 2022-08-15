@@ -28,6 +28,7 @@ class user extends Many.Mixin(Friend,Message) {
             rank: this.user.rank,
             bio: this.user.bio,
             createdAt: this.user.createdAt,
+            major: this.user.major,
             sockets_id: this.user.sockets_id,
             friends_count: 0,
             posts_count: 0
