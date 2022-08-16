@@ -109,6 +109,23 @@ main .container .left-side {
 
 .message-details h5 {
     margin-bottom: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.message-details p {
+    font-size: 1rem;
+}
+.message-timestamp .text-muted {
+    font-size: .7rem;
+    font-weight: 400;
+}
+
+.inner-message-content .profile-picture {
+    width: 100%;
+    height: 100%;
 }
 
 .user-message .message-details .message-content {
@@ -237,6 +254,12 @@ main .container .left-side {
 .inner-message-content {
     display: flex;
     gap: 1rem;
+}
+
+.inner-message-content p {
+    display: inline;
+    white-space: initial;
+    word-break: break-all;
 }
 
 .inner-message-content .avatar-picture {

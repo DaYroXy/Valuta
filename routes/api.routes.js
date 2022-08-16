@@ -5,6 +5,7 @@ const friendModel = require("../models/Friend.model");
 const ObjectId = require('mongoose').Types.ObjectId;
 const Major = require("../classes/major");
 const Room = require("../classes/room");
+const Message = require("../classes/message");
 
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
@@ -16,7 +17,6 @@ router.use("/friends", require("./friend.routes"));
 router.use("/search", require("./search.routes"));
 router.use("/messages", require("./messages.routes"));
 router.use("/rooms", require("./rooms.routes"));
-
 
 
 router.get("/test", async (req,res) => {

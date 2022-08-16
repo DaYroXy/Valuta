@@ -39,6 +39,18 @@ router.post("/send", async(req,res) => {
         } )
     }
 
+    let message = {
+        room_id: to,
+        content: result.content,
+        createdAt: result.createdAt,
+        user: {
+            _id: me.id,
+            name: me.name,
+            avatar: me.avatar
+        }
+    }
+    io.emit("new_room_message", message)
+
 
     res.json({
         "stauts": "sucess",

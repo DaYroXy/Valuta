@@ -3,6 +3,7 @@ const express = require ("express");
 const router = express.Router();
 const ObjectId = require("mongoose").Types.ObjectId;
 const Room = require("../classes/room");
+const Message = require("../classes/message");
 
 
 // router.get("/", async (req,res) => {
@@ -50,6 +51,22 @@ router.get("/:roomId", async (req,res) => {
     res.json(values);
 })
 
+
+router.get("/messages/:roomId", async (req,res) => {
+    const {roomId} = req.params;
+    
+    if(!ObjectId.isValid(roomId)) {
+        res.json({
+            "status": "error",
+            "message": "Invalid Room Id"
+        })
+        return;
+    }
+
+    let message = new Message();
+    let response = await message.getRoomMessages(roomId);
+    res.json(response)
+})
 
 
 module.exports=router;

@@ -1,6 +1,7 @@
 const ObjectId = require("mongoose").Types.ObjectId;
 const MessageModel = require("../models/Message.model");
 const FriendModel = require("../models/Friend.model");
+const Room = require("./room");
 
 class Message {
 
@@ -33,10 +34,11 @@ class Message {
             }
         }
 
-        if (!(await this.returnUserById(to))) {
+        let room = new Room();
+        if (!(await this.returnUserById(to)) && !(await room.findById(to))) {
             return {
                 status: "error",
-                message: "User not found"
+                message: "User/Room not found"
             }
         }
 
@@ -49,6 +51,7 @@ class Message {
         });
 
         this.message = messages;
+        return messages;
     }
 
     async getMessagesBetween(uid) {
@@ -125,6 +128,35 @@ class Message {
                 }
             ]).sort({createdAt: -1})
         return message;
+    }
+
+    async getRoomMessages(roomId) {
+        let messages = await MessageModel.aggregate([
+            {
+                $match: { to: ObjectId(roomId) }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "from",
+                    foreignField: "_id",
+                    as: "user",
+                }
+            }, {
+                $unwind: "$user"
+            },
+            {
+                $project: {
+                        _id: 0,
+                        "user._id":1,
+                        "user.avatar":1,
+                        "user.name":1,
+                        "content":1,
+                        "createdAt": 1
+                }
+            }
+        ])
+        return messages;
     }
 }
 
