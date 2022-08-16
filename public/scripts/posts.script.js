@@ -32,10 +32,15 @@ function addPost(data) {
         `
     }
 
-    let LikeButton = `<span onclick="likePost('${data._id}')" ><i class="fa-regular fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
-    if(data.likes.some(userLiked => userLiked["userId"] === logged_user_id)) {
-        LikeButton = `<span onclick="likePost('${data._id}')" style="color: var(--color-danger);"><i class="fa-solid fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
+    let LikeButton = `<span onclick="likePost('${data._id}')" ><i class="fa-regular fa-heart fa-xl"><small class="notification-count">0</small></i></span>`
+
+    if("likes" in data) {
+            LikeButton = `<span onclick="likePost('${data._id}')" ><i class="fa-regular fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
+        if(data.likes.some(userLiked => userLiked["userId"] === logged_user_id)) {
+            LikeButton = `<span onclick="likePost('${data._id}')" style="color: var(--color-danger);"><i class="fa-solid fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
+        }
     }
+
 
     let html = `
         <div class="feed" data-id="${data._id}">
