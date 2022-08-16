@@ -8,7 +8,7 @@ const { sessionMiddleware, wrap } = require('./server/express-session');
 const User = require('./classes/user');
 const Major = require("./classes/major");
 const Room = require("./classes/room");
-const PORT = 4200;
+const PORT = 80;
 
 // MongoDb Setup
 const mongoose = require('mongoose');

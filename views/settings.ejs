@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <%- include("./addons/header-includes.ejs") %>
-    <link rel="stylesheet" href="http://localhost:4200/styles/global.css">
-    <link rel="stylesheet" href="http://localhost:4200/styles/index.css">
-    <!-- <link rel="stylesheet" href="http://localhost:4200/styles/profile.css"> -->
-    <link rel="stylesheet" href="http://localhost:4200/styles/settings.css">
+    <link rel="stylesheet" href="http://valuta-hub.me/styles/global.css">
+    <link rel="stylesheet" href="http://valuta-hub.me/styles/index.css">
+    <!-- <link rel="stylesheet" href="http://valuta-hub.me/styles/profile.css"> -->
+    <link rel="stylesheet" href="http://valuta-hub.me/styles/settings.css">
 
     <title>Valuta</title>
 </head>
@@ -36,7 +36,7 @@
 
 
                             <% } else { %>
-                                <img id="bg-changed" src="http://localhost:4200/uploads/<%- user.bg_image %>" alt="Profile Background Image">
+                                <img id="bg-changed" src="http://valuta-hub.me/uploads/<%- user.bg_image %>" alt="Profile Background Image">
 
                             <% } %>
                         </div>
@@ -64,7 +64,7 @@
                                                     <img id="avatar-change" src="<%- user.avatar %>">
 
                                                 <% } else { %>
-                                                    <img id="avatar-change" src="http://localhost:4200/uploads/<%- user.avatar %>">
+                                                    <img id="avatar-change" src="http://valuta-hub.me/uploads/<%- user.avatar %>">
                                                 <% } %>
                                             
                                         </div>
@@ -133,13 +133,13 @@
             e.preventDefault();
             let formData = new FormData(updateSettings);
             console.log(formData)
-            fetch("http://localhost:4200/api/v1/settings", {
+            fetch("http://valuta-hub.me/api/v1/settings", {
                 method: "PUT",
                 body: formData
             }).then(res => res.json())
             .then(res => {
                 if(res.status === "success") {
-                    fetch("http://localhost:4200/api/v1/refresh", {
+                    fetch("http://valuta-hub.me/api/v1/refresh", {
                     method: "GET"
                     }).then(res => {
                         window.location.reload();
