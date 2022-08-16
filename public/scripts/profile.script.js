@@ -2,7 +2,7 @@
 
 // // Get Private Posts
 function getProfilePosts(username) {
-    fetch(`http://valuta-hub.me/api/v1/posts/${username}`)
+    fetch(`https://valuta-hub.me/api/v1/posts/${username}`)
     .then(posts => posts.json())
     .then(posts => {
         
@@ -22,7 +22,7 @@ function getProfilePosts(username) {
 
 // Add friend 
 function friend_Request(username) {
-    fetch(`http://valuta-hub.me/api/v1/friends/add`,{
+    fetch(`https://valuta-hub.me/api/v1/friends/add`,{
         method: "POST",
         body: JSON.stringify({"recipient" : username}),
         headers: {
@@ -46,7 +46,7 @@ function friend_Request(username) {
 }
 
 function removeFriend(username) {
-    fetch(`http://valuta-hub.me/api/v1/friends/remove/${username}`,{
+    fetch(`https://valuta-hub.me/api/v1/friends/remove/${username}`,{
         method: "DELETE",
     }).then(res => res.json())
     .then(res => {
@@ -67,7 +67,7 @@ function toggleMessageContainer() {
 async function sendMessage(userId) {
     let message = document.querySelector(".message-input > textarea").value
 
-    fetch(`http://valuta-hub.me/api/v1/messages/send`, {
+    fetch(`https://valuta-hub.me/api/v1/messages/send`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -80,7 +80,7 @@ async function sendMessage(userId) {
         console.log(res.stauts)
         if(res.stauts === "sucess") {
             console.log("ASd")
-            window.location.href = "http://valuta-hub.me/messages"
+            window.location.href = "https://valuta-hub.me/messages"
         }
     })
 }

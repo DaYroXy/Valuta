@@ -5,9 +5,9 @@ let logoutButton = document.getElementById("logout");
 logoutButton.addEventListener("click", async (e) => {
     e.preventDefault();
 
-    await fetch("http://valuta-hub.me/api/v1/entry/logout", {
+    await fetch("https://valuta-hub.me/api/v1/entry/logout", {
         method: "PUT",
     })
 
-    window.location.href = "http://valuta-hub.me/entry";
+    window.location.href = "https://valuta-hub.me/entry";
 })

@@ -9,7 +9,7 @@ function addPost(data) {
     if(user_avatar.includes("http") || user_avatar.includes("https")){
         user_avatar = data.user.avatar
     }   else{
-        user_avatar = `http://valuta-hub.me/uploads/${data.user.avatar}`
+        user_avatar = `https://valuta-hub.me/uploads/${data.user.avatar}`
     }
 
     let createdAt = timeSince(new Date(data.createdAt));
@@ -50,7 +50,7 @@ function addPost(data) {
                         <div class="info">
                             <div class="info-name-container">
                                 <h3>${data.user.name}</h3>
-                                <small><a href="http://valuta-hub.me/profile/${data.user.username}">@${data.user.username}</a></small>
+                                <small><a href="https://valuta-hub.me/profile/${data.user.username}">@${data.user.username}</a></small>
                             </div>
                             <small> <span createdAt="${data.createdAt}">${createdAt}</span>, <span class="${data.rank.name}">${data.rank.name}</span></small>
                         </div>
@@ -82,14 +82,14 @@ function addPost(data) {
 
 // Get Global Posts
 async function getGlobalPosts() {
-    let posts = await (await fetch("http://valuta-hub.me/api/v1/posts")).json();
+    let posts = await (await fetch("https://valuta-hub.me/api/v1/posts")).json();
     return posts;
 }
 
 // Get Global Posts
 
 async function getTrendPosts(trendName) {
-    let posts = await (await fetch(`http://valuta-hub.me/api/v1/posts/trends/${trendName}`)).json();
+    let posts = await (await fetch(`https://valuta-hub.me/api/v1/posts/trends/${trendName}`)).json();
     return posts;
 }
 
@@ -100,7 +100,7 @@ function toggleMenuList(event) {
 }
 
 function deletePost(postId) {
-    fetch(`http://valuta-hub.me/api/v1/posts/delete/${postId}`, {
+    fetch(`https://valuta-hub.me/api/v1/posts/delete/${postId}`, {
         method: "DELETE",
     }).then(res => res.json())
     .then(res => {
@@ -207,11 +207,11 @@ socket.on("friend_request", (data_status) => {
  
     }
 
-    fetch("http://valuta-hub.me/api/v1/refresh")
+    fetch("https://valuta-hub.me/api/v1/refresh")
 })
 
 function likePost(postId) {
-    fetch(`http://valuta-hub.me/api/v1/posts/like/${postId}`, {
+    fetch(`https://valuta-hub.me/api/v1/posts/like/${postId}`, {
         method: "POST",  
     }).then(res => res.json())
     .then(res => {
