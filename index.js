@@ -78,6 +78,7 @@ app.get('/messages', (req, res) => {
     res.render('messages', { user })
 })
 
+
 // Rooms Page
 app.get('/rooms', async (req, res) => {
     const user = req.session.user
@@ -94,6 +95,21 @@ app.get('/rooms', async (req, res) => {
     let rooms = await room.getRelated(majors);
 
     res.render('rooms', { user, rooms })
+})
+
+// settings Page
+app.get('/settings', (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry')
+        return;
+    }
+    
+    let visitedUser = user;
+    const page = "settings"
+
+    res.render('settings', { user, visitedUser, page })
 })
 
 // Profie Page

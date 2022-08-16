@@ -265,7 +265,18 @@ class user extends Many.Mixin(Friend,Message) {
             })
         }
         return (await User.findById(this.user._id, {_id:0, sockets_id: 1})).sockets_id;
+    }
 
+    async updateUser(name, username, avatar, bg_image, bio) {
+        if(!this.user) {
+            return({
+                status: "error",
+                message: "User not found"
+            })
+        }
+        await User.updateOne({_id: this.user._id}, {$set: {name: name, username: username, avatar: avatar, bg_image: bg_image, bio: bio}});
+        this.user = await this.userExists(username);
+        return true;
     }
 
 }

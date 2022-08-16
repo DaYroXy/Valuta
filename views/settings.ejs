@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./addons/header-includes.ejs") %>
+    <link rel="stylesheet" href="http://localhost:4200/styles/global.css">
+    <link rel="stylesheet" href="http://localhost:4200/styles/index.css">
+    <!-- <link rel="stylesheet" href="http://localhost:4200/styles/profile.css"> -->
+    <link rel="stylesheet" href="http://localhost:4200/styles/settings.css">
+
+    <title>Valuta</title>
+</head>
+<body>
+
+    <!-- Navbar Components -->
+    <%- include("./components/navbar.ejs") %>
+    
+
+    <main>
+
+        <div class="container">
+
+            <%- include("./components/main-left.ejs") %>
+
+            <!-- Middle -->
+            <div class="middle">
+
+                <form id="update-settings-form">
+                    <input hidden type="file" name="bg-image" id="background-image-change">
+                    <input hidden type="file" name="avatar-image-input" id="avatar-image-change">
+
+                    <div class="profile-information">
+                        
+                        <div class="profile-background-image">
+                            <% if(user.bg_image.includes("http") || user.bg_image.includes("https")) { %>
+                                <img id="bg-changed" src="<%- user.bg_image %>" alt="Profile Background Image">
+
+
+                            <% } else { %>
+                                <img id="bg-changed" src="http://localhost:4200/uploads/<%- user.bg_image %>" alt="Profile Background Image">
+
+                            <% } %>
+                        </div>
+                        
+                        <div class="image-display-label">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            <label id="back-ground-image-label" for="background-image-change"></label>
+                        </div>
+                        
+                        <div class="profile-content">
+                            <div class="profile-body">
+                                <div class="profile-left">
+                                    <div class="pfp-container">
+                                        <div class="profile-picture">
+
+                                            <div class="image-display-label-avatar">
+                                                <div class="image-dis-container">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                    <label id="back-ground-image-label" for="avatar-image-change"></label>
+    
+                                                </div>
+    
+                                            </div>
+                                                <% if(user.avatar.includes("http") || user.avatar.includes("https")) { %>
+                                                    <img id="avatar-change" src="<%- user.avatar %>">
+
+                                                <% } else { %>
+                                                    <img id="avatar-change" src="http://localhost:4200/uploads/<%- user.avatar %>">
+                                                <% } %>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="profile-info-left">
+                                        <div class="change-user-data">
+                                            <p>name: </p>
+                                            <input type="text" id="name-change" name="name-change" value="<%- user.name %>">
+                                        </div>
+                                        <div class="change-user-data">
+                                            <p>username:</p>
+
+                                            <div class="ud-username">
+                                                <small>@</small>
+                                                <input type="text" id="username-change" name="username-change" value="<%- user.username %>">
+                                            </div>
+                                        </div>
+                                        <div class="change-user-data">
+                                            <p>BIO:</p>
+                                            <textarea name="bio-change" id="bio-change" cols="30" name="bio-change" rows="10"><%- user.bio %></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-button-div">
+                                    <input type="submit" name="submit" id="update-settings" value="Update Settings">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <%- include("./components/main-right.ejs") %>
+
+        </div>
+        <script>
+           // For Background
+        const bgPreview = document.getElementById('background-image-change')
+        // .image-preview-class
+        bgPreview.onchange = evt => {
+            const [file] = bgPreview.files
+
+            if (file) {
+                const prvw = document.getElementById('bg-changed')
+                prvw.src = URL.createObjectURL(file)
+            }
+        }
+
+        // for avatar
+
+        const bgPreviewAvatar = document.getElementById('avatar-image-change')
+        // .image-preview-class
+        bgPreviewAvatar.onchange = evt => {
+            const [file] = bgPreviewAvatar.files
+
+            if (file) {
+                const prvw = document.getElementById('avatar-change')
+                prvw.src = URL.createObjectURL(file)
+            }
+        }
+        
+        let updateSettings = document.getElementById("update-settings-form")
+        updateSettings.addEventListener("submit", (e) => {
+            e.preventDefault();
+            let formData = new FormData(updateSettings);
+            console.log(formData)
+            fetch("http://localhost:4200/api/v1/settings", {
+                method: "PUT",
+                body: formData
+            }).then(res => res.json())
+            .then(res => {
+                if(res.status === "success") {
+                    fetch("http://localhost:4200/api/v1/refresh", {
+                    method: "GET"
+                    }).then(res => {
+                        window.location.reload();
+                    })
+                }
+            })
+
+        })
+        </script>
+    </main>
+</body>
+</html>

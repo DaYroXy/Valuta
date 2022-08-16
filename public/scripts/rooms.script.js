@@ -68,7 +68,7 @@ function displayMessage(message) {
         </div>
         `
     } else {
-        let img = `<img src="./images/${message.user.avatar} alt="profile picutre"></img>`
+        let img = `<img src="./uploads/${message.user.avatar} alt="profile picutre"></img>`
         // ${message.user.name}
 
         if(message.user.avatar.includes("http") || message.user.avatar.includes("https") ) {

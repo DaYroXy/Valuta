@@ -9,7 +9,7 @@ function addPost(data) {
     if(user_avatar.includes("http") || user_avatar.includes("https")){
         user_avatar = data.user.avatar
     }   else{
-        user_avatar = `http://localhost:4200/images/${data.user.avatar}`
+        user_avatar = `http://localhost:4200/uploads/${data.user.avatar}`
     }
 
     let createdAt = timeSince(new Date(data.createdAt));

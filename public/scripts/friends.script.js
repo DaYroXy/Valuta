@@ -15,7 +15,7 @@ async function getFriends() {
             if(friend.avatar.includes("http") || friend.avatar.includes("https")) {
                 avatar = `<img src="${friend.avatar}" alt="user profile picture">`
             }else {
-                avatar = `<img src="http://localhost:4200/images/${friend.avatar}" alt="user profile picture">`
+                avatar = `<img src="http://localhost:4200/uploads/${friend.avatar}" alt="user profile picture">`
             }
 
             let onlineStatus = `<p class="text-muted offline">Offline</p>`

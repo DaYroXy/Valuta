@@ -137,7 +137,7 @@ function getMessagesList() {
         }
         let html = res.map(user => {
             console.log(user)
-            let image = `<img src="./images/${user.avatar}" alt="profile picutre">`
+            let image = `<img src="./uploads/${user.avatar}" alt="profile picutre">`
             if(user.avatar.includes("http") || user.avatar.includes("https")) {
                 image = `<img src="${user.avatar}" alt="profile picutre">`
             }
