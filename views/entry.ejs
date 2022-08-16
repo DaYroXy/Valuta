@@ -60,9 +60,11 @@
                 <select name="majors" id="majors">
                   <% 
                     MajorsList.forEach(function(major) {
+
+                      if(major.year != 0){
                       %>
                         <option value="<%- major._id %>"><%- major.name %> - Year <%- major.year %></option>
-                      <%
+                      <% }
                     })
                   %>
                 </select>

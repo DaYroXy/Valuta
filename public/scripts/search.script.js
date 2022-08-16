@@ -156,3 +156,42 @@ if(friends_list_element){
 
 }
 
+
+
+// room search 
+let room_list_element = document.getElementById("rooms-search")
+if(room_list_element){
+
+
+    room_list_element.addEventListener("keyup", (e) => {
+        let rooms_list_container = document.querySelectorAll("#room-menu-select");
+
+        let Found = []
+        rooms_list_container.forEach(room => {
+            const friendName = room.querySelector("h5").textContent
+            if(friendName.toLowerCase().startsWith(e.target.value.toLowerCase())) {
+                Found.push(room)
+                room.style.display = ""
+            } else {
+                room.style.display = "none"
+            }
+        })
+
+        let NoResults = document.querySelector(".no-results-found")
+        if(Found.length === 0 && !NoResults) {
+            let NoResults = `
+                <div class="no-results-found">
+                    <h5>No results found.</h5>
+                </div>
+            `
+
+            document.querySelector(".messages-container").insertAdjacentHTML("beforeend", NoResults)
+        }
+
+        if(Found.length > 0 && NoResults) {
+            NoResults.remove();
+        }
+
+    })
+
+}
