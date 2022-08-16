@@ -19,6 +19,8 @@ function addPost(data) {
     let connectedUserInfo = document.querySelector(".profile-details > .handle");
     let logged_user_username = connectedUserInfo.textContent.toLocaleLowerCase()
 
+    let logged_user_id = document.getElementById("user-id-data").getAttribute("user-data")
+
     let editMenu = ""
     if(logged_user_username == data.user.name.toLocaleLowerCase()) {
         editMenu = `
@@ -28,6 +30,11 @@ function addPost(data) {
             </ul>
         </div>
         `
+    }
+
+    let LikeButton = `<span onclick="likePost('${data._id}')" ><i class="fa-regular fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
+    if(data.likes.some(userLiked => userLiked["userId"] === logged_user_id)) {
+        LikeButton = `<span onclick="likePost('${data._id}')" style="color: var(--color-danger);"><i class="fa-solid fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
     }
 
     let html = `
@@ -62,7 +69,7 @@ function addPost(data) {
                 </div>
                 
                 <div class="action-button">
-                    <span><i class="fa-regular fa-heart fa-xl"></i></span>
+                    ${LikeButton}
                     <span><i class="fa-regular fa-comment fa-xl"></i></span>
                     <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
                 </div>
@@ -201,4 +208,43 @@ socket.on("friend_request", (data_status) => {
     }
 
     fetch("http://localhost:4200/api/v1/refresh")
+})
+
+function likePost(postId) {
+    fetch(`http://localhost:4200/api/v1/posts/like/${postId}`, {
+        method: "POST",  
+    }).then(res => res.json())
+    .then(res => {
+        console.log(res)
+    })
+}
+
+socket.on("postLiked", (post) => {
+    let postElement = document.querySelector(`[data-id="${post.id}"]`);0
+    if(!postElement) {
+        return;
+    }
+
+    let likeCounter = postElement.querySelector(".notification-count");
+    let logged_user_id = document.getElementById("user-id-data").getAttribute("user-data")
+    let likeButton = postElement.querySelector(".fa-heart");
+
+
+    if(post.status.includes("removed")) {
+        likeCounter.textContent = parseInt(likeCounter.textContent) - 1;
+        if(post.userId === logged_user_id) {
+            likeButton.classList.remove("fa-solid")
+            likeButton.classList.add("fa-regular")
+            likeButton.parentElement.style.color = "var(--color-dark)";
+        }
+    } else {
+       likeCounter.textContent = parseInt(likeCounter.textContent) + 1;
+       if(post.userId === logged_user_id) {
+        likeButton.classList.remove("fa-regular")
+        likeButton.classList.add("fa-solid")
+        likeButton.parentElement.style.color = "var(--color-danger)";
+    }
+
+    }
+    // let likeButton = postElement.querySelector(".like-button");
 })

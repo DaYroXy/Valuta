@@ -239,4 +239,43 @@ router.get("/trends/:trend", async(req, res) => {
 })
 
 
+// Like Post
+
+router.post("/like/:postId", async (req, res) => {
+    const io = req.app.get('io');
+    const user = req.session.user;
+    if(!user) {
+        res.json({
+            status: "error",
+            message: "You are not logged in"
+        })
+        return;
+    }
+
+    const { postId } = req.params;
+    if(!postId || !ObjectId.isValid(postId)) {
+        res.json({
+            status: "error",
+            message: "Post id not found"
+        })
+        return;
+    }
+
+    let post = new Post();
+    await post.setUserById(user.id);
+
+    let result = await post.like(postId);
+    const postToEmit = {
+        id: postId,
+        userId: user.id,
+        status: ("message" in result) ? result.message : "post-liked"
+    }
+    io.emit("postLiked", postToEmit)
+    res.json({
+        status: "success",
+        message: "post liked sucessfully"
+    })
+})
+
+
 module.exports=router;

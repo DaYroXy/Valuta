@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const postModel = require('../models/Post.model');
 const userModel = require('../models/User.model');
 const User = require('../classes/user.js');
+const Like = require("../models/Like.model")
 
 
 class Post {
@@ -121,6 +122,13 @@ class Post {
             },
             {
             "$unwind": "$rank"      
+            }, {
+                $lookup: {
+                    from: "likes",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "likes"
+                }
             },
             {
             "$project": 
@@ -134,6 +142,7 @@ class Post {
                     "user.avatar": 1,
                     "user.username": 1,
                     "rank.name" : 1, 
+                    "likes.userId": 1,
                 }
             }
             
@@ -205,6 +214,39 @@ class Post {
         }
 
         return posts;
+    }
+
+    async like(postId) {
+        if(!this.user) {
+            return {
+                status: "error",
+                message: "User not found"
+            }
+        }
+
+        // validate postid
+        if(!mongoose.Types.ObjectId.isValid(postId)) {
+            return {
+                status: "error",
+                message: "Post id is not valid"
+            }
+        }
+
+        // if user liked already
+        let likedAlready = await Like.findOne({userId:this.user._id, postId:postId});
+        if(likedAlready) {
+            await Like.deleteOne(likedAlready._id)
+            return {
+                status: "success",
+                message: "Like removed"
+            };
+        }
+
+        let like = await Like.create({
+            userId: this.user._id,
+            postId: postId,
+        });
+        return like;
     }
 
 }

@@ -350,3 +350,23 @@ img {
     justify-content: space-between;
     gap: 1rem;
 }
+
+
+.action-button .notification-count {
+   position: absolute;
+   bottom: 0;
+   font-size: .75rem;
+   right: -5px;
+}
+
+.action-button span {
+    position: relative;
+   direction: rtl;
+
+}
+
+.action-button span small {
+   font-size: .75rem;
+   font-weight: 100;
+    color: var(--color-dark);
+}
