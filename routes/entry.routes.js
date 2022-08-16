@@ -7,7 +7,7 @@ const userClass = require("../classes/user");
 router.post("/login", async (req, res) => {
 
     const data = {
-        username: req.body.username.toString(),
+        username: req.body.username.toString().toLowerCase(),
         password: req.body.password.toString()
     }
 

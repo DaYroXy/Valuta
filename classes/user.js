@@ -115,7 +115,7 @@ class user extends Many.Mixin(Friend,Message) {
         }
         
         const hashedPassword = await bcrypt.hash(password, 10)
-
+        username = username.toLowerCase();
         var backgroundImage;
         try  {
             const Url = await fetch("https://picsum.photos/800")   
@@ -274,6 +274,7 @@ class user extends Many.Mixin(Friend,Message) {
                 message: "User not found"
             })
         }
+        username = username.toLowerCase();
         await User.updateOne({_id: this.user._id}, {$set: {name: name, username: username, avatar: avatar, bg_image: bg_image, bio: bio}});
         this.user = await this.userExists(username);
         return true;

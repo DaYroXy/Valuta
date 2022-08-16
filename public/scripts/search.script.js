@@ -34,7 +34,7 @@ const getSearchResults = throttleSearch(async text => {
                 if(result.avatar.includes("http") || result.avatar.includes("https")) {
                     avatar = `<img src="${result.avatar}" alt="user profile picture">`;
                 } else {
-                    avatar = `<img src="http://localhost:4200/api/v1/avatar/${result.avatar}" alt="user profile picture">`;
+                    avatar = `<img src="http://localhost:4200/uploads/${result.avatar}" alt="user profile picture">`;
                 }
                 html = `
                 <a href="http://localhost:4200/profile/${result.username}">
