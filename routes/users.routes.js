@@ -101,7 +101,7 @@ router.put("/settings", async (req, res) => {
             bgImage = files["bg-image"];
             if(bgImage.mimetype.includes("image")) {
                 let filterdImage = bgImage.name.split(".");
-                let md5Name = `${avatar.md5}.${filterdImage[filterdImage.length - 1]}`;
+                let md5Name = `${bgImage.md5}.${filterdImage[filterdImage.length - 1]}`;
                 userData.bg_image = md5Name;
                 req.files["bg-image"].mv(`public/uploads/${md5Name}`, async (err) => {
                     if(err) {
