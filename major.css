@@ -1,0 +1,73 @@
+
+
+main .major-list {
+    background: var(--color-white);
+    width: 100%;
+    border-radius: var(--card-border-radius);
+    text-align: center;
+    padding: var(--card-padding);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+main .major-list:hover {
+    box-shadow: none;
+}
+
+main .major-list {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1rem;
+    padding: 2rem 0;
+}
+main .major-list .middle-line{
+    height: 7rem;
+    width: 1px;
+    background-color: var(--color-gray);
+    
+}
+
+
+main .major-list input[type="text"],  main .major-list input[type="number"] {
+    background: var(--color-light);
+    padding: 0.8rem 1rem;
+    border-radius: .7rem;
+    margin-bottom: 1rem;
+}
+
+main .major-list .left-side .bottom-buttons {
+    display: flex;
+    gap: 2rem;
+}
+
+main .major-list .left-side .bottom-buttons .update input {
+    background-color: var(--color-online);
+    color: var(--color-white);
+}
+
+main .major-list .left-side input {
+    width: 100%;
+}
+
+main .major-list .left-side .bottom-buttons .delete input {
+    background-color: var(--color-danger);
+    color: var(--color-white);
+}
+
+
+main .major-list input[type="submit"] {
+    background: var(--color-primary);
+    color: var(--color-light);
+    border-radius: .7rem;
+    padding: 0.6rem 1.8rem;
+}
+
+main .major-list select {
+    width: 100%;
+    background: var(--color-light);
+    padding: 0.8rem 1rem;
+    border-radius: .7rem;
+    margin-bottom: 1rem;
+}
