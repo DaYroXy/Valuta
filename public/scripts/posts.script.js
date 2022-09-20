@@ -75,7 +75,7 @@ function addPost(data) {
                 
                 <div class="action-button">
                     ${LikeButton}
-                    <span><i class="fa-regular fa-comment fa-xl"></i></span>
+                    <span onclick="window.location.href = 'http://localhost:4200/post/${data._id}' "><i class="fa-regular fa-comment fa-xl"></i></span>
                     <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
                 </div>
 
@@ -185,6 +185,17 @@ socket.on("postDeleted", (post) => {
 })
 
 
+try {
+    let timeList = document.querySelectorAll("[createdAt]")
+
+    timeList.forEach(time => {
+        let since = timeSince(new Date(time.getAttribute("createdAt")))
+        time.textContent = since;
+    })
+
+} catch (err) {
+    
+}
 setInterval(() => {
     try {
         let timeList = document.querySelectorAll("[createdAt]")

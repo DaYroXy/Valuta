@@ -8,6 +8,7 @@ const { sessionMiddleware, wrap } = require('./server/express-session');
 const User = require('./classes/user');
 const Major = require("./classes/major");
 const Room = require("./classes/room");
+const Post = require("./classes/post");
 const PORT = 4200;
 
 // MongoDb Setup
@@ -126,6 +127,55 @@ app.get('/profile', (req, res) => {
 
     res.render('profile', { user, visitedUser, page })
 })
+
+// Profie Page
+app.get('/post/:id', async (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry')
+        return;
+    }
+
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        res.redirect("/")
+    }
+    
+    
+    let post = new Post();
+    await post.getPostById(req.params.id);
+    let postData = await post.getPostById(req.params.id)
+
+    let postUser = new User();
+    let userData = await postUser.getUserById(postData.userId);
+    if(!userData) {
+        res.redirect("/")
+    }
+    const Rank = require('./models/Rank.model');
+    let rank = await Rank.findOne({ userId: user.id });
+
+    const PostInformation = {
+        id: postData._id,
+        content: postData.content,
+        image: postData.image,
+        createdAt: postData.createdAt,
+        user: {
+            id: userData._id,
+            name: userData.name,
+            username: userData.username,
+            avatar: userData.avatar,
+            bg_image: userData.bg_image,
+            rank: rank.name
+        }
+    }
+    console.log(PostInformation)
+
+    let visitedUser = user;
+    const page = "home"
+
+    res.render('post', { user, PostInformation, page })
+})
+
 
 // get user profile
 app.get("/profile/:username", async (req, res) => {

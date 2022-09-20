@@ -1,0 +1,115 @@
+
+<html lang="en">
+    <head>
+        <%- include("./addons/header-includes.ejs") %>
+        <script src="http://localhost:4200/scripts/posts.script.js" defer></script>
+        <script src="http://localhost:4200/scripts/profile.script.js"></script>
+        <script src="http://localhost:4200/scripts/post-page.js" defer></script>
+        <link rel="stylesheet" href="http://localhost:4200/styles/global.css">
+        <link rel="stylesheet" href="http://localhost:4200/styles/index.css">
+        <link rel="stylesheet" href="http://localhost:4200/styles/profile.css">
+        <link rel="stylesheet" href="http://localhost:4200/styles/post.css">
+    
+        <title>Valuta</title>
+    </head>
+    <body>
+    
+        <!-- Navbar Components -->
+        <%- include("./components/navbar.ejs") %>
+        
+    
+        <main>
+    
+            <div class="container">
+    
+                <%- include("./components/main-left.ejs") %>
+    
+                <!-- Middle -->
+                <div class="middle">
+    
+    
+                    <div class="profile-information" style="background-color: var(--color-gray); margin-bottom: 1rem;" >
+
+                        
+                        <div class="profile-content">
+                            <div class="profile-body">
+                             <!-- started -->
+                             <div class="feed" data-id="<%- PostInformation.id  %>">
+                                <div class="feed-top">
+                                    <div class="user">
+                                        <div class="pfp-container">
+                                            <div class="profile-picture">
+                                                <%
+                                                if(PostInformation.user.avatar.includes("http") || PostInformation.user.avatar.includes("https")){
+                                                    %>
+                                                        <img src="<%- PostInformation.user.avatar %>" alt="Profile Background Image">
+                                                    <%
+                                                }else{
+                                                        %>
+                                                            <img src="http://localhost:4200/uploads/<%- PostInformation.user.avatar %>" alt="Profile Background Image">
+                                                        
+                                                        <%
+                                                    }
+                                                %>
+                                            </div>
+                                        </div>
+                
+                                        <div class="info">
+                                            <div class="info-name-container">
+                                                <h3><%- PostInformation.user.name %></h3>
+                                                <small><a href="http://localhost:4200/profile/<%- PostInformation.user.username %>">@<%- PostInformation.user.username %></a></small>
+                                            </div>
+                                            <small> <span createdat="<%- PostInformation.createdAt %>"><%- PostInformation.createdAt %></span>, <span class="student"><%- PostInformation.user.rank %></span></small>
+                                        </div>
+                                    </div>
+                                    <span class="edit">
+                                        <i onclick="toggleMenuList(this)" class="fa-solid fa-ellipsis fa-lg"></i>
+                                        
+                                    <div class="edit-menu show">
+                                        <ul>
+                                            <li><button onclick="deletePost('62fbae5456a6ab20eba3511b')">Delete</button></li>
+                                        </ul>
+                                    </div>
+                        
+                                    </span>
+                                </div>
+                
+                                <div class="feed-content">
+                                    <small><%- PostInformation.content %></small>
+                                    <% if(PostInformation.image !== "") { %>
+                                    <div class="feed-photo" style="margin-bottom: 2rem;">
+                                      
+                                                    <img src="http://localhost:4200/uploads/<%- PostInformation.image %>" alt="Post Image">
+                                                
+                                    </div>
+                                    <% } %>
+                                </div>
+                                
+                                <div class="action-button" <% if(PostInformation.image === "") { %> style="margin-top: 1rem;" <%} %> >
+                                    <span onclick="likePost('62fbae5456a6ab20eba3511b')" style="color: var(--color-danger);"><i class="fa-solid fa-heart fa-xl"><small class="notification-count">1</small></i></span>
+                                    <span><i class="fa-regular fa-comment fa-xl"></i></span>
+                                    <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
+                                </div>
+                
+                            </div>
+                             <!-- ended -->
+                            </div>
+                        </div>
+                    </div>
+    
+                    
+                    <!-- FEED -->
+                    <div class="feeds"></div>
+    
+                </div>
+    
+                <%- include("./components/main-right.ejs") %>
+    
+            </div>
+        </main>
+    </body>
+    <script>
+
+    </script>
+    </html>
+    

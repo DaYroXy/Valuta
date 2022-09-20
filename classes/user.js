@@ -225,6 +225,14 @@ class user extends Many.Mixin(Friend,Message) {
               {
                 "$unwind": "$rank"      
               },
+            {
+                $lookup: {
+                    from: "likes",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "likes"
+                }
+            },
               {"$project": {
                 "_id":1,
                 "content":1,
@@ -235,9 +243,10 @@ class user extends Many.Mixin(Friend,Message) {
                 "user.avatar": 1,
                 "user.username": 1,
                 "rank.name" : 1, 
+                "likes.userId": 1,
             }}
             
-          ]).sort({"createdAt":1}).limit(10);
+          ]).sort({"createdAt":-1}).limit(10);
         return posts;
     }
 
