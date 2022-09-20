@@ -81,6 +81,15 @@ class Major {
         return majors;
     }
 
+    async checkIfMajorExists() {
+        let results = await majorModel.find();
+        if(results.length == 0) {
+            await this.create("Software Engineer", 4, []);
+        }
+
+        return true;
+    }
+
 }
 
 module.exports = Major;

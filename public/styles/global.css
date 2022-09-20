@@ -353,10 +353,13 @@ img {
 
 
 .action-button .notification-count {
-   position: absolute;
+   /* position: absolute;
    bottom: 0;
    font-size: .75rem;
-   right: -5px;
+   right: -5px; */
+    margin-left: .1rem;
+    font-size: .65rem;
+    font-weight: 400;
 }
 
 .action-button span {

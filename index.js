@@ -31,6 +31,9 @@ app.use(sessionMiddleware);
 // Reset all users status on startup
 new User().resetAllUserStatus();
 
+// Check if at least 1 major exists if not create 1
+new Major().checkIfMajorExists();
+
 // Setup view engine as .ejs files
 app.set('view engine', 'ejs')
 
