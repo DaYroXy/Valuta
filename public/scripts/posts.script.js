@@ -119,7 +119,7 @@ function deletePost(postId) {
     if(noPosts !== null) {
         noPosts.remove();
     }
-
+    console.log(post)
     addPost(post);
 
 

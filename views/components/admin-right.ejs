@@ -1,0 +1,179 @@
+</main>
+
+<!-- Right Section -->
+
+<div class="right-section">
+    <div class="top">
+        <div class="profile">
+            <div class="info">
+                <p><b><%- user.name %></b></p>
+                <small class="text-muted"><%- user.rank %></small>
+            </div>
+            <div class="profile-picture">
+                <img src="user.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="recent-activities">
+        <h2>Recent Activities</h2>
+        <div class="activities">
+            
+            <!-- Editable Activity -->
+            <div class="activity">
+                <div class="profile-picture">
+                    <img src="user.png" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Bashar Shaabi</b> Just submitted a new post.</p>
+                    <small class="text-muted">2 Minutes Ago</small>
+                </div>
+            </div>
+
+            <!-- Editable Activity -->
+            <div class="activity">
+                <div class="profile-picture">
+                    <img src="user.png" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Bashar Shaabi</b> Just submitted a new post.</p>
+                    <small class="text-muted">2 Minutes Ago</small>
+                </div>
+            </div>
+
+            <!-- Editable Activity -->
+            <div class="activity">
+                <div class="profile-picture">
+                    <img src="user.png" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Bashar Shaabi</b> Just submitted a new post.</p>
+                    <small class="text-muted">2 Minutes Ago</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Chat -->
+        <div class="admin-chat">
+            <h2>Admin Chat</h2>
+            <div class="admin-chat-content">
+                <div class="top">
+                    <h3>Chat</h3>
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+
+                <div class="middle">
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom">
+                    <div class="send-message">
+                        <input type="text" placeholder="Type your message here...">
+                        <i class="fa-solid fa-share"></i>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    let selectedMajor = document.getElementById('selected-major')
+
+    selectedMajor.addEventListener('change', function () {
+        console.log(selectedMajor.value)
+    })
+
+    const Data = [
+        {
+            label: 'Software Developer',
+            data: [0, 20, 20, 60, 60, 120, NaN],
+            fill: false,
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4,
+            borderColor: "#ff6384"
+        },
+        {
+            label: 'Biotechnoalligy',
+            data: [0, 4, 12, 40, 80, 104],
+            fill: false,
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4,
+            borderColor: "#6B4CE6"
+        },
+    ]
+    // const datapoints = [0, 20, 20, 60, 60, 120, NaN, 180, 120, 125, 105, 110, 170];
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'July', 'May', 'November', 'October'],
+            datasets: Data
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Most Popular Majors'
+                },
+            },
+            interaction: {
+                intersect: false,
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    },
+                    suggestedMin: -10,
+                    suggestedMax: 200
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -37,7 +37,7 @@ class user extends Many.Mixin(Friend,Message) {
     }
 
     async getUserRank() {
-        return await rankModel.findOne({id: this.user.rank});
+        return await rankModel.findById(this.user.rank);
     }
 
     async getUserByUsername(username) {
@@ -137,7 +137,7 @@ class user extends Many.Mixin(Friend,Message) {
             userImage = "anas.jpeg"
         }
 
-        let rank = await rankModel.findOne({access: 0});
+        let rank = await rankModel.findOne({name: "student"});
         if(!rank) {
             rank = await rankModel.create({
                 name: "student",

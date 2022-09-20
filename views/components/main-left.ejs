@@ -77,6 +77,12 @@
             <span><i class="fa-solid fa-gear"></i></span> <h3>Settings</h3>
         </a>
 
+        <% if(rank.access > 0) { %>
+            <a href="http://localhost:4200/dashboard" class="menu-item <% if(page=='admin'){ %> active <% } %> noselect">
+                <span><i class="fa-solid fa-user-shield"></i></span> <h3>Admin</h3>
+            </a>
+        <% } %>
+
     </div>
 
     <!-- Create Post -->

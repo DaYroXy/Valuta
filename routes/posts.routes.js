@@ -123,7 +123,9 @@ router.post("/add", async (req, res) => {
         return
     }
 
-    const userRank = await rankModel.findOne({id: user.rank});
+    const userRank = new userClass();
+    await userRank.getUserById(user.id);
+
     const postToEmit = {
         _id: postResult.data._id,
         content: postResult.data.content,
@@ -136,9 +138,11 @@ router.post("/add", async (req, res) => {
             username: user.username,
         },
         rank: {
-            name : userRank.name
+            name : (await userRank.getUserRank()).name
         }
     }
+
+    console.log(user.rank);
 
     // emit post to all users
     io.emit("newPost", postToEmit)

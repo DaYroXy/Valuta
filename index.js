@@ -5,14 +5,17 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const server = require('http').createServer(app)
 const { sessionMiddleware, wrap } = require('./server/express-session');
+const si = require('systeminformation');
 const User = require('./classes/user');
 const Major = require("./classes/major");
 const Room = require("./classes/room");
 const Post = require("./classes/post");
+const serverConf = require("./classes/server");
 const PORT = 4200;
 
 // MongoDb Setup
 const mongoose = require('mongoose');
+const { application } = require('express');
 mongoose.connect('mongodb://localhost:27017/Valuta', { useNewUrlParser: true });
 
 // Socket.io Setup
@@ -28,11 +31,14 @@ app.use(fileUpload({
 }));
 app.use(sessionMiddleware);
 
-// Reset all users status on startup
-new User().resetAllUserStatus();
+// // Reset all users status on startup
+// new User().resetAllUserStatus();
 
-// Check if at least 1 major exists if not create 1
-new Major().checkIfMajorExists();
+// // Check if at least 1 major exists if not create 1
+// new Major().checkIfMajorExists();
+
+new serverConf().setupSever();
+
 
 // Setup view engine as .ejs files
 app.set('view engine', 'ejs')
@@ -67,7 +73,11 @@ app.get('/', async (req, res) => {
     }
     
     const page = "home"
-    res.render('index', { user, page })
+    const me = new User();
+    await me.getUserById(user.id);
+    const rank = await me.getUserRank();
+
+    res.render('index', { user, page, rank })
 })
 
 // Messages Page
@@ -102,7 +112,7 @@ app.get('/rooms', async (req, res) => {
 })
 
 // settings Page
-app.get('/settings', (req, res) => {
+app.get('/settings', async (req, res) => {
     const user = req.session.user
 
     if (!user) {
@@ -112,12 +122,16 @@ app.get('/settings', (req, res) => {
     
     let visitedUser = user;
     const page = "settings"
+    
+    const me = new User();
+    await me.getUserById(user.id);
+    const rank = await me.getUserRank();
 
-    res.render('settings', { user, visitedUser, page })
+    res.render('settings', { user, visitedUser, page, rank })
 })
 
 // Profie Page
-app.get('/profile', (req, res) => {
+app.get('/profile', async (req, res) => {
     const user = req.session.user
 
     if (!user) {
@@ -128,7 +142,12 @@ app.get('/profile', (req, res) => {
     let visitedUser = user;
     const page = "profile"
 
-    res.render('profile', { user, visitedUser, page })
+    const me = new User();
+    await me.getUserById(user.id);
+    const rank = await me.getUserRank();
+
+
+    res.render('profile', { user, visitedUser, page, rank })
 })
 
 // Profie Page
@@ -171,12 +190,15 @@ app.get('/post/:id', async (req, res) => {
             rank: rank.name
         }
     }
-    console.log(PostInformation)
 
     let visitedUser = user;
     const page = "home"
 
-    res.render('post', { user, PostInformation, page })
+    let me = new User();
+    await me.getUserById(user.id);
+    rank = await me.getUserRank();
+
+    res.render('post', { user, PostInformation, page, rank })
 })
 
 
@@ -219,9 +241,76 @@ app.get("/profile/:username", async (req, res) => {
     let isFriend = friendStatus.status;
 
     const page = "visit"
+
+    await me.getUserById(user.id);
+    const rank = await me.getUserRank();
     // Render
-    res.render('profile', { user, visitedUser, page, isFriend })
+    res.render('profile', { user, visitedUser, page, isFriend, rank })
 })
+
+// Admin section
+function convertToGB(bytes) {
+    return Number((bytes / (1024 * 1024 * 1024)).toFixed(0));
+}
+
+// Dashboard Page
+app.get("/dashboard", async (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry');
+        return;
+    }
+
+    if(user.rank !== "admin") {
+        res.redirect("/");
+        return;
+    }
+
+
+    res.render('dashboard', {user})
+})
+
+// Majors Page
+app.get("/majors", async (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry');
+        return;
+    }
+
+    if(user.rank !== "admin") {
+        res.redirect("/");
+        return;
+    }
+
+    res.render('majors', {user})
+})
+
+// Server Page
+app.get("/server", async (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry');
+        return;
+    }
+
+    if(user.rank !== "admin") {
+        res.redirect("/");
+        return;
+    }
+
+    let specs = {
+        Cores: (await si.cpu()).cores,
+        Memory: convertToGB((await si.mem()).total),
+        Storage: convertToGB((await si.diskLayout())[0].size),
+    }
+
+    res.render('server', {user, specs})
+})
+
 
 // APIS
 app.use("/api/v1", require("./routes/api.routes"));

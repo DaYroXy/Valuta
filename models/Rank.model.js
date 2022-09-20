@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Rank = new mongoose.Schema({
     name: String,
-    access: String
+    access: Number,
 });
 
 module.exports = mongoose.model("Rank", Rank);

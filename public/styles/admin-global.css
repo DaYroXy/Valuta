@@ -1,0 +1,652 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --color-white: #FFFFFF;
+    /* --color-light: #e4e1ee; */
+    --color-light: #dcd8e9;
+
+    --color-gray: #9E98B3;
+    --color-primary: #6B4CE6;
+    --color-secondary: #D6CCFF;
+    --color-selected: rgba(132, 139, 200, 0.18);
+    
+    --color-sucess: #51FB51;
+    --color-online: #2bd32b;
+    --color-lowGreen: #22b922;
+    --color-danger: #FB5151;
+    --color-pending: #eb700c;
+
+    --color-dark: #241E38;
+    --color-darker: #363949;
+    --color-info-dark: #677483;
+    --color-black: #151221;
+    --color-recieved: #514e57d3;
+
+    --border-radius: 2rem;
+    --btn-padding: 0.6rem 2rem;
+    --search-padding: 0.6rem 1rem;
+    --card-border-radius: 2rem;
+    --card-padding: 1.8rem;
+    --box-shadow: 0 2rem 3rem var(--color-selected);
+
+    --sticky-top-left: 5.4rem;
+    --sticky-top-right: -18rem;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    border: none;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: "poppins", sans-serif;
+    font-size: 0.88rem;
+    background: var(--color-light);
+    /* user-select: none; */
+    /* overflow-x: none; */
+    color: var(--color-darker);
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+  width: 24px;
+  border-radius: 13px;
+  background-clip: padding-box;
+  border: 10px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb {        
+  box-shadow: inset 0 0 0 10px rgb(202, 202, 202);
+}
+
+a {
+    color: var(--color-dark);
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+h1 {
+    font-weight: 800;
+    font-size: 1.8rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+h3 {
+    font-size: .87rem;
+}
+
+h4 {
+    font-size: .8rem;
+}
+
+h5 {
+    font-size: .77rem;
+}
+
+small {
+    font-size: .75rem;
+}
+
+p {
+    color: var(--color-dark);
+}
+
+b {
+    color: var(--color-dark)
+}
+
+.primary {
+    color: var(--color-primary);
+}
+
+.secondary {
+    color: var(--color-secondary);
+}
+
+.danger {
+    color: var(--color-danger);
+}
+
+.success {
+    color: var(--color-success);
+}
+
+.warning {
+    color: var(--color-pending);
+}
+
+.profile-picture {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.text-muted {
+    color: var(--color-gray);
+}
+
+.container {
+    display: grid;
+    width: 96%;
+    margin: 0 auto;
+    gap: 1.8rem;
+    grid-template-columns: 14rem auto 23rem;
+}
+
+.server-options {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.server-options-body .top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.options-menu {
+    margin-top: 1rem;
+}
+
+.options-menu ul {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem   ;
+}
+
+.options-menu ul li {
+    width: 100%;
+}
+
+.options-menu ul li button {
+    width: 100%;
+    height: 35px;
+    border-radius: .5rem;
+}
+
+.options-menu ul li:first-of-type button {
+    background: none;
+    border: 2px solid var(--color-danger);
+    color: var(--color-danger);
+    font-size: .9rem;
+}
+
+.options-menu ul li:not(:first-of-type) button {
+    background: none;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    font-size: .9rem;
+}
+
+
+
+.options-menu .up-time {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+#myChart {
+    padding: 1rem;
+}
+
+.server-options-body {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+    max-height: 405px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.side-bar {
+    height: 100vh;
+}
+
+.side-bar .top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.side-bar .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.side-bar .logo img {
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+.side-bar .side-bar-body {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    position: relative;
+    top: 3rem;
+}
+
+.side-bar h3 {
+    font-weight: 500;
+}
+
+.side-bar .side-bar-body a {
+    display: flex;
+    color: var(--color-info-dark);
+    margin-left: 2rem;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+    height: 3.7rem;
+    /* transition: all 300ms ease; */
+}
+
+.side-bar .side-bar-body a i {
+    font-size: 1.2rem;
+    transition: all 300ms ease;
+}
+
+.side-bar .side-bar-body a:last-child {
+    position: absolute;
+    bottom: 1rem;
+    width: 100%;
+}
+
+.side-bar .side-bar-body a:hover {
+    color: var(--color-primary);
+}
+
+.side-bar .side-bar-body a:hover i {
+    margin-left: 1rem;
+}
+
+.side-bar .side-bar-body .active {
+    background: var(--color-selected);
+    color: var(--color-primary);
+    margin-left: 0;
+}
+
+.side-bar .side-bar-body .active::before {
+    content: "";
+    width: 6px;
+    height: 100%;
+    background-color: var(--color-primary);
+}
+
+.side-bar .side-bar-body .active i {
+    color: var(--color-primary);
+    margin-left: calc(1rem - 6px);
+}
+
+/* Main Section */
+
+main {
+    margin-top: 1.4rem;
+}
+
+main .main-content {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+}
+
+main .main-content .card {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    margin-top: 1rem;
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+
+
+main .major-list {
+    background: var(--color-white);
+    width: 100%;
+    border-radius: var(--card-border-radius);
+    text-align: center;
+    padding: var(--card-padding);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+main .major-list:hover {
+    box-shadow: none;
+}
+
+main .major-list {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1rem;
+    padding: 2rem 0;
+}
+main .major-list .middle-line{
+    height: 7rem;
+    width: 1px;
+    background-color: var(--color-gray);
+    
+}
+
+
+main .major-list input[type="text"],  main .major-list input[type="number"] {
+    background: var(--color-light);
+    padding: 0.8rem 1rem;
+    border-radius: .7rem;
+    margin-bottom: 1rem;
+}
+
+main .major-list .left-side .bottom-buttons {
+    display: flex;
+    gap: 2rem;
+}
+
+main .major-list .left-side .bottom-buttons .update input {
+    background-color: var(--color-online);
+    color: var(--color-white);
+}
+
+main .major-list .left-side input {
+    width: 100%;
+}
+
+main .major-list .left-side .bottom-buttons .delete input {
+    background-color: var(--color-danger);
+    color: var(--color-white);
+}
+
+.usage-chart {
+    width: 120px;
+    position: relative;
+}
+
+.usage-chart h3 {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    position: absolute;
+}
+
+
+main .major-list input[type="submit"] {
+    background: var(--color-primary);
+    color: var(--color-light);
+    border-radius: .7rem;
+    padding: 0.6rem 1.8rem;
+}
+
+main .major-list select {
+    width: 100%;
+    background: var(--color-light);
+    padding: 0.8rem 1rem;
+    border-radius: .7rem;
+    margin-bottom: 1rem;
+}
+
+
+main .main-content .card:hover {
+    box-shadow: none;
+}
+
+main .main-content .card i {
+    background: var(--color-primary);
+    padding: 0.8rem;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.6rem;
+}
+
+main .main-content .lecturers-card i {
+    background: var(--color-danger);
+}
+
+main .main-content .admins-card i {
+    background: var(--color-online);
+}
+
+main .main-content .card .middle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .main-content .card .middle .left {
+    width: 100%;
+}
+
+main .main-content .card .middle .progress {
+    position: relative;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+}
+
+main .main-content .card .middle .progress .number {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+main .main-content .card .middle .progress svg{ 
+    width: 7rem;
+    height: 7rem;
+}
+
+main .main-content .card .middle .progress svg circle {
+    fill: none;
+    stroke: var(--color-primary);
+    stroke-width: 14;
+    stroke-linecap: round;
+    transform: translate(5px, 5px);
+    stroke-dasharray: 110;
+    stroke-dashoffset: 92;
+}
+
+main .main-content .card h3 {
+    margin: 1rem 0 0.6rem;
+    font-size: 1rem;
+}
+
+main .main-content .card small {
+    margin-top: 1rem;
+    display: block;
+}
+
+/* Recnet Users */
+
+main .recent-users {
+    margin-top: 3rem;
+}
+
+main .recent-users h2 {
+    margin-bottom: .8rem;
+}
+
+main .recent-users table {
+    background: var(--color-white);
+    width: 100%;
+    border-radius: var(--card-border-radius);
+    text-align: center;
+    padding: var(--card-padding);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+main .recent-users table:hover {
+    box-shadow: none;
+}
+
+main .recent-users table tbody td {
+    height: 2.8rem;
+    border-bottom: 1px solid var(--color-selected);
+    color: var(--color-info-dark);
+}
+
+main .recent-users table tbody tr:last-child td {
+    border: none;
+}
+
+main .recent-users {
+    margin-bottom: 1rem;
+}
+
+/* Right Section */
+
+.right-section {
+    margin-top: 1.4rem;
+}
+
+.right-section .top .profile {
+    display: flex;
+    gap: 2rem;
+    text-align: right;
+}
+
+.right-section .top {
+    display: flex;
+    justify-content: end;
+    gap: 2rem;
+}
+
+.right-section .recent-activities {
+    margin-top: 1rem;
+}
+
+.right-section .recent-activities h2 {
+    margin-bottom: .8rem;
+}
+
+.right-section .recent-activities .activities {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+.right-section .recent-activities .activities:hover {
+    box-shadow: none;
+}
+
+.right-section .recent-activities .activities .activity {
+    display: grid;
+    grid-template-columns: 2.6rem auto;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.right-section .recent-activities .activities .activity:last-child {
+    margin-bottom: 0;
+}
+
+.right-section .admin-chat {
+    margin-top: .8rem;
+}
+
+.right-section .admin-chat-content {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+    max-height: 405px;
+    overflow: hidden;
+}
+
+.right-section .admin-chat-content:hover {
+    box-shadow: none;
+}
+
+.right-section .admin-chat-content .top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.right-section .admin-chat-content .top {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.right-section .admin-chat-content .middle {
+    background: var(--color-light);
+    max-height: 270px;
+    overflow-y: scroll;
+    padding: 1rem;
+    border-radius: .4rem;
+}
+
+.right-section .admin-chat-content .middle .user-message {
+    margin-bottom: 1rem;
+    padding: .5rem;
+}
+
+.right-section .admin-chat-content .middle .user-message:last-child {
+    margin-bottom: 0;
+    border: none;
+}
+
+.right-section .admin-chat-content .bottom {
+    margin-top: 1rem;
+}
+
+
+.right-section .admin-chat-content .bottom .send-message input[type="text"] {
+    background-color: var(--color-light);
+    padding: .8rem;
+    border-radius: 1rem;
+    width: 100%;
+}
+
+.right-section .admin-chat-content .bottom .send-message {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.right-section .admin-chat-content .bottom .send-message i {
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: .6rem;
+    border-radius: 50%;
+}
