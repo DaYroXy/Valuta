@@ -9,8 +9,20 @@
                 <p><b><%- user.name %></b></p>
                 <small class="text-muted"><%- user.rank %></small>
             </div>
+
+            
             <div class="profile-picture">
-                <img src="user.png" alt="">
+                <%
+                if(user.avatar.includes("http") || user.avatar.includes("https")){
+                    %>
+                        <img src="<%- user.avatar %>" alt="user profile picture">
+                    <%
+                }else{
+                        %>
+                            <img src="http://localhost:4200/uploads/<%- user.avatar %>" alt="user profile picture">
+                        <%
+                    }
+                %>
             </div>
         </div>
     </div>
@@ -110,70 +122,6 @@
     </div>
 </div>
 </div>
-<script>
-    let selectedMajor = document.getElementById('selected-major')
 
-    selectedMajor.addEventListener('change', function () {
-        console.log(selectedMajor.value)
-    })
-
-    const Data = [
-        {
-            label: 'Software Developer',
-            data: [0, 20, 20, 60, 60, 120, NaN],
-            fill: false,
-            cubicInterpolationMode: 'monotone',
-            tension: 0.4,
-            borderColor: "#ff6384"
-        },
-        {
-            label: 'Biotechnoalligy',
-            data: [0, 4, 12, 40, 80, 104],
-            fill: false,
-            cubicInterpolationMode: 'monotone',
-            tension: 0.4,
-            borderColor: "#6B4CE6"
-        },
-    ]
-    // const datapoints = [0, 20, 20, 60, 60, 120, NaN, 180, 120, 125, 105, 110, 170];
-
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['January', 'February', 'July', 'May', 'November', 'October'],
-            datasets: Data
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Most Popular Majors'
-                },
-            },
-            interaction: {
-                intersect: false,
-            },
-            scales: {
-                x: {
-                    display: true,
-                    title: {
-                        display: true
-                    }
-                },
-                y: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Value'
-                    },
-                    suggestedMin: -10,
-                    suggestedMax: 200
-                }
-            }
-        }
-    });
-</script>
 </body>
 </html>

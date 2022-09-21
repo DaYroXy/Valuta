@@ -63,7 +63,7 @@ if(trend) {
         }
 
         posts.reverse().map(p => {
-            addPost(p);
+            addPost(p, false);
         })
     })
 
@@ -81,7 +81,7 @@ if(trend) {
 
         posts.reverse().map(p => {
             
-            addPost(p);
+            addPost(p, false);
         })
     })
 }

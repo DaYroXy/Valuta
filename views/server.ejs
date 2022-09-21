@@ -14,7 +14,7 @@
             </div>
 
             <div class="usage-chart">
-                <h3>50%</h3>
+                <h3 id="coresUsage"><%- usage.CPU.usage %>%</h3>
                 <canvas id="cpu-tracker"></canvas>
             </div>
         </div>
@@ -31,7 +31,7 @@
             </div>
 
             <div class="usage-chart">
-                <h3>50%</h3>
+                <h3 id="memoryUsage"><%- usage.Memory.percentage %>%</h3>
                 <canvas id="memory-tracker" ></canvas>
             </div>
         </div>
@@ -48,7 +48,7 @@
             </div>
 
             <div class="usage-chart">
-                <h3>50%</h3>
+                <h3 id="storageUsage"><%- usage.Storage.percentage %>%</h3>
                 <canvas id="storage-tracker" ></canvas>
             </div>
         </div>
@@ -105,4 +105,11 @@
     </table>
 </div>
 
+<script>
+    const USAGES_CHAR_HOLDER = {
+        cpu: <%- usage.CPU.usage %>,
+        memory: <%- usage.Memory.percentage%>,
+        storage: <%- usage.Storage.percentage %>,
+    }
+</script>
 <%- include("./components/admin-right.ejs") %>

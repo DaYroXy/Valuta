@@ -2,7 +2,7 @@
 
 
 // Add post to page
-function addPost(data) {
+function addPost(data, isVisited) {
     let img = ""
     let user_avatar = data.user.avatar
 
@@ -13,8 +13,18 @@ function addPost(data) {
     }
 
     let createdAt = timeSince(new Date(data.createdAt));
+    
+    let is_visited_page = "";
+    if(isVisited) {
+        is_visited_page = "isVisited"
+    }
+
     if(data.image !== "") {
-        img = `<img src="./uploads/${data.image}" alt="feed-content-image">`
+        if(isVisited) {
+            img = `<img src="../uploads/${data.image}" alt="feed-content-image">`
+        } else {
+            img = `<img src="./uploads/${data.image}" alt="feed-content-image">`
+        }
     }
     let connectedUserInfo = document.querySelector(".profile-details > .handle");
     let logged_user_username = connectedUserInfo.textContent.toLocaleLowerCase()
@@ -68,7 +78,7 @@ function addPost(data) {
 
                 <div class="feed-content">
                     <small>${data.content}</small>
-                    <div class="feed-photo">
+                    <div class="feed-photo ${is_visited_page}">
                         ${img}
                     </div>
                 </div>
@@ -120,7 +130,7 @@ function deletePost(postId) {
         noPosts.remove();
     }
     console.log(post)
-    addPost(post);
+    addPost(post, false);
 
 
     let connectedUserInfo = document.querySelector(".profile-details > .handle");

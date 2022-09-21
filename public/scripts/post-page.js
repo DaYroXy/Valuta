@@ -10,6 +10,6 @@ getGlobalPosts().then(posts => {
 
     posts.reverse().map(p => {
         
-        addPost(p);
+        addPost(p, false);
     })
 })

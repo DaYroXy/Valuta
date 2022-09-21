@@ -5,8 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/91c75a63e2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="http://localhost:4200/styles/admin-global.css">
-    <script src="http://localhost:4200/scripts/server.script.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+    <script>
+        const socket = io("/")
+    </script>
+    
+    <% if (page == "majors" || page == "server") { %> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <% } %>
+
+    <% if (page === "server") { %>
+        <script src="http://localhost:4200/scripts/server.script.js" defer></script>
+    <% } %>
+
+    <% if (page == "dashboard") { %> 
+        <script src="http://localhost:4200/scripts/dashboard.script.js" defer></script>
+    <% } %>
+
+    <% if (page == "majors") { %> 
+        <script src="http://localhost:4200/scripts/majors.script.js" defer></script>
+    <% } %>
+
     <title>Admin</title>
 </head>
 <body>
@@ -23,15 +42,15 @@
             </div>
 
             <div class="side-bar-body">
-                <a href="dashboard" class="active">
+                <a href="dashboard" <% if(page === "dashboard") { %> class="active" <% } %>>
                     <i class="fa-solid fa-house"></i>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="majors">
+                <a href="majors"  <% if(page === "majors") { %> class="active" <% } %>>
                     <i class="fa-solid fa-graduation-cap"></i>
                     <h3>Majors</h3>
                 </a>
-                <a href="server">
+                <a href="server" <% if(page === "server") { %> class="active" <% } %>>
                     <i class="fa-solid fa-server"></i>
                     <h3>Server</h3>
                 </a>

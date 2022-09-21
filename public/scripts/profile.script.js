@@ -15,7 +15,7 @@ function getProfilePosts(username) {
         }
     
         posts.reverse().map(p => {
-            addPost(p);
+            addPost(p, true);
         })
     })    
 }

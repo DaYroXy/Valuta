@@ -233,9 +233,10 @@ class Post {
         }
 
         // if user liked already
-        let likedAlready = await Like.findOne({userId:this.user._id, postId:postId});
+        let likedAlready = await Like.findOne({$and: [{userId:this.user._id}, {postId:postId}]});
         if(likedAlready) {
-            await Like.deleteOne(likedAlready._id)
+            console.log(this.user.username + "Deleted: " + likedAlready._id)
+            await Like.deleteOne({_id:likedAlready._id})
             return {
                 status: "success",
                 message: "Like removed"

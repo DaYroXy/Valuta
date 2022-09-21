@@ -253,6 +253,10 @@ function convertToGB(bytes) {
     return Number((bytes / (1024 * 1024 * 1024)).toFixed(0));
 }
 
+function converToGbNoFixed(bytes) {
+    return Number((bytes / (1024 * 1024 * 1024)));
+}
+
 // Dashboard Page
 app.get("/dashboard", async (req, res) => {
     const user = req.session.user
@@ -267,8 +271,8 @@ app.get("/dashboard", async (req, res) => {
         return;
     }
 
-
-    res.render('dashboard', {user})
+    const page = "dashboard";
+    res.render('dashboard', {user, page})
 })
 
 // Majors Page
@@ -285,7 +289,9 @@ app.get("/majors", async (req, res) => {
         return;
     }
 
-    res.render('majors', {user})
+    const page = "majors";
+
+    res.render('majors', {user, page})
 })
 
 // Server Page
@@ -308,7 +314,38 @@ app.get("/server", async (req, res) => {
         Storage: convertToGB((await si.diskLayout())[0].size),
     }
 
-    res.render('server', {user, specs})
+    let cpuData = (await si.currentLoad());
+    let memData = (await si.mem());
+    let storageData = (await si.fsSize());
+
+    let allStorage = {
+        total: 0,
+        used: 0,
+    };
+    
+    storageData.map(d => {
+        allStorage.used += d.used;
+    })
+
+    let usage = {
+        CPU: {
+            usage: Number(cpuData.currentLoad.toFixed(0)),
+            idle: Number(cpuData.currentLoadIdle.toFixed(0))
+        },
+        Memory: {
+            usage: Number(converToGbNoFixed(memData.used).toFixed(1)),
+            idle: Number(converToGbNoFixed(memData.total).toFixed(1)),
+            percentage: ((Number(converToGbNoFixed(memData.used).toFixed(1))/Number(converToGbNoFixed(memData.total).toFixed(1)))*100).toFixed(1)
+        },
+        Storage: {
+            usage: Number(converToGbNoFixed(storageData[0].size).toFixed(2)),
+            idle: Number(converToGbNoFixed(allStorage.used).toFixed(2)),
+            percentage: ((Number(converToGbNoFixed(allStorage.used).toFixed(1))/Number(converToGbNoFixed(storageData[0].size).toFixed(1)))*100).toFixed(1)
+        },
+    }
+    const page = "server";
+
+    res.render('server', {user, specs, usage, page})
 })
 
 
@@ -351,6 +388,41 @@ io.on("connection", async (socket) => {
     io.emit("user-connected", await user.getUserById(userSession.id));
     await user.addSocket(socket.id);
 });
+
+// keep usages updated
+setInterval(async () => {
+    let cpuData = (await si.currentLoad());
+    let memData = (await si.mem());
+    let storageData = (await si.fsSize());
+
+    let allStorage = {
+        total: 0,
+        used: 0,
+    };
+    
+    storageData.map(d => {
+        allStorage.used += d.used;
+    })
+
+    let usage = {
+        CPU: {
+            usage: Number(cpuData.currentLoad.toFixed(0)),
+            idle: Number(cpuData.currentLoadIdle.toFixed(0))
+        },
+        Memory: {
+            usage: Number(converToGbNoFixed(memData.used).toFixed(1)),
+            idle: Number(converToGbNoFixed(memData.total).toFixed(1)),
+            percentage: Number(((Number(converToGbNoFixed(memData.used).toFixed(1))/Number(converToGbNoFixed(memData.total).toFixed(1)))*100).toFixed(1))
+        },
+        Storage: {
+            usage: Number(converToGbNoFixed(storageData[0].size).toFixed(2)),
+            idle: Number(converToGbNoFixed(allStorage.used).toFixed(2)),
+            percentage: Number(((Number(converToGbNoFixed(allStorage.used).toFixed(1))/Number(converToGbNoFixed(storageData[0].size).toFixed(1)))*100).toFixed(1))
+        },
+    }
+
+    io.emit("os-usages", usage);
+}, 2500);
 
 // Server Listener
 server.listen(PORT, () => {

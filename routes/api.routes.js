@@ -1,11 +1,11 @@
 const express = require ("express");
 const router = express.Router();
-const User = require("../classes/user");
-const friendModel = require("../models/Friend.model");
-const ObjectId = require('mongoose').Types.ObjectId;
-const Major = require("../classes/major");
-const Room = require("../classes/room");
-const Message = require("../classes/message");
+// const User = require("../classes/user");
+// const friendModel = require("../models/Friend.model");
+// const ObjectId = require('mongoose').Types.ObjectId;
+// const Major = require("../classes/major");
+// const Room = require("../classes/room");
+// const Message = require("../classes/message");
 
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
