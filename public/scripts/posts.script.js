@@ -88,12 +88,12 @@ function addPost(data, isVisited) {
                 <div class="action-button">
                     ${LikeButton}
                     <span onclick="window.location.href = 'http://localhost:4200/post/${data._id}' "><i class="fa-regular fa-comment fa-xl"></i></span>
-                    <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
-                </div>
-
-            </div>
-        `;
-    document.querySelector(".feeds")
+                    </div>
+                    
+                    </div>
+                    `;
+                    // <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
+                    document.querySelector(".feeds")
     .insertAdjacentHTML("afterbegin", html)
 }
 
