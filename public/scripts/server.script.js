@@ -1,3 +1,28 @@
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+// Get Logs
+const Logs_Element = document.querySelector(".recent-users tbody")
+fetch("http://localhost:4200/api/v1/admin/logs").then(res => res.json())
+.then(res => {
+    let index = res.count
+    res.data.forEach(log => {
+        const tr = document.createElement("tr")
+        let date = new Date(log.createdAt).toLocaleString()
+        tr.innerHTML = `
+            <td>${index}</td>
+            <td>${date}</td>
+            <td>${log.ip}</td>
+            <td>${log.browser}</td>
+            <td>/${log.method}</td>
+        `
+        index--;
+        Logs_Element.appendChild(tr)
+    })
+})
+
+
 
 // canvas for chart
 const CPU_USAGE = document.getElementById('cpu-tracker').getContext('2d');

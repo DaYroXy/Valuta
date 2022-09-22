@@ -5,7 +5,11 @@ const rankModel = require("../models/Rank.model");
 const Activity = require("../models/Activity.model");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const Logs = require("../models/Logs.model");
 const Major = require("../classes/major");
+const majorClass = require("../classes/major")
+const Room = require("../classes/room");
+const User = require("../classes/user");
 
 router.get("/list/users", async (req, res) => {
     
@@ -192,11 +196,120 @@ router.get("/graph", (req,res) => {
     })
 })
 
+router.get("/logs", async (req,res) => {
+    let count = await Logs.find().count()
+    Logs.find().sort({createdAt: -1}).limit(8).exec((err, result) => {
+        if(err) {
+            console.log(err)
+            res.json({
+                status: 500,
+                message: "Internal server error"
+            })
+            return;
+        }
+        let r = {
+            count: count,
+            data: result
+        } 
+        res.json(r);
+    })
+
+})
+
 
 router.get("/majors", async (req,res) => {
     let majors = await new Major().getMajorGrouped();
     res.json(majors);
 })
 
+router.post("/majors/add", async (req,res) => {
+    let {name, years, lecturers} = req.body
+    
+    if(!name || name.trim() === "") {
+        res.json({
+            status: 400,
+            message: "Missing or incorrect name"
+        })
+        return;
+    }
+
+    if(!years || years <= 0) {
+        res.json({
+            status: 400,
+            message: "Missing or incorrect years"
+        })
+        return;
+    }
+
+    if(!lecturers || !Array.isArray(lecturers)) {
+        res.json({
+            status: 400,
+            message: "Missing or incorrect lecturers"
+        })
+        return;
+    }
+        
+    const major = new Major();
+    try {
+        await major.create(name, years, lecturers)
+        res.json({
+            status: "success",
+            message: "Major created"
+        })
+        return;
+    } catch (err) {
+        res.json({
+            status: "error",
+            message: err.message
+        })
+    }
+})
+
+router.post("/lecturer/add/", async (req,res) => {
+
+    let {username, major} = req.body;
+    let foundMajor = await new Major().findMany(major);
+    if(foundMajor.length === 0) {
+        res.json({
+            status: 400,
+            message: "Major doesnt exists"
+        })
+        return;
+    }
+
+    let user = new User();
+    await user.getUserByUsername(username)
+    let userId = user.getUser().id;
+
+    if(!user) {
+        res.json({
+            status: 400,
+            message: "User doesnt exists"
+        })
+        return;
+    }
+    
+    let isLecturer = false;
+    foundMajor.map(async major => {
+        major.lecturers.map(e => {
+            if(e.equals(userId)) {
+                isLecturer = true;
+            }
+        })
+
+        if(!isLecturer) {
+            major.lecturers.push(userId);
+            await major.save();
+        }
+    })
+
+    await user.updateUserRank("lecturer")
+    
+
+    res.json({
+        status: "success",
+        message: "Lecturer added"
+    })
+})
 
 module.exports = router;

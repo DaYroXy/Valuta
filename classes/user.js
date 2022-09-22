@@ -289,6 +289,13 @@ class user extends Many.Mixin(Friend,Message) {
         return true;
     }
 
+    async updateUserRank(rankName) {
+        let rank = await rankModel.findOne({name: rankName});
+        if(!rank) {
+            return false;
+        }
+        await User.updateOne({_id: this.user._id}, {$set: {rank: rank._id}});
+    }
 }
 
 module.exports = user;

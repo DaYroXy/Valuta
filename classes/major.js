@@ -53,7 +53,6 @@ class Major {
             })
 
             // create room for major
-
             let rName = `${mName} - Year ${i}`
             let rDescription = `talk about ${mName} - Year ${i}`
             if(i == 0) {
@@ -61,7 +60,7 @@ class Major {
                 rDescription = "talk with all years"
             }
 
-            room.create(rName, rDescription, createdMajor._id, null)
+            room.create(rName, rDescription, createdMajor._id, [])
             majors.push(createdMajor)
         }
         return majors;
@@ -104,7 +103,12 @@ class Major {
                         }
                     }
                 }
-            }
+            }, {
+                $project: {
+                    _id: 0,
+                    years:1,
+                    name: "$_id",
+            }}
         ])
 
         return results;

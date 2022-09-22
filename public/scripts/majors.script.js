@@ -61,3 +61,74 @@ const myChart = new Chart(ctx, {
         }
     }
 });
+
+function getMajorsUpdate() {
+    let selectedMajor = document.getElementById('selected-major')
+    fetch(`http://localhost:4200/api/v1/admin/majors`)
+    .then(res => res.json())
+    .then(majors => {
+        majors.map(m => {
+            selectedMajor.insertAdjacentHTML("afterbegin", `<option value="${m.name}">${m.name}</option>`)
+        })
+    })
+}
+
+getMajorsUpdate()
+
+const addMajorButton = document.querySelector("#add-major-button");
+const majorHandler = document.querySelector("#major-handler");
+addMajorButton.addEventListener('click', (e) => {
+    console.log("got here")
+    e.preventDefault();
+    let name = document.querySelector("#major-name");
+    let years = document.querySelector("#major-years");
+    let lecturers = []
+
+    let major = {
+        name: name.value,
+        years: years.value,
+        lecturers: lecturers
+    }
+
+    fetch("http://localhost:4200/api/v1/admin/majors/add",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(major)
+    }).then(res => res.json()).then(res => {
+        if(res.status === "success") {
+            name.value = "";
+            years.value = "";
+            majorHandler.style = "color:var(--color-online); margin-top:1rem;"
+        } else {
+            majorHandler.style = "color:var(--color-danger); margin-top:1rem;"   
+        }
+        majorHandler.textContent = res.message
+        console.log(res)
+    })
+
+})
+
+
+const lecturer_username = document.querySelector("#lecturer-username");
+
+const addLecturerButton = document.querySelector("#add-lecturer-button");
+
+addLecturerButton.addEventListener("click", () => {
+    let major = document.querySelector("#selected-major");
+    let username = lecturer_username.value;
+    let lecturer = {
+        username: username,
+        major: major.value
+    }
+    fetch("http://localhost:4200/api/v1/admin/lecturer/add",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(lecturer)
+    }).then(res => res.json()).then(res => {
+        console.log(res)
+    })
+})

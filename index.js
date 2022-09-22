@@ -9,6 +9,7 @@ const si = require('systeminformation');
 const User = require('./classes/user');
 const Major = require("./classes/major");
 const Room = require("./classes/room");
+const Logs = require("./classes/logs");
 const Post = require("./classes/post");
 const serverConf = require("./classes/server");
 const PORT = 4200;
@@ -48,14 +49,14 @@ app.set('view engine', 'ejs')
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }));
 
-// on all get request and continue to page
-let i = 0;
-app.get('*', (req, res, next) => {
-
+// LOGS CATCEHR
+app.use((req, res, next) => {
     let url = req.originalUrl;
-    if(url.includes("/scripts") || url.includes("/images") || url.includes("/api") || url.includes("/styles") || url.includes("/uploads") || url.includes("/apple")){
-        next();
-        return;
+    if(req.method === "GET") {
+        if(url.includes("/scripts") || url.includes("/images") || url.includes("/api") || url.includes("/styles") || url.includes("/uploads") || url.includes("/apple")){
+            next();
+            return;
+        }
     }
     
     let headers = JSON.stringify(req.headers);
@@ -84,17 +85,9 @@ app.get('*', (req, res, next) => {
         ip = ip.replace("::ffff:", "")
     }
 
-    let data = {
-        id:i++,
-        url: req.originalUrl,
-        device: "chrome",
-        ip: ip,
-        headers: headers
-    }
-    console.log(data)
-    next();
-});
-
+    new Logs(ip, headers, req.method)
+    next()
+})
 
 // If json is invalid, return a 400 error
 app.use((err, req, res, next) => {

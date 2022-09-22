@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
 
-const Like = new mongoose.Schema({
-    userId:ObjectId,
-    postId:ObjectId,
+const Logs = new mongoose.Schema({
+    ip: {type: "String", required: true},
+    browser: {type: "String", required: true},
+    method: {type: "String", required: true},
+
 }, { timestamps: true });
 
-module.exports = mongoose.model("Like", Like);
+module.exports = mongoose.model("Logs", Logs);
