@@ -9,15 +9,11 @@ const si = require('systeminformation');
 const User = require('./classes/user');
 const Major = require("./classes/major");
 const Room = require("./classes/room");
-<<<<<<< HEAD
-const PORT = 80;
-=======
 const Logs = require("./classes/logs");
 const Post = require("./classes/post");
 const Like = require("./models/Like.model");
 const serverConf = require("./classes/server");
 const PORT = 4200;
->>>>>>> main
 
 // MongoDb Setup
 const mongoose = require('mongoose');
