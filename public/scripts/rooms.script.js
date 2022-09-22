@@ -122,29 +122,6 @@ function displayMessage(message) {
 
 }
 
-<<<<<<< HEAD
-// load messages on user change
-function loadMessages(roomId) {
-    fetch(`https://valuta-hub.me/api/v1/rooms/messages/${roomId}`)
-    .then(res => res.json())
-    .then(messages => {
-        
-        // clear all existing messages
-        let messagesElement = document.querySelector(".chatting-messages");
-        messagesElement.innerHTML = ""
-
-        // load new messages
-        messages.forEach(message => {
-            displayMessage(message);
-        })
-
-    }).catch(err => {
-        console.log(err)
-    })
-}
-
-=======
->>>>>>> main
 let rooms = document.querySelectorAll("#room-menu-select");
 changeRoom(rooms[0].getAttribute("room-data"))
 
