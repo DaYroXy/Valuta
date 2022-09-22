@@ -67,7 +67,7 @@
                                         
                                     <div class="edit-menu show">
                                         <ul>
-                                            <li><button onclick="deletePost('62fbae5456a6ab20eba3511b')">Delete</button></li>
+                                            <li><button onclick="deletePost('<%- PostInformation.id %>')">Delete</button></li>
                                         </ul>
                                     </div>
                         
@@ -79,14 +79,14 @@
                                     <% if(PostInformation.image !== "") { %>
                                     <div class="feed-photo" style="margin-bottom: 2rem;">
                                       
-                                                    <img src="http://localhost:4200/uploads/<%- PostInformation.image %>" alt="Post Image">
+                                        <img src="http://localhost:4200/uploads/<%- PostInformation.image %>" alt="Post Image">
                                                 
                                     </div>
                                     <% } %>
                                 </div>
                                 
                                 <div class="action-button" <% if(PostInformation.image === "") { %> style="margin-top: 1rem;" <%} %> >
-                                    <span onclick="likePost('62fbae5456a6ab20eba3511b')" style="color: var(--color-danger);"><i class="fa-solid fa-heart fa-xl"><small class="notification-count">1</small></i></span>
+                                    <span onclick="likePost('<%- PostInformation.id %>')" style="color: var(--color-danger);"><i class="fa-solid fa-heart fa-xl"><small class="notification-count">1</small></i></span>
                                     <span><i class="fa-regular fa-comment fa-xl"></i></span>
                                     <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
                                 </div>
@@ -124,7 +124,7 @@
         
                                 </div>
                             </div>
-        
+                            <input type="text" name="comment" value="<%- PostInformation.id %>" hidden>
                             <input type="submit" name="post" value="Post" class="btn btn-primary" data-np-checked="1">
                         </form>
                     
@@ -139,7 +139,7 @@
         </main>
     </body>
     <script>
-
+        
     </script>
     </html>
     

@@ -129,6 +129,38 @@ addLecturerButton.addEventListener("click", () => {
         },
         body: JSON.stringify(lecturer)
     }).then(res => res.json()).then(res => {
-        console.log(res)
+        if(res.status === "success") {
+            lecturer_username.value = "";
+            lecturerHandler.style = "color:var(--color-online); margin-top:1rem;"
+        } else {
+            lecturerHandler.style = "color:var(--color-danger); margin-top:1rem;"   
+        }
+        lecturerHandler.textContent = res.message
+    })
+})
+
+const removeLecturerButton = document.querySelector("#remove-lecturer-button");
+const  lecturerHandler = document.querySelector("#lecturer-handler")
+removeLecturerButton.addEventListener("click", () =>{
+    let major = document.querySelector("#selected-major");
+    let username = lecturer_username.value;
+    let lecturer = {
+        username: username,
+        major: major.value
+    }
+    fetch("http://localhost:4200/api/v1/admin/lecturer/remove",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(lecturer)
+    }).then(res => res.json()).then(res => {
+        if(res.status === "success") {
+            lecturer_username.value = "";
+            lecturerHandler.style = "color:var(--color-online); margin-top:1rem;"
+        } else {
+            lecturerHandler.style = "color:var(--color-danger); margin-top:1rem;"   
+        }
+        lecturerHandler.textContent = res.message
     })
 })

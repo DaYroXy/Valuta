@@ -6,6 +6,7 @@ const Post = new mongoose.Schema({
     content: String,
     image: String,
     file: String,
+    related: ObjectId,
     trendId: [{ type: ObjectId, default: null }],
 }, { timestamps: true });
 

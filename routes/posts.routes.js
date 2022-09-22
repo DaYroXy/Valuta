@@ -13,6 +13,10 @@ router.get("/", async (req, res) => {
     res.json(await new Post().getPosts())
 })
 
+router.get("/comments/:postId", async (req,res) => {
+    let postId = req.params.postId;
+    res.json(await new Post().getRelatedPosts(postId))
+})
 
 // Get logged user data
 router.get("/me", async(req, res) => {
@@ -48,6 +52,12 @@ router.get("/:username", async(req, res) => {
 
 // add post to db
 router.post("/add", async (req, res) => {
+
+    let {comment} = req.body;
+    if(!comment) {
+        comment = false;
+    }
+
     var io = req.app.get('io');
     const user = req.session.user;
 
@@ -64,7 +74,8 @@ router.post("/add", async (req, res) => {
     const postData = {
         content: req.body.content,
         image: "",
-        file: ""
+        file: "",
+        related: comment
     }
 
     // if user sent a file or image

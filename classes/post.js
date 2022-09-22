@@ -3,14 +3,20 @@ const postModel = require('../models/Post.model');
 const userModel = require('../models/User.model');
 const User = require('../classes/user.js');
 const Like = require("../models/Like.model")
+const ObjectId = require("mongoose").Types.ObjectId;
 
 
 class Post {
     
-    async postData({content, image, file}) {
+    async postData({content, image, file, related}) {
         this.content = content;
         this.image = image;
         this.file = file;
+        if(related) {
+            this.related = related;
+        } else {
+            this.related = null;
+        }
     }
 
     async getPostById(postid) {
@@ -77,6 +83,7 @@ class Post {
             content: this.content,
             image: this.image,
             file: this.file,
+            related: this.related
         });
 
         if(!post) {
@@ -101,6 +108,11 @@ class Post {
 
     async getPosts() {
         const posts = await postModel.aggregate([
+            {
+                $match: {
+                    "related": null
+                }
+            },
             {
                 "$lookup": {
                     "from": "users",
@@ -144,7 +156,63 @@ class Post {
                     "rank.name" : 1, 
                     "likes.userId": 1,
                 }
-            }
+            },
+            
+          ]).sort({"createdAt":-1}).limit(10);
+        return posts;
+    }
+
+    async getRelatedPosts(postId) {
+        const posts = await postModel.aggregate([
+            {
+                $match: {
+                    "related": ObjectId(postId)
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "userId",
+                    "foreignField": "_id",
+                    "as": "user"
+                }
+            },
+            {
+                "$unwind": "$user"
+            },
+            {
+                "$lookup": {
+                    "from": "ranks",
+                    "localField": "user.rank",
+                    "foreignField": "_id",
+                    "as": "rank"
+                }
+            },
+            {
+            "$unwind": "$rank"      
+            }, {
+                $lookup: {
+                    from: "likes",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "likes"
+                }
+            },
+            {
+            "$project": 
+                {
+                    "_id":1,
+                    "content":1,
+                    "image":1,
+                    "file":1,
+                    "createdAt": 1,
+                    "user.name": 1,
+                    "user.avatar": 1,
+                    "user.username": 1,
+                    "rank.name" : 1, 
+                    "likes.userId": 1,
+                }
+            },
             
           ]).sort({"createdAt":-1}).limit(10);
         return posts;

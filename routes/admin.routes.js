@@ -265,9 +265,16 @@ router.post("/majors/add", async (req,res) => {
     }
 })
 
-router.post("/lecturer/add/", async (req,res) => {
+router.post("/lecturer/add", async (req,res) => {
 
     let {username, major} = req.body;
+    if(!username || !major) {
+        res.json({
+            status: 400,
+            message: "Missing or incorrect username or major"
+        })
+        return;
+    }
     let foundMajor = await new Major().findMany(major);
     if(foundMajor.length === 0) {
         res.json({
@@ -311,5 +318,63 @@ router.post("/lecturer/add/", async (req,res) => {
         message: "Lecturer added"
     })
 })
+
+
+router.post("/lecturer/remove", async (req,res) => {
+
+    let {username, major} = req.body;
+    if(!username || !major) {
+        res.json({
+            status: 400,
+            message: "Missing username or major"
+        })
+        return;
+    }
+
+    let foundMajor = await new Major().findMany(major);
+    if(foundMajor.length === 0) {
+        res.json({
+            status: 400,
+            message: "Major doesnt exists"
+        })
+        return;
+    }
+
+    let user = new User();
+    await user.getUserByUsername(username)
+    let userId = user.getUser().id;
+
+    if(!user) {
+        res.json({
+            status: 400,
+            message: "User doesnt exists"
+        })
+        return;
+    }
+    
+    let isLecturer = false;
+    foundMajor.map(async major => {
+        major.lecturers.map(e => {
+            if(e.equals(userId)) {
+                isLecturer = true;
+            }
+        })
+
+        if(isLecturer) {
+            // remove from array
+            major.lecturers.pop(userId);
+            await major.save();
+        }
+    })
+
+    await user.updateUserRank("student")
+    
+
+    res.json({
+        status: "success",
+        message: "Lecturer removed"
+    })
+})
+
 
 module.exports = router;
