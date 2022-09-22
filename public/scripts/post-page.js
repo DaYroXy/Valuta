@@ -1,6 +1,6 @@
 async function getRelatedPosts() {
     const mainPostId = document.querySelector(".profile-information .feed").getAttribute("data-id")
-    let posts = await (await fetch(`http://localhost:4200/api/v1/posts/comments/${mainPostId}`)).json();
+    let posts = await (await fetch(`https://valuta-hub.me/api/v1/posts/comments/${mainPostId}`)).json();
     return posts;
 
 }
@@ -31,7 +31,7 @@ form.addEventListener('submit', (e) => {
     console.log(e)
 
     let formData = new FormData(form);
-    fetch("http://localhost:4200/api/v1/posts/add", {
+    fetch("https://valuta-hub.me/api/v1/posts/add", {
         method: "POST",
         body: formData
     }).then (res => res.json())

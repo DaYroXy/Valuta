@@ -4,7 +4,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 
 // Get Logs
 const Logs_Element = document.querySelector(".recent-users tbody")
-fetch("http://localhost:4200/api/v1/admin/logs").then(res => res.json())
+fetch("https://valuta-hub.me/api/v1/admin/logs").then(res => res.json())
 .then(res => {
     let index = res.count
     res.data.forEach(log => {

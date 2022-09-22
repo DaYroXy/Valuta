@@ -1,6 +1,6 @@
 // user-disconnected
 
-const API_URL = "http://localhost:4200/api/v1";
+const API_URL = "https://valuta-hub.me/api/v1";
 
 // text variables
 const TOTAL_USERS_TEXT = document.getElementById("total-users")

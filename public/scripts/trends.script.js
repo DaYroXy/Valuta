@@ -7,7 +7,7 @@ async function addTrend(trend) {
     }
 
     html = `<div class="trend">
-        <h5><a href="http://localhost:4200/?trend=${trend.name}"># ${trend.name}</a></h5>
+        <h5><a href="https://valuta-hub.me/?trend=${trend.name}"># ${trend.name}</a></h5>
         <p class="text-muted">${trend.popularity} Posts</p>
     </div>`
 
@@ -15,7 +15,7 @@ async function addTrend(trend) {
 } 
 
 async function getTrends() {
-    let posts = await (await fetch("http://localhost:4200/api/v1/trends/?skip=0&limit=5")).json();
+    let posts = await (await fetch("https://valuta-hub.me/api/v1/trends/?skip=0&limit=5")).json();
     return posts;
 }
 

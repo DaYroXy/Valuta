@@ -17,7 +17,7 @@ form.addEventListener('submit', (e) => {
 
     let formData = new FormData(form);
 
-    fetch("http://localhost:4200/api/v1/posts/add", {
+    fetch("https://valuta-hub.me/api/v1/posts/add", {
         method: "POST",
         body: formData
     }).then (res => res.json())

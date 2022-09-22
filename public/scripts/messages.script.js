@@ -7,7 +7,7 @@ function loadMessages(uid) {
         })
     }
 
-    fetch(`http://localhost:4200/api/v1/messages/get/${uid}`)
+    fetch(`https://valuta-hub.me/api/v1/messages/get/${uid}`)
     .then(res => res.json())
     .then(res => {
         console.log(res)
@@ -70,7 +70,7 @@ function updateChatInfo(user) {
     if(user.avatar.includes("http") || user.avatar.includes("https")) {
         userAvatar.src = `${user.avatar}`;
     }else {
-        userAvatar.src = `http://localhost:4200/${user.avatar}`;
+        userAvatar.src = `https://valuta-hub.me/${user.avatar}`;
     }
 
     if(user.sockets.length > 0) {
@@ -120,7 +120,7 @@ function timeSince(date) {
   }
 
 function getMessagesList() {
-    fetch("http://localhost:4200/api/v1/messages/get")
+    fetch("https://valuta-hub.me/api/v1/messages/get")
     .then(res => res.json())
     .then(res => {
         if(res.length === 0) {
@@ -175,7 +175,7 @@ function getMessagesList() {
 }
 
 async function updateCurrentChat(userId) {
-    fetch(`http://localhost:4200/api/v1/messages/get/${userId}`)
+    fetch(`https://valuta-hub.me/api/v1/messages/get/${userId}`)
     .then(res => res.json())
     .then(res => {
         updateChatInfo(res.user)
@@ -231,7 +231,7 @@ socket.on("new_message", (uid) => {
 
 async function sendMessage(userId) {
     let message = document.getElementById("create-post").value;
-    fetch(`http://localhost:4200/api/v1/messages/send`, {
+    fetch(`https://valuta-hub.me/api/v1/messages/send`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

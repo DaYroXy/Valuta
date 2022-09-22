@@ -4,10 +4,10 @@ function isEmptyOrSpaces(str){
 
 const getSearchResults = throttleSearch(async text => {
 
-    let API_URL = `http://localhost:4200/api/v1/search/${text}`
+    let API_URL = `https://valuta-hub.me/api/v1/search/${text}`
     if(text.startsWith('#')) {
         text = text.replaceAll("#", "")
-        API_URL = `http://localhost:4200/api/v1/search/trends/${text}`
+        API_URL = `https://valuta-hub.me/api/v1/search/trends/${text}`
     }
 
     console.log(text)
@@ -34,10 +34,10 @@ const getSearchResults = throttleSearch(async text => {
                 if(result.avatar.includes("http") || result.avatar.includes("https")) {
                     avatar = `<img src="${result.avatar}" alt="user profile picture">`;
                 } else {
-                    avatar = `<img src="http://localhost:4200/uploads/${result.avatar}" alt="user profile picture">`;
+                    avatar = `<img src="https://valuta-hub.me/uploads/${result.avatar}" alt="user profile picture">`;
                 }
                 html = `
-                <a href="http://localhost:4200/profile/${result.username}">
+                <a href="https://valuta-hub.me/profile/${result.username}">
                     <div class="search-result-user">
                         <div class="profile-picture">
                             ${avatar}
@@ -53,7 +53,7 @@ const getSearchResults = throttleSearch(async text => {
                     `
             } else {
                 html = `
-                <a href="http://localhost:4200/?trend=${result.name}">
+                <a href="https://valuta-hub.me/?trend=${result.name}">
                     <div class="search-trend-result">
                         <h5>#${result.name}</h5>
                         <p class="text-muted">${result.popularity} posts</p>

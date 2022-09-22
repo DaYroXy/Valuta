@@ -5,7 +5,7 @@ import re
 from multiprocessing.dummy import Pool as ThreadPool
 
 
-url = "http://localhost:4200"
+url = "https://valuta-hub.me"
 
 # get all majors
 def getMajors():
@@ -20,7 +20,7 @@ def getRandomMajor():
 
 # create account
 def createAccount(name, username, email, password, majors):
-    create_account_url = "http://localhost:4200/api/v1/entry/register"
+    create_account_url = "https://valuta-hub.me/api/v1/entry/register"
     Data = {
         "name": name,
         "username": username,
@@ -30,7 +30,7 @@ def createAccount(name, username, email, password, majors):
         "register": "Sign up"
     }
 
-    res = requests.post("http://localhost:4200/api/v1/entry/register", data=Data)
+    res = requests.post("https://valuta-hub.me/api/v1/entry/register", data=Data)
     if "Dont have an account?" in res.text:
         print("Username Taken!")
         return
@@ -43,7 +43,7 @@ def createAccount(name, username, email, password, majors):
 
     session = requests.session()
 
-    res = session.post("http://localhost:4200/api/v1/entry/login", data=payload)
+    res = session.post("https://valuta-hub.me/api/v1/entry/login", data=payload)
     print(username+" logged in!")
     texts = json.loads(requests.get("https://zenquotes.io/api/quotes").text)
     newPost = {
@@ -51,9 +51,9 @@ def createAccount(name, username, email, password, majors):
         "image": "(binary)",
         "file": "(binary)"
     }
-    session.post("http://localhost:4200/api/v1/posts/add", data=newPost)
+    session.post("https://valuta-hub.me/api/v1/posts/add", data=newPost)
     print(username+" just posted!")
-    roomstext = session.get("http://localhost:4200/rooms").text.split("\n")
+    roomstext = session.get("https://valuta-hub.me/rooms").text.split("\n")
     
     rooms = []
     for line in roomstext:
@@ -69,7 +69,7 @@ def createAccount(name, username, email, password, majors):
             "content": message["q"],
             "to": randomRoom
         }
-        res = session.post("http://localhost:4200/api/v1/messages/send/", data=msg_payload)
+        res = session.post("https://valuta-hub.me/api/v1/messages/send/", data=msg_payload)
         print(res.text)
 
 

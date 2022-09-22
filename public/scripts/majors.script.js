@@ -64,7 +64,7 @@ const myChart = new Chart(ctx, {
 
 function getMajorsUpdate() {
     let selectedMajor = document.getElementById('selected-major')
-    fetch(`http://localhost:4200/api/v1/admin/majors`)
+    fetch(`https://valuta-hub.me/api/v1/admin/majors`)
     .then(res => res.json())
     .then(majors => {
         majors.map(m => {
@@ -90,7 +90,7 @@ addMajorButton.addEventListener('click', (e) => {
         lecturers: lecturers
     }
 
-    fetch("http://localhost:4200/api/v1/admin/majors/add",{
+    fetch("https://valuta-hub.me/api/v1/admin/majors/add",{
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -122,7 +122,7 @@ addLecturerButton.addEventListener("click", () => {
         username: username,
         major: major.value
     }
-    fetch("http://localhost:4200/api/v1/admin/lecturer/add",{
+    fetch("https://valuta-hub.me/api/v1/admin/lecturer/add",{
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -148,7 +148,7 @@ removeLecturerButton.addEventListener("click", () =>{
         username: username,
         major: major.value
     }
-    fetch("http://localhost:4200/api/v1/admin/lecturer/remove",{
+    fetch("https://valuta-hub.me/api/v1/admin/lecturer/remove",{
         method: "POST",
         headers: {
             "Content-Type": "application/json"

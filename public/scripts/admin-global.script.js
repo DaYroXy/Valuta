@@ -52,7 +52,7 @@ function loadMessage(message) {
 function loadAllMessages() {
   let messageContainer = document.querySelector(".admin-chat-content .middle")
   let roomUID = messageContainer.getAttribute("room-uid")
-  fetch(`http://localhost:4200/api/v1/rooms/messages/${roomUID}`)
+  fetch(`https://valuta-hub.me/api/v1/rooms/messages/${roomUID}`)
   .then(res => res.json()).then(res => {
       console.log(res)
       res.forEach(message => {
@@ -70,7 +70,7 @@ function sendMessage(roomId) {
         return;
     }
     message = message.value
-    fetch(`http://localhost:4200/api/v1/messages/send`, {
+    fetch(`https://valuta-hub.me/api/v1/messages/send`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -85,7 +85,7 @@ function sendMessage(roomId) {
     })
 }
 
-const API_FETCH_URL = "http://localhost:4200/api/v1/admin/activity";
+const API_FETCH_URL = "https://valuta-hub.me/api/v1/admin/activity";
 const activities_element = document.querySelector(".activities");
 
 async function getRecentActivities(limit) {
@@ -97,7 +97,7 @@ async function getRecentActivities(limit) {
 fetch(`${API_FETCH_URL}/3`).then(res => res.json()).then(res => {
     let HTML = "";
     res.forEach(activity => {
-        let userAvatar = `http://localhost:4200/${activity.user.avatar}`;
+        let userAvatar = `https://valuta-hub.me/${activity.user.avatar}`;
         
         if(activity.user.avatar.includes("http") || activity.user.avatar.includes("https")) {
             userAvatar = `${activity.user.avatar}`;

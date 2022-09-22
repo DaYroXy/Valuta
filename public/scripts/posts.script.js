@@ -9,7 +9,7 @@ function addPost(data, isVisited) {
     if(user_avatar.includes("http") || user_avatar.includes("https")){
         user_avatar = data.user.avatar
     }   else{
-        user_avatar = `http://localhost:4200/uploads/${data.user.avatar}`
+        user_avatar = `https://valuta-hub.me/uploads/${data.user.avatar}`
     }
 
     let createdAt = timeSince(new Date(data.createdAt));
@@ -67,7 +67,7 @@ function addPost(data, isVisited) {
                         <div class="info">
                             <div class="info-name-container">
                                 <h3>${data.user.name}</h3>
-                                <small><a href="http://localhost:4200/profile/${data.user.username}">@${data.user.username}</a></small>
+                                <small><a href="https://valuta-hub.me/profile/${data.user.username}">@${data.user.username}</a></small>
                             </div>
                             <small> <span createdAt="${data.createdAt}">${createdAt}</span>, <span class="${data.rank.name}">${data.rank.name}</span></small>
                         </div>
@@ -87,7 +87,7 @@ function addPost(data, isVisited) {
                 
                 <div class="action-button">
                     ${LikeButton}
-                    <span onclick="window.location.href = 'http://localhost:4200/post/${data._id}' "><i class="fa-regular fa-comment fa-xl"></i></span>
+                    <span onclick="window.location.href = 'https://valuta-hub.me/post/${data._id}' "><i class="fa-regular fa-comment fa-xl"></i></span>
                     </div>
                     
                     </div>
@@ -99,14 +99,14 @@ function addPost(data, isVisited) {
 
 // Get Global Posts
 async function getGlobalPosts() {
-    let posts = await (await fetch("http://localhost:4200/api/v1/posts")).json();
+    let posts = await (await fetch("https://valuta-hub.me/api/v1/posts")).json();
     return posts;
 }
 
 // Get Global Posts
 
 async function getTrendPosts(trendName) {
-    let posts = await (await fetch(`http://localhost:4200/api/v1/posts/trends/${trendName}`)).json();
+    let posts = await (await fetch(`https://valuta-hub.me/api/v1/posts/trends/${trendName}`)).json();
     return posts;
 }
 
@@ -117,7 +117,7 @@ function toggleMenuList(event) {
 }
 
 function deletePost(postId) {
-    fetch(`http://localhost:4200/api/v1/posts/delete/${postId}`, {
+    fetch(`https://valuta-hub.me/api/v1/posts/delete/${postId}`, {
         method: "DELETE",
     }).then(res => res.json())
     .then(res => {
@@ -235,11 +235,11 @@ socket.on("friend_request", (data_status) => {
  
     }
 
-    fetch("http://localhost:4200/api/v1/refresh")
+    fetch("https://valuta-hub.me/api/v1/refresh")
 })
 
 function likePost(postId) {
-    fetch(`http://localhost:4200/api/v1/posts/like/${postId}`, {
+    fetch(`https://valuta-hub.me/api/v1/posts/like/${postId}`, {
         method: "POST",  
     }).then(res => res.json())
     .then(res => {

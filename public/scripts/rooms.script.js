@@ -2,7 +2,7 @@
 
 // on user change messages UI
 function changeRoom(roomId) {
-    fetch(`http://localhost:4200/api/v1/rooms/${roomId}`)
+    fetch(`https://valuta-hub.me/api/v1/rooms/${roomId}`)
     .then(res => res.json())
     .then(data => {
 
@@ -30,7 +30,7 @@ function sendMessage(roomId) {
     }
     message = message.value
     console.log(message, roomId)
-    fetch(`http://localhost:4200/api/v1/messages/send`, {
+    fetch(`https://valuta-hub.me/api/v1/messages/send`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -48,7 +48,7 @@ function sendMessage(roomId) {
 
 // load messages on user change
 function loadMessages(roomId) {
-    fetch(`http://localhost:4200/api/v1/rooms/messages/${roomId}`)
+    fetch(`https://valuta-hub.me/api/v1/rooms/messages/${roomId}`)
     .then(res => res.json())
     .then(messages => {
         
