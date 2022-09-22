@@ -11,6 +11,7 @@ const Major = require("./classes/major");
 const Room = require("./classes/room");
 const Logs = require("./classes/logs");
 const Post = require("./classes/post");
+const Like = require("./models/Like.model");
 const serverConf = require("./classes/server");
 const PORT = 4200;
 
@@ -219,11 +220,15 @@ app.get('/post/:id', async (req, res) => {
     const Rank = require('./models/Rank.model');
     let rank = await Rank.findOne({ userId: user.id });
 
+    let postLikes = await Like.find({postId: postData._id}).count()
+    let amILikes = await Like.find({$and: [{userId: user.id}, {postId: postData._id}]}).count()
     const PostInformation = {
         id: postData._id,
         content: postData.content,
         image: postData.image,
         createdAt: postData.createdAt,
+        likes: postLikes,
+        meLike: amILikes,
         user: {
             id: userData._id,
             name: userData.name,

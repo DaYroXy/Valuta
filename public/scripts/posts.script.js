@@ -19,9 +19,11 @@ function addPost(data, isVisited) {
         is_visited_page = "isVisited"
     }
 
+    let needMargin = ""
     if(data.image !== "") {
         if(isVisited) {
             img = `<img src="../uploads/${data.image}" alt="feed-content-image">`
+            needMargin = `style="margin-bottom: 1.5rem;"`
         } else {
             img = `<img src="./uploads/${data.image}" alt="feed-content-image">`
         }
@@ -78,7 +80,7 @@ function addPost(data, isVisited) {
 
                 <div class="feed-content">
                     <small>${data.content}</small>
-                    <div class="feed-photo ${is_visited_page}">
+                    <div ${needMargin} class="feed-photo ${is_visited_page}">
                         ${img}
                     </div>
                 </div>
