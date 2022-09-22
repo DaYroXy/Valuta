@@ -1,12 +1,14 @@
 const User = require('./user');
 const Major = require('./major');
+const Room = require('./room');
 const rankModel = require('../models/Rank.model');
 
 class ServerConf {
     
     async setupSever() {
-        new User().resetAllUserStatus();
-        new Major().checkIfMajorExists();
+        await new User().resetAllUserStatus();
+        await new Room().setupRooms();
+        await new Major().checkIfMajorExists();
         this.setupRanks();
     }
 

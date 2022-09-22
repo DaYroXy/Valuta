@@ -6,6 +6,7 @@ const userClass = require("../classes/user");
 const Post = require("../classes/post");
 const Trend = require("../classes/trend");
 const ObjectId = require('mongoose').Types.ObjectId;
+const Activity = require("../classes/activity.js");
 
 // Get All Posts 
 router.get("/", async (req, res) => {
@@ -161,6 +162,8 @@ router.post("/add", async (req, res) => {
     }
     req.session.user.posts_count += 1;
 
+    new Activity(user.id, 1);
+
     res.json({
         "status": "success",
         "message": "post added successfully"
@@ -219,6 +222,7 @@ router.delete("/delete/:postId", async (req, res) => {
     io.emit("postDeleted", postToEmit)
     req.session.user.posts_count -= 1;
 
+    new Activity(user.id, 2);
     res.json({
         status: "success",
         message: "post removed sucessfully"

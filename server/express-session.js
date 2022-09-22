@@ -1,4 +1,5 @@
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 const day = 1000 * 60 * 60 * 24;
 
@@ -8,7 +9,8 @@ const sessionMiddleware = session({
     saveUninitialized: false,
     cookie: {
         maxAge: day * 30
-    }
+    },
+    store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/Valuta' })
 });
 
 

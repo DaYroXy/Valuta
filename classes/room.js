@@ -60,6 +60,34 @@ class Room {
         return await roomModel.find({$or:[{major: {$in: ids}}, {name: "Universal"}]});
     }
 
+    async setupRooms() {
+        let found = await roomModel.findOne({name: "Universal"});
+        if(!found) {
+            let room = new roomModel({
+                name: "Universal",
+                description: "talk with everyone in valuta",
+                major: null,
+                moderators: null
+            });
+            await room.save();
+        }
+
+        found = await roomModel.findOne({name: "admin"});
+        if(!found) {
+            let room = new roomModel({
+                name: "admin",
+                description: "talk with admins in valuta",
+                major: null,
+                moderators: null
+            });
+            await room.save();
+        }
+    }
+
+    async getAdminRoom() {
+        return await roomModel.findOne({name: "admin"});
+    }
+
 }
 
 module.exports = Room;

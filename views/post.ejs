@@ -73,7 +73,7 @@
                         
                                     </span>
                                 </div>
-                
+
                                 <div class="feed-content">
                                     <small><%- PostInformation.content %></small>
                                     <% if(PostInformation.image !== "") { %>
@@ -96,7 +96,37 @@
                             </div>
                         </div>
                     </div>
-    
+                    
+                                    
+                    <form id="submit-post" class="create-post">
+                        <!-- <form enctype="multipart/form-data" method="POST" action="/api/v1/posts/add" class="create-post"> -->
+                            <div class="profile-picture">
+                                
+                                <img src="https://avatars.dicebear.com/api/bottts/1mjl0g1xeha80.png?background=%235a1fac" alt="user profile picture">
+                                    
+                            </div>
+                            <div class="create-post-container">
+                                
+                                <div class="text-area">
+                                    <textarea onkeyup="textAreaAdjust(this)" placeholder="Whats on your mind, Anas?" name="content" id="content" cols="30" rows="10"></textarea>
+                                    <div class="feed-photo">
+                                        <img id="preview-image" hidden="">
+                                    </div>
+                                </div>
+        
+                                <!-- <input type="text" name="post-content" placeholder="Whats on your mind, Anas?" id="create-post" required> -->
+                                
+                                <div class="files-container">
+                                    <input type="file" name="image" id="create-post-image" data-np-invisible="1" data-np-checked="1">
+                                    <input type="file" name="file" id="create-post-file" data-np-invisible="1" data-np-checked="1">
+                                    <label for="create-post-image"><i class="fa-solid fa-image fa-lg"></i></label>
+                                    <label for="create-post-file"><i class="fa-solid fa-file-circle-plus"></i></label>
+        
+                                </div>
+                            </div>
+        
+                            <input type="submit" name="post" value="Post" class="btn btn-primary" data-np-checked="1">
+                        </form>
                     
                     <!-- FEED -->
                     <div class="feeds"></div>

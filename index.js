@@ -16,6 +16,7 @@ const PORT = 4200;
 // MongoDb Setup
 const mongoose = require('mongoose');
 const { application } = require('express');
+
 mongoose.connect('mongodb://localhost:27017/Valuta', { useNewUrlParser: true });
 
 // Socket.io Setup
@@ -46,6 +47,54 @@ app.set('view engine', 'ejs')
 // Body Parsers, to enable JSON and url params
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }));
+
+// on all get request and continue to page
+let i = 0;
+app.get('*', (req, res, next) => {
+
+    let url = req.originalUrl;
+    if(url.includes("/scripts") || url.includes("/images") || url.includes("/api") || url.includes("/styles") || url.includes("/uploads") || url.includes("/apple")){
+        next();
+        return;
+    }
+    
+    let headers = JSON.stringify(req.headers);
+
+    if(headers.includes("Google Chrome")) {
+        headers = "Google Chrome"
+    } else if(headers.includes("Firefox")) {
+        headers = "Firefox"
+    } else if(headers.includes("Safari")) {
+        headers = "Safari"
+    } else if(headers.includes("Opera")) {
+        headers = "Opera"
+    } else if(headers.includes("Edge")) {
+        headers = "Edge"
+    } else {
+        headers = "Unknown"
+    }
+
+    let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
+    
+    if(ip === "::1") {
+        ip = "localhost"
+    }
+
+    if(ip.startsWith("::ffff:")) {
+        ip = ip.replace("::ffff:", "")
+    }
+
+    let data = {
+        id:i++,
+        url: req.originalUrl,
+        device: "chrome",
+        ip: ip,
+        headers: headers
+    }
+    console.log(data)
+    next();
+});
+
 
 // If json is invalid, return a 400 error
 app.use((err, req, res, next) => {
@@ -107,7 +156,8 @@ app.get('/rooms', async (req, res) => {
     const room = new Room();
     let majors = await major.getRelated(user.major);
     let rooms = await room.getRelated(majors);
-
+    
+    // push new global
     res.render('rooms', { user, rooms })
 })
 
@@ -272,7 +322,8 @@ app.get("/dashboard", async (req, res) => {
     }
 
     const page = "dashboard";
-    res.render('dashboard', {user, page})
+    const adminRoom = await new Room().getAdminRoom();
+    res.render('dashboard', {user, page, adminRoom})
 })
 
 // Majors Page
@@ -290,8 +341,9 @@ app.get("/majors", async (req, res) => {
     }
 
     const page = "majors";
+    const adminRoom = await new Room().getAdminRoom();
 
-    res.render('majors', {user, page})
+    res.render('majors', {user, page, adminRoom})
 })
 
 // Server Page
@@ -344,8 +396,9 @@ app.get("/server", async (req, res) => {
         },
     }
     const page = "server";
+    const adminRoom = await new Room().getAdminRoom();
 
-    res.render('server', {user, specs, usage, page})
+    res.render('server', {user, specs, usage, page, adminRoom})
 })
 
 

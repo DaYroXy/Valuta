@@ -45,6 +45,27 @@ function sendMessage(roomId) {
     })
 }
 
+
+// load messages on user change
+function loadMessages(roomId) {
+    fetch(`http://localhost:4200/api/v1/rooms/messages/${roomId}`)
+    .then(res => res.json())
+    .then(messages => {
+        
+        // clear all existing messages
+        let messagesElement = document.querySelector(".chatting-messages");
+        messagesElement.innerHTML = ""
+
+        // load new messages
+        messages.forEach(message => {
+            displayMessage(message);
+        })
+
+    }).catch(err => {
+        console.log(err)
+    })
+}
+
 // Add display Message to UI
 function displayMessage(message) {
     // get current user id
@@ -60,7 +81,6 @@ function displayMessage(message) {
                 <div class="inner-message-content">
                     <p>${message.content}</p>
                 </div>
-
                 <div class="message-timestamp">
                     <small class="text-muted">${timeSince(new Date(message.createdAt))}</small>
                 </div>
@@ -100,26 +120,6 @@ function displayMessage(message) {
     messagesElement.querySelector(".scroll-to-bottom").remove();
 
 
-}
-
-// load messages on user change
-function loadMessages(roomId) {
-    fetch(`http://localhost:4200/api/v1/rooms/messages/${roomId}`)
-    .then(res => res.json())
-    .then(messages => {
-        
-        // clear all existing messages
-        let messagesElement = document.querySelector(".chatting-messages");
-        messagesElement.innerHTML = ""
-
-        // load new messages
-        messages.forEach(message => {
-            displayMessage(message);
-        })
-
-    }).catch(err => {
-        console.log(err)
-    })
 }
 
 let rooms = document.querySelectorAll("#room-menu-select");

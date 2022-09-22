@@ -145,6 +145,12 @@ img {
     text-transform: uppercase;
 }
 
+.lecturer {
+    color: var(--color-pending);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
 /* ---------- NAVBAR ---------- */
 
 

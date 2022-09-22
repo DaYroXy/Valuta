@@ -1,6 +1,6 @@
 // user-disconnected
 
-const API_URL = "http://localhost:4200/api/v1/";
+const API_URL = "http://localhost:4200/api/v1";
 
 // text variables
 const TOTAL_USERS_TEXT = document.getElementById("total-users")
@@ -40,4 +40,27 @@ async function updateAll() {
     TOTAL_ADMINS_TEXT_ONLINE.innerHTML = `${admins.online} Online`
 }
 
+function getRecentUsers() {
+    fetch(`${API_URL}/admin/recentUsers`)
+    .then(res => res.json())
+    .then(data => {
+        let recentUsers = document.querySelector(".recent-users tbody")
+        let index = data.count;
+        console.log(data)
+        data.users.map(user => {
+            let html = `
+            <tr>
+            <td>${index}</td>
+            <td>${user.email}</td>
+            <td>@${user.username}</td>
+            <td>${user.major.name}</td>
+            <td><b class="${user.rank.name}">${user.rank.name}</b></td>
+            </tr>
+            `
+            index--;
+            recentUsers.insertAdjacentHTML("beforeend", html)
+        })
+    })
+}
+getRecentUsers()
 updateAll();

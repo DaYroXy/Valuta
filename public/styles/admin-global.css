@@ -589,7 +589,7 @@ main .recent-users {
     border-radius: var(--card-border-radius);
     box-shadow: var(--box-shadow);
     transition: all 300ms ease;
-    max-height: 405px;
+    max-height: 421px;
     overflow: hidden;
 }
 
@@ -649,4 +649,22 @@ main .recent-users {
     color: var(--color-white);
     padding: .6rem;
     border-radius: 50%;
+}
+
+.admin {
+    color: var(--color-danger);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.student {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.lecturer {
+    color: var(--color-pending);
+    font-weight: 700;
+    text-transform: uppercase;
 }

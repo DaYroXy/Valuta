@@ -28,7 +28,7 @@ const ctx = document.getElementById('myChart').getContext('2d');
 const myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ['January', 'February', 'July', 'May', 'November', 'October'],
+        labels: ['6 Hours ago', '5 Hours ago', '4 Hours ago', '3 Hours ago', '2 Hours ago', '1 Hour ago'],
         datasets: Data
     },
     options: {

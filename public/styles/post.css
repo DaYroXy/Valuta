@@ -1,5 +1,7 @@
-
-
 .profile-body {
     margin-bottom: 1rem;
+}
+
+.create-post-container .files-container {
+    align-items: center;
 }

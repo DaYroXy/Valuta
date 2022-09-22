@@ -90,6 +90,26 @@ class Major {
         return true;
     }
 
+    // Get Major from db
+    async getMajorGrouped() {
+        let results = await majorModel.aggregate([
+            {
+                $group: {
+                    _id: "$name",
+                    years: {
+                        $push: {
+                            _id: "$_id",
+                            year: "$year",
+                            lecturers: "$lecturers"
+                        }
+                    }
+                }
+            }
+        ])
+
+        return results;
+    }
+
 }
 
 module.exports = Major;
