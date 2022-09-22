@@ -254,7 +254,7 @@ main .container .left-side {
 
 /* FEED */
 
-.middle .feeds .feed {
+.middle .feeds .feed, .profile-body .feed {
     background: var(--color-white);
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
@@ -263,8 +263,13 @@ main .container .left-side {
     line-height: 1.5;
 }
 
+.profile-body .feed {
+    width: 100%;
+    margin: 0;    
+}
 
-.middle .feeds .feed .feed-top {
+
+.middle .feeds .feed .feed-top, .profile-body .feed .feed-top {
     display: flex;
     justify-content: space-between;
 }
@@ -273,25 +278,25 @@ main .container .left-side {
     width: 100%;
 }
 
-.middle .feeds .feed .feed-top .user {
+.middle .feeds .feed .feed-top .user, .profile-body .feed .feed-top .user {
     display: flex;
     gap: 1rem;
 }
 
 
-.middle .feeds .feed .feed-content {
+.middle .feeds .feed .feed-content, .profile-body .feed .feed-content {
     margin: 0.7rem 0;
     font-size: 1rem;
 }
 
-.middle .feeds .feed .feed-photo {
+.middle .feeds .feed .feed-photo, .profile-body .feed .feed-photo {
     border-radius: var(--card-border-radius);
     overflow: hidden;
     margin: 0.7rem 0;
     max-height: 800px;
 }
 
-.middle .feeds .feed .action-button {
+.middle .feeds .feed .action-button, .profile-body .feed .action-button {
     display: flex;
     gap: 1.2rem;
     margin: 0 0.6rem;

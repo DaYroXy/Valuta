@@ -37,7 +37,7 @@ class user extends Many.Mixin(Friend,Message) {
     }
 
     async getUserRank() {
-        return await rankModel.findOne({id: this.user.rank});
+        return await rankModel.findById(this.user.rank);
     }
 
     async getUserByUsername(username) {
@@ -137,7 +137,7 @@ class user extends Many.Mixin(Friend,Message) {
             userImage = "anas.jpeg"
         }
 
-        let rank = await rankModel.findOne({access: 0});
+        let rank = await rankModel.findOne({name: "student"});
         if(!rank) {
             rank = await rankModel.create({
                 name: "student",
@@ -225,6 +225,14 @@ class user extends Many.Mixin(Friend,Message) {
               {
                 "$unwind": "$rank"      
               },
+            {
+                $lookup: {
+                    from: "likes",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "likes"
+                }
+            },
               {"$project": {
                 "_id":1,
                 "content":1,
@@ -235,9 +243,10 @@ class user extends Many.Mixin(Friend,Message) {
                 "user.avatar": 1,
                 "user.username": 1,
                 "rank.name" : 1, 
+                "likes.userId": 1,
             }}
             
-          ]).sort({"createdAt":1}).limit(10);
+          ]).sort({"createdAt":-1}).limit(10);
         return posts;
     }
 
@@ -280,6 +289,13 @@ class user extends Many.Mixin(Friend,Message) {
         return true;
     }
 
+    async updateUserRank(rankName) {
+        let rank = await rankModel.findOne({name: rankName});
+        if(!rank) {
+            return false;
+        }
+        await User.updateOne({_id: this.user._id}, {$set: {rank: rank._id}});
+    }
 }
 
 module.exports = user;

@@ -1,5 +1,6 @@
 
 const roomModel = require('../models/room.model.js');
+const ObjectId = require("mongoose").Types.ObjectId;
 
 class Room {
 
@@ -58,6 +59,45 @@ class Room {
     // get rooms by major ids
     async getRelated(ids) {
         return await roomModel.find({$or:[{major: {$in: ids}}, {name: "Universal"}]});
+    }
+
+    async setupRooms() {
+        let found = await roomModel.findOne({name: "Universal"});
+        if(!found) {
+            let room = new roomModel({
+                name: "Universal",
+                description: "talk with everyone in valuta",
+                major: null,
+                moderators: []
+            });
+            await room.save();
+        }
+
+        found = await roomModel.findOne({name: "admin"});
+        if(!found) {
+            let room = new roomModel({
+                name: "admin",
+                description: "talk with admins in valuta",
+                major: null,
+                moderators: []
+            });
+            await room.save();
+        }
+    }
+
+    async getAdminRoom() {
+        return await roomModel.findOne({name: "admin"});
+    }
+
+    async addLecturer(majorId, lecturerId) {
+        // console.log(majorId)/=
+        let room = await roomModel.findOne({major: ObjectId(majorId)});
+        room.moderators.push(ObjectId(lecturerId))
+        // console.log(room)
+        // console.log(room)
+        // room.moderators.push(lecturerId);
+        await room.save();
+        console.log(room)
     }
 
 }

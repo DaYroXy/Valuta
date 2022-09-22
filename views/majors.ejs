@@ -1,0 +1,70 @@
+<%- include("./components/admin-left.ejs") %>
+
+<h1>Dashboard</h1>
+
+<div class="recent-users" style="margin-top: 4rem;">
+    <div class="major-list">
+        <canvas id="myChart" width="200" height="100px"></canvas>
+    </div>
+
+</div>
+
+<!-- Recent Users -->
+
+<div class="recent-users">
+    <h2>Majors List</h2>
+
+    <div class="major-list">
+        <div class="left-side">
+            <div class="title">
+                <h2>Lecturer</h2>
+            </div>
+
+            <div class="input">
+                <select name="#" id="selected-major">
+                </select>
+            </div>
+
+            <div class="input">
+                <input id="lecturer-username" type="text" placeholder="Lecturer Username">
+            </div>
+
+            <div class="bottom-buttons">
+                <div class="input delete">
+                    <input id="remove-lecturer-button" type="submit" value="Remove">
+                </div>
+
+                <div class="input update">
+                    <input id="add-lecturer-button" type="submit" value="Add">
+                </div>
+                
+                
+            </div>
+            <p id="lecturer-handler"></p>
+        </div>
+
+        <div class="middle-line"></div>
+
+        <div class="right-side">
+            <div class="title">
+                <h2>Major</h2>
+            </div>
+
+            <div class="input">
+                <input id="major-name" type="text" placeholder="Major Name">
+            </div>
+
+            <div class="input">
+                <input id="major-years" type="number" min="1" placeholder="Years">
+            </div>
+
+            <div class="input">
+                <input id="add-major-button" type="submit" value="Add Major">
+            </div>
+            <p id="major-handler"></p>
+        </div>
+    </div>
+
+</div>
+
+<%- include("./components/admin-right.ejs") %>

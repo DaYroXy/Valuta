@@ -8,13 +8,13 @@
             <span><i class="fa-solid fa-house-chimney"></i></span> <h3>Home</h3>
         </a>
 
-        <a class="menu-item noselect" id="notifications-button">
+        <!-- <a class="menu-item noselect" id="notifications-button">
             <span><i class="fa-solid fa-bell"><small class="notification-count">99</small></i></span> <h3>Notifications</h3>
             
-            <!-- Notifications Popyo -->
+            Notifications Popyo
             <div class="notification-popup notification-show noselect">
 
-                <!-- Notifications List -->
+                Notifications List
                 <a href="#" class="notification ">
                     <div class="profile-picture">
                         <img src="https://valuta-hub.me/images/user.png" alt="Profile Image">
@@ -25,6 +25,7 @@
                         <small class="text-muted">2 DAYS AGO</small>
                     </div>
                 </a>
+<<<<<<< HEAD
                 <!-- Notifications List -->
                 <a href="#" class="notification">
                     <div class="profile-picture">
@@ -61,6 +62,11 @@
             </div>
         </a>
 
+=======
+                
+        </a> -->
+
+>>>>>>> main
         <a href="https://valuta-hub.me/messages" class="menu-item <% if(page=='message'){ %> active <% } %> noselect">
             <span><i class="fa-solid fa-envelope"><small class="notification-count">6</small></i></span> <h3>Messages</h3>
         </a>
@@ -76,6 +82,12 @@
         <a href="https://valuta-hub.me/settings" class="menu-item <% if(page=='settings'){ %> active <% } %> noselect">
             <span><i class="fa-solid fa-gear"></i></span> <h3>Settings</h3>
         </a>
+
+        <% if(rank.access > 1) { %>
+            <a href="https://valuta-hub.me/dashboard" class="menu-item <% if(page=='admin'){ %> active <% } %> noselect">
+                <span><i class="fa-solid fa-user-shield"></i></span> <h3>Admin</h3>
+            </a>
+        <% } %>
 
     </div>
 

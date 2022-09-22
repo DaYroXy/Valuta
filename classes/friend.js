@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId
 const friendModel = require("../models/Friend.model");
+const Activity = require("./activity.js");
 
 class Friend {
 
@@ -104,11 +105,13 @@ class Friend {
 
         if(isFriendAlreadySentRequest) {
             if(await friendModel.updateOne({"_id":isFriendAlreadySentRequest.id}, { $set : {status: 1}})) {
+                new Activity(this.user.id, 4);
                 return {
                     status: "success",
                     message: "Friend request accepted"
                 }
             }
+
         }
 
         let isRequested = await friendModel.findOne({
@@ -129,6 +132,7 @@ class Friend {
             recipient: friend.id,
             status: 0
         })) {
+            new Activity(this.user.id, 3);
             return {
                 status: "success",
                 message: "Friend request sent"
@@ -176,6 +180,7 @@ class Friend {
         }
 
         if(await friendModel.deleteOne({"_id":isFriend.id})) {
+            new Activity(this.user.id, 5);
             return {
                 status: "success",
                 message: "Friend removed"

@@ -13,6 +13,7 @@ const form = document.getElementById('submit-post');
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    console.log(e)
 
     let formData = new FormData(form);
 
@@ -62,7 +63,7 @@ if(trend) {
         }
 
         posts.reverse().map(p => {
-            addPost(p);
+            addPost(p, false);
         })
     })
 
@@ -80,7 +81,7 @@ if(trend) {
 
         posts.reverse().map(p => {
             
-            addPost(p);
+            addPost(p, false);
         })
     })
 }

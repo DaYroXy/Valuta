@@ -5,13 +5,24 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const server = require('http').createServer(app)
 const { sessionMiddleware, wrap } = require('./server/express-session');
+const si = require('systeminformation');
 const User = require('./classes/user');
 const Major = require("./classes/major");
 const Room = require("./classes/room");
+<<<<<<< HEAD
 const PORT = 80;
+=======
+const Logs = require("./classes/logs");
+const Post = require("./classes/post");
+const Like = require("./models/Like.model");
+const serverConf = require("./classes/server");
+const PORT = 4200;
+>>>>>>> main
 
 // MongoDb Setup
 const mongoose = require('mongoose');
+const { application } = require('express');
+
 mongoose.connect('mongodb://localhost:27017/Valuta', { useNewUrlParser: true });
 
 // Socket.io Setup
@@ -27,8 +38,14 @@ app.use(fileUpload({
 }));
 app.use(sessionMiddleware);
 
-// Reset all users status on startup
-new User().resetAllUserStatus();
+// // Reset all users status on startup
+// new User().resetAllUserStatus();
+
+// // Check if at least 1 major exists if not create 1
+// new Major().checkIfMajorExists();
+
+new serverConf().setupSever();
+
 
 // Setup view engine as .ejs files
 app.set('view engine', 'ejs')
@@ -36,6 +53,46 @@ app.set('view engine', 'ejs')
 // Body Parsers, to enable JSON and url params
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }));
+
+// LOGS CATCEHR
+app.use((req, res, next) => {
+    let url = req.originalUrl;
+    if(req.method === "GET") {
+        if(url.includes("/scripts") || url.includes("/images") || url.includes("/api") || url.includes("/styles") || url.includes("/uploads") || url.includes("/apple")){
+            next();
+            return;
+        }
+    }
+    
+    let headers = JSON.stringify(req.headers);
+
+    if(headers.includes("Google Chrome")) {
+        headers = "Google Chrome"
+    } else if(headers.includes("Firefox")) {
+        headers = "Firefox"
+    } else if(headers.includes("Safari")) {
+        headers = "Safari"
+    } else if(headers.includes("Opera")) {
+        headers = "Opera"
+    } else if(headers.includes("Edge")) {
+        headers = "Edge"
+    } else {
+        headers = "Unknown"
+    }
+
+    let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
+    
+    if(ip === "::1") {
+        ip = "localhost"
+    }
+
+    if(ip.startsWith("::ffff:")) {
+        ip = ip.replace("::ffff:", "")
+    }
+
+    new Logs(ip, headers, req.method)
+    next()
+})
 
 // If json is invalid, return a 400 error
 app.use((err, req, res, next) => {
@@ -63,7 +120,11 @@ app.get('/', async (req, res) => {
     }
     
     const page = "home"
-    res.render('index', { user, page })
+    const me = new User();
+    await me.getUserById(user.id);
+    const rank = await me.getUserRank();
+
+    res.render('index', { user, page, rank })
 })
 
 // Messages Page
@@ -93,12 +154,13 @@ app.get('/rooms', async (req, res) => {
     const room = new Room();
     let majors = await major.getRelated(user.major);
     let rooms = await room.getRelated(majors);
-
+    
+    // push new global
     res.render('rooms', { user, rooms })
 })
 
 // settings Page
-app.get('/settings', (req, res) => {
+app.get('/settings', async (req, res) => {
     const user = req.session.user
 
     if (!user) {
@@ -108,12 +170,16 @@ app.get('/settings', (req, res) => {
     
     let visitedUser = user;
     const page = "settings"
+    
+    const me = new User();
+    await me.getUserById(user.id);
+    const rank = await me.getUserRank();
 
-    res.render('settings', { user, visitedUser, page })
+    res.render('settings', { user, visitedUser, page, rank })
 })
 
 // Profie Page
-app.get('/profile', (req, res) => {
+app.get('/profile', async (req, res) => {
     const user = req.session.user
 
     if (!user) {
@@ -124,8 +190,69 @@ app.get('/profile', (req, res) => {
     let visitedUser = user;
     const page = "profile"
 
-    res.render('profile', { user, visitedUser, page })
+    const me = new User();
+    await me.getUserById(user.id);
+    const rank = await me.getUserRank();
+
+
+    res.render('profile', { user, visitedUser, page, rank })
 })
+
+// Profie Page
+app.get('/post/:id', async (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry')
+        return;
+    }
+
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        res.redirect("/")
+    }
+    
+    
+    let post = new Post();
+    await post.getPostById(req.params.id);
+    let postData = await post.getPostById(req.params.id)
+
+    let postUser = new User();
+    let userData = await postUser.getUserById(postData.userId);
+    if(!userData) {
+        res.redirect("/")
+    }
+    const Rank = require('./models/Rank.model');
+    let rank = await Rank.findOne({ userId: user.id });
+
+    let postLikes = await Like.find({postId: postData._id}).count()
+    let amILikes = await Like.find({$and: [{userId: user.id}, {postId: postData._id}]}).count()
+    const PostInformation = {
+        id: postData._id,
+        content: postData.content,
+        image: postData.image,
+        createdAt: postData.createdAt,
+        likes: postLikes,
+        meLike: amILikes,
+        user: {
+            id: userData._id,
+            name: userData.name,
+            username: userData.username,
+            avatar: userData.avatar,
+            bg_image: userData.bg_image,
+            rank: rank.name
+        }
+    }
+
+    let visitedUser = user;
+    const page = "home"
+
+    let me = new User();
+    await me.getUserById(user.id);
+    rank = await me.getUserRank();
+
+    res.render('post', { user, PostInformation, page, rank })
+})
+
 
 // get user profile
 app.get("/profile/:username", async (req, res) => {
@@ -166,9 +293,116 @@ app.get("/profile/:username", async (req, res) => {
     let isFriend = friendStatus.status;
 
     const page = "visit"
+
+    await me.getUserById(user.id);
+    const rank = await me.getUserRank();
     // Render
-    res.render('profile', { user, visitedUser, page, isFriend })
+    res.render('profile', { user, visitedUser, page, isFriend, rank })
 })
+
+// Admin section
+function convertToGB(bytes) {
+    return Number((bytes / (1024 * 1024 * 1024)).toFixed(0));
+}
+
+function converToGbNoFixed(bytes) {
+    return Number((bytes / (1024 * 1024 * 1024)));
+}
+
+// Dashboard Page
+app.get("/dashboard", async (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry');
+        return;
+    }
+
+    if(user.rank !== "admin") {
+        res.redirect("/");
+        return;
+    }
+
+    const page = "dashboard";
+    const adminRoom = await new Room().getAdminRoom();
+    res.render('dashboard', {user, page, adminRoom})
+})
+
+// Majors Page
+app.get("/majors", async (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry');
+        return;
+    }
+
+    if(user.rank !== "admin") {
+        res.redirect("/");
+        return;
+    }
+
+    const page = "majors";
+    const adminRoom = await new Room().getAdminRoom();
+
+    res.render('majors', {user, page, adminRoom})
+})
+
+// Server Page
+app.get("/server", async (req, res) => {
+    const user = req.session.user
+
+    if (!user) {
+        res.redirect('/entry');
+        return;
+    }
+
+    if(user.rank !== "admin") {
+        res.redirect("/");
+        return;
+    }
+
+    let specs = {
+        Cores: (await si.cpu()).cores,
+        Memory: convertToGB((await si.mem()).total),
+        Storage: convertToGB((await si.diskLayout())[0].size),
+    }
+
+    let cpuData = (await si.currentLoad());
+    let memData = (await si.mem());
+    let storageData = (await si.fsSize());
+
+    let allStorage = {
+        total: 0,
+        used: 0,
+    };
+    
+    storageData.map(d => {
+        allStorage.used += d.used;
+    })
+
+    let usage = {
+        CPU: {
+            usage: Number(cpuData.currentLoad.toFixed(0)),
+            idle: Number(cpuData.currentLoadIdle.toFixed(0))
+        },
+        Memory: {
+            usage: Number(converToGbNoFixed(memData.used).toFixed(1)),
+            idle: Number(converToGbNoFixed(memData.total).toFixed(1)),
+            percentage: ((Number(converToGbNoFixed(memData.used).toFixed(1))/Number(converToGbNoFixed(memData.total).toFixed(1)))*100).toFixed(1)
+        },
+        Storage: {
+            usage: Number(converToGbNoFixed(storageData[0].size).toFixed(2)),
+            idle: Number(converToGbNoFixed(allStorage.used).toFixed(2)),
+            percentage: ((Number(converToGbNoFixed(allStorage.used).toFixed(1))/Number(converToGbNoFixed(storageData[0].size).toFixed(1)))*100).toFixed(1)
+        },
+    }
+    const page = "server";
+    const adminRoom = await new Room().getAdminRoom();
+
+    res.render('server', {user, specs, usage, page, adminRoom})
+})
+
 
 // APIS
 app.use("/api/v1", require("./routes/api.routes"));
@@ -209,6 +443,41 @@ io.on("connection", async (socket) => {
     io.emit("user-connected", await user.getUserById(userSession.id));
     await user.addSocket(socket.id);
 });
+
+// keep usages updated
+setInterval(async () => {
+    let cpuData = (await si.currentLoad());
+    let memData = (await si.mem());
+    let storageData = (await si.fsSize());
+
+    let allStorage = {
+        total: 0,
+        used: 0,
+    };
+    
+    storageData.map(d => {
+        allStorage.used += d.used;
+    })
+
+    let usage = {
+        CPU: {
+            usage: Number(cpuData.currentLoad.toFixed(0)),
+            idle: Number(cpuData.currentLoadIdle.toFixed(0))
+        },
+        Memory: {
+            usage: Number(converToGbNoFixed(memData.used).toFixed(1)),
+            idle: Number(converToGbNoFixed(memData.total).toFixed(1)),
+            percentage: Number(((Number(converToGbNoFixed(memData.used).toFixed(1))/Number(converToGbNoFixed(memData.total).toFixed(1)))*100).toFixed(1))
+        },
+        Storage: {
+            usage: Number(converToGbNoFixed(storageData[0].size).toFixed(2)),
+            idle: Number(converToGbNoFixed(allStorage.used).toFixed(2)),
+            percentage: Number(((Number(converToGbNoFixed(allStorage.used).toFixed(1))/Number(converToGbNoFixed(storageData[0].size).toFixed(1)))*100).toFixed(1))
+        },
+    }
+
+    io.emit("os-usages", usage);
+}, 2500);
 
 // Server Listener
 server.listen(PORT, () => {

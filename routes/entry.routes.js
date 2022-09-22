@@ -54,7 +54,7 @@ router.post("/register", async (req, res) => {
         bio: "No bio availabe."
     }
 
-    if(data.name === "") {
+    if(!data.name || data.name === "") {
         res.redirect("/entry?registerError=Name is required");
         return;
     }
@@ -70,7 +70,7 @@ router.post("/register", async (req, res) => {
         return;
     }
 
-    if(data.username === "") {
+    if(!data.username || data.username === "") {
         res.redirect("/entry?registerError=Username is required");
         return;
     }
@@ -80,7 +80,7 @@ router.post("/register", async (req, res) => {
         return;
     }
 
-    if(data.email === "") {
+    if(!data.email || data.email === "") {
         res.redirect("/entry?registerError=Email is required");
         return;
     }
@@ -90,7 +90,7 @@ router.post("/register", async (req, res) => {
         return;
     }
 
-    if(data.password === "") {
+    if(!data.password || data.password === "") {
         res.redirect("/entry?registerError=Password is required");
         return;
     }

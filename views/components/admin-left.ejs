@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/91c75a63e2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://valuta-hub.me/styles/admin-global.css">
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+    <script src="https://valuta-hub.me/scripts/admin-global.script.js" defer></script>
+    <script>
+        const socket = io("/")
+    </script>
+    
+    <% if (page == "majors" || page == "server") { %> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <% } %>
+
+    <% if (page === "server") { %>
+        <script src="https://valuta-hub.me/scripts/server.script.js" defer></script>
+    <% } %>
+
+    <% if (page == "dashboard") { %> 
+        <script src="https://valuta-hub.me/scripts/dashboard.script.js" defer></script>
+    <% } %>
+
+    <% if (page == "majors") { %> 
+        <script src="https://valuta-hub.me/scripts/majors.script.js" defer></script>
+    <% } %>
+
+    <title>Admin</title>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Side Bar-->
+        <div class="side-bar">
+            <div class="top">
+                <div class="logo">
+                    <img src="https://valuta-hub.me/images/Logo.png" alt="user image">
+                    <h2>Valuta</h2>
+                </div>
+            </div>
+
+            <div class="side-bar-body">
+                <a href="dashboard" <% if(page === "dashboard") { %> class="active" <% } %>>
+                    <i class="fa-solid fa-house"></i>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="majors"  <% if(page === "majors") { %> class="active" <% } %>>
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <h3>Majors</h3>
+                </a>
+                <a href="server" <% if(page === "server") { %> class="active" <% } %>>
+                    <i class="fa-solid fa-server"></i>
+                    <h3>Server</h3>
+                </a>
+                
+                <a href="/">
+                    <i class="fa-solid fa-tree"></i>
+                    <h3>Back to Valuta</h3>
+                </a>
+            </div>
+        </div>
+        
+        <main>

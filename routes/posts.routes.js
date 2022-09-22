@@ -6,12 +6,17 @@ const userClass = require("../classes/user");
 const Post = require("../classes/post");
 const Trend = require("../classes/trend");
 const ObjectId = require('mongoose').Types.ObjectId;
+const Activity = require("../classes/activity.js");
 
 // Get All Posts 
 router.get("/", async (req, res) => {
     res.json(await new Post().getPosts())
 })
 
+router.get("/comments/:postId", async (req,res) => {
+    let postId = req.params.postId;
+    res.json(await new Post().getRelatedPosts(postId))
+})
 
 // Get logged user data
 router.get("/me", async(req, res) => {
@@ -47,6 +52,12 @@ router.get("/:username", async(req, res) => {
 
 // add post to db
 router.post("/add", async (req, res) => {
+
+    let {comment} = req.body;
+    if(!comment) {
+        comment = false;
+    }
+
     var io = req.app.get('io');
     const user = req.session.user;
 
@@ -63,7 +74,8 @@ router.post("/add", async (req, res) => {
     const postData = {
         content: req.body.content,
         image: "",
-        file: ""
+        file: "",
+        related: comment
     }
 
     // if user sent a file or image
@@ -123,7 +135,9 @@ router.post("/add", async (req, res) => {
         return
     }
 
-    const userRank = await rankModel.findOne({id: user.rank});
+    const userRank = new userClass();
+    await userRank.getUserById(user.id);
+
     const postToEmit = {
         _id: postResult.data._id,
         content: postResult.data.content,
@@ -136,9 +150,11 @@ router.post("/add", async (req, res) => {
             username: user.username,
         },
         rank: {
-            name : userRank.name
+            name : (await userRank.getUserRank()).name
         }
     }
+
+    console.log(user.rank);
 
     // emit post to all users
     io.emit("newPost", postToEmit)
@@ -156,6 +172,8 @@ router.post("/add", async (req, res) => {
         })
     }
     req.session.user.posts_count += 1;
+
+    new Activity(user.id, 1);
 
     res.json({
         "status": "success",
@@ -215,6 +233,7 @@ router.delete("/delete/:postId", async (req, res) => {
     io.emit("postDeleted", postToEmit)
     req.session.user.posts_count -= 1;
 
+    new Activity(user.id, 2);
     res.json({
         status: "success",
         message: "post removed sucessfully"

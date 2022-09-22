@@ -53,7 +53,6 @@ class Major {
             })
 
             // create room for major
-
             let rName = `${mName} - Year ${i}`
             let rDescription = `talk about ${mName} - Year ${i}`
             if(i == 0) {
@@ -61,7 +60,7 @@ class Major {
                 rDescription = "talk with all years"
             }
 
-            room.create(rName, rDescription, createdMajor._id, null)
+            room.create(rName, rDescription, createdMajor._id, [])
             majors.push(createdMajor)
         }
         return majors;
@@ -79,6 +78,40 @@ class Major {
         ]});
 
         return majors;
+    }
+
+    async checkIfMajorExists() {
+        let results = await majorModel.find();
+        if(results.length == 0) {
+            await this.create("Software Engineer", 4, []);
+        }
+
+        return true;
+    }
+
+    // Get Major from db
+    async getMajorGrouped() {
+        let results = await majorModel.aggregate([
+            {
+                $group: {
+                    _id: "$name",
+                    years: {
+                        $push: {
+                            _id: "$_id",
+                            year: "$year",
+                            lecturers: "$lecturers"
+                        }
+                    }
+                }
+            }, {
+                $project: {
+                    _id: 0,
+                    years:1,
+                    name: "$_id",
+            }}
+        ])
+
+        return results;
     }
 
 }

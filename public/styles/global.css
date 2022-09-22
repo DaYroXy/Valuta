@@ -145,6 +145,12 @@ img {
     text-transform: uppercase;
 }
 
+.lecturer {
+    color: var(--color-pending);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
 /* ---------- NAVBAR ---------- */
 
 
@@ -240,6 +246,7 @@ img {
     justify-content: center;
     gap: 1rem;
     /* padding: 5rem; */
+    margin-bottom: 1.5rem;
     margin-top: 5rem;
 }
 
@@ -353,10 +360,13 @@ img {
 
 
 .action-button .notification-count {
-   position: absolute;
+   /* position: absolute;
    bottom: 0;
    font-size: .75rem;
-   right: -5px;
+   right: -5px; */
+    margin-left: .1rem;
+    font-size: .65rem;
+    font-weight: 400;
 }
 
 .action-button span {

@@ -1,0 +1,127 @@
+</main>
+
+<!-- Right Section -->
+
+<div class="right-section">
+    <div class="top">
+        <div class="profile">
+            <div class="info">
+                <p><b><%- user.name %></b></p>
+                <small class="text-muted"><%- user.rank %></small>
+            </div>
+
+            
+            <div class="profile-picture">
+                <%
+                if(user.avatar.includes("http") || user.avatar.includes("https")){
+                    %>
+                        <img src="<%- user.avatar %>" alt="user profile picture">
+                    <%
+                }else{
+                        %>
+                            <img src="https://valuta-hub.me/uploads/<%- user.avatar %>" alt="user profile picture">
+                        <%
+                    }
+                %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="recent-activities">
+        <h2>Recent Activities</h2>
+        <div class="activities">
+            
+            <!-- Editable Activity -->
+            <!-- <div class="activity">
+                <div class="profile-picture">
+                    <img src="user.png" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Bashar Shaabi</b> Just submitted a new post.</p>
+                    <small class="text-muted">2 Minutes Ago</small>
+                </div>
+            </div> -->
+
+            <!-- Editable Activity -->
+            <!-- <div class="activity">
+                <div class="profile-picture">
+                    <img src="user.png" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Bashar Shaabi</b> Just submitted a new post.</p>
+                    <small class="text-muted">2 Minutes Ago</small>
+                </div>
+            </div> -->
+
+            <!-- Editable Activity -->
+            <!-- <div class="activity">
+                <div class="profile-picture">
+                    <img src="user.png" alt="">
+                </div>
+                <div class="message">
+                    <p><b>Bashar Shaabi</b> Just submitted a new post.</p>
+                    <small class="text-muted">2 Minutes Ago</small>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- Admin Chat -->
+        <div class="admin-chat">
+            <h2>Admin Chat</h2>
+            <div class="admin-chat-content">
+                <div class="top">
+                    <h3>Chat</h3>
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+
+                <div class="middle" room-uid="<%- adminRoom._id %>">
+                    <!-- <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div>
+
+                    <div class="user-message">
+                        <div class="message">
+                            <p><b>Bashar Shaabi</b> wlk 5ls askt ya zlmi 2rf e2rfk m3fnk zy teze</p>
+                            <small class="text-muted">2 Minutes Ago</small>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="bottom">
+                    <div class="send-message">
+                        <input id="admin-chat-message" type="text" placeholder="Type your message here...">
+                        <i onclick="sendMessage('<%- adminRoom._id %>')" class="fa-solid fa-share"></i>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

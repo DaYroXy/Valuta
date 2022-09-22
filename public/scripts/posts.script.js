@@ -2,7 +2,7 @@
 
 
 // Add post to page
-function addPost(data) {
+function addPost(data, isVisited) {
     let img = ""
     let user_avatar = data.user.avatar
 
@@ -13,8 +13,20 @@ function addPost(data) {
     }
 
     let createdAt = timeSince(new Date(data.createdAt));
+    
+    let is_visited_page = "";
+    if(isVisited) {
+        is_visited_page = "isVisited"
+    }
+
+    let needMargin = ""
     if(data.image !== "") {
-        img = `<img src="./uploads/${data.image}" alt="feed-content-image">`
+        if(isVisited) {
+            img = `<img src="../uploads/${data.image}" alt="feed-content-image">`
+            needMargin = `style="margin-bottom: 1.5rem;"`
+        } else {
+            img = `<img src="./uploads/${data.image}" alt="feed-content-image">`
+        }
     }
     let connectedUserInfo = document.querySelector(".profile-details > .handle");
     let logged_user_username = connectedUserInfo.textContent.toLocaleLowerCase()
@@ -32,10 +44,15 @@ function addPost(data) {
         `
     }
 
-    let LikeButton = `<span onclick="likePost('${data._id}')" ><i class="fa-regular fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
-    if(data.likes.some(userLiked => userLiked["userId"] === logged_user_id)) {
-        LikeButton = `<span onclick="likePost('${data._id}')" style="color: var(--color-danger);"><i class="fa-solid fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
+    let LikeButton = `<span onclick="likePost('${data._id}')" ><i class="fa-regular fa-heart fa-xl"><small class="notification-count">0</small></i></span>`
+
+    if("likes" in data) {
+            LikeButton = `<span onclick="likePost('${data._id}')" ><i class="fa-regular fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
+        if(data.likes.some(userLiked => userLiked["userId"] === logged_user_id)) {
+            LikeButton = `<span onclick="likePost('${data._id}')" style="color: var(--color-danger);"><i class="fa-solid fa-heart fa-xl"><small class="notification-count">${data.likes.length}</small></i></span>`
+        }
     }
+
 
     let html = `
         <div class="feed" data-id="${data._id}">
@@ -63,20 +80,20 @@ function addPost(data) {
 
                 <div class="feed-content">
                     <small>${data.content}</small>
-                    <div class="feed-photo">
+                    <div ${needMargin} class="feed-photo ${is_visited_page}">
                         ${img}
                     </div>
                 </div>
                 
                 <div class="action-button">
                     ${LikeButton}
-                    <span><i class="fa-regular fa-comment fa-xl"></i></span>
-                    <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
-                </div>
-
-            </div>
-        `;
-    document.querySelector(".feeds")
+                    <span onclick="window.location.href = 'https://valuta-hub.me/post/${data._id}' "><i class="fa-regular fa-comment fa-xl"></i></span>
+                    </div>
+                    
+                    </div>
+                    `;
+                    // <span><i class="fa-regular fa-share-from-square fa-xl"></i></span>
+                    document.querySelector(".feeds")
     .insertAdjacentHTML("afterbegin", html)
 }
 
@@ -114,8 +131,8 @@ function deletePost(postId) {
     if(noPosts !== null) {
         noPosts.remove();
     }
-
-    addPost(post);
+    console.log(post)
+    addPost(post, false);
 
 
     let connectedUserInfo = document.querySelector(".profile-details > .handle");
@@ -180,6 +197,17 @@ socket.on("postDeleted", (post) => {
 })
 
 
+try {
+    let timeList = document.querySelectorAll("[createdAt]")
+
+    timeList.forEach(time => {
+        let since = timeSince(new Date(time.getAttribute("createdAt")))
+        time.textContent = since;
+    })
+
+} catch (err) {
+    
+}
 setInterval(() => {
     try {
         let timeList = document.querySelectorAll("[createdAt]")

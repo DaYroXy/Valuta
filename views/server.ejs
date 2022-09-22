@@ -1,0 +1,88 @@
+<%- include("./components/admin-left.ejs") %>
+
+<h1>Dashboard</h1>
+
+<div class="main-content">
+    
+    <!-- EJS Editable Card -->
+    <div class="card users-card">
+        <i class="fa-solid fa-microchip"></i>
+        <div class="middle">
+            <div class="left">
+                <h3>Total Cores</h3>
+                <h1 id="totalCores"><%- specs.Cores %> Cores</h1>
+            </div>
+
+            <div class="usage-chart">
+                <h3 id="coresUsage"><%- usage.CPU.usage %>%</h3>
+                <canvas id="cpu-tracker"></canvas>
+            </div>
+        </div>
+        <small class="text-muted">Overall</small>
+    </div>
+
+    <!-- EJS Editable Card -->
+    <div class="card lecturers-card">
+        <i class="fa-solid fa-memory"></i>
+        <div class="middle">
+            <div class="left">
+                <h3>Total Memory</h3>
+                <h1 id="totalMemory"><%- specs.Memory %> GB</h1>
+            </div>
+
+            <div class="usage-chart">
+                <h3 id="memoryUsage"><%- usage.Memory.percentage %>%</h3>
+                <canvas id="memory-tracker" ></canvas>
+            </div>
+        </div>
+        <small class="text-muted">Overall</small>
+    </div>
+
+    <!-- EJS Editable Card -->
+    <div class="card admins-card">
+        <i class="fa-solid fa-hard-drive"></i>
+        <div class="middle">
+            <div class="left">
+                <h3>Total Storage</h3>
+                <h1 id="totalStorage"><%- specs.Storage %> GB</h1>
+            </div>
+
+            <div class="usage-chart">
+                <h3 id="storageUsage"><%- usage.Storage.percentage %>%</h3>
+                <canvas id="storage-tracker" ></canvas>
+            </div>
+        </div>
+        <small class="text-muted">Overall</small>
+    </div>
+
+</div>
+
+<!-- Recent Users -->
+
+<div class="recent-users">
+    <h2>Request Logs</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Ip</th>
+                <th>Device</th>
+                <th>Request</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const USAGES_CHAR_HOLDER = {
+        cpu: <%- usage.CPU.usage %>,
+        memory: <%- usage.Memory.percentage%>,
+        storage: <%- usage.Storage.percentage %>,
+    }
+</script>
+<%- include("./components/admin-right.ejs") %>
